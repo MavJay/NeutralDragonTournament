@@ -30,6 +30,8 @@ contract NeutralDragonTournament{
     uint256 levelNum = 0;
     uint256 totalOfParticipants;
     uint256 betAmt = 100;
+    uint addmissionDuration = 60/15;
+    uint endTimer;
 
    address payable developer; // to receive commission and owner of the contract.
    // Get wizard moves placed by player
@@ -78,18 +80,21 @@ contract NeutralDragonTournament{
     tournamentPlayers[] public bPlayers;
     scoreArr[] public resultScores;
     // to fix tournament start date
-    uint256 tournamentDate = (now+5 days)/60/60/24;
+   
     event player_count_event(uint count); // Need to check
+    event returnData(uint256[]);
+    event addmissionTimeDuration(uint);
+    event levelTimer(uint);
     // event checkValidUser(bool);
 
     constructor() public{
         developer = msg.sender;
-        /* setTimer(tournamentDate); */
+        tournamentTimer();
     }
-    /* function setTimer(uint256 receivedTime) public view returns (uint256){
-        receivedTime = tournamentDate;
-        return tournamentDate;
-    } */
+    function tournamentTimer() public{
+         endTimer = block.number+addmissionDuration;
+         emit addmissionTimeDuration(endTimer);
+    }
     function joinTournament(address payable adr,uint256 wizardId, uint bet, uint affinityType) public payable{
 
       // Need to add wizard information..
@@ -130,7 +135,7 @@ contract NeutralDragonTournament{
         }
         if (tPlayers.length == 1) {
         //   tPlayers[0].player.transfer(tPlayers[0].bet*10000000);//Calculate with respect to 100
-            // distributePrize();
+             distributePrize();
 
        } else{
 
@@ -179,6 +184,10 @@ contract NeutralDragonTournament{
     }
 
     function placeSpells(address adr,uint256[] memory movesets) public returns (uint256[] memory) {
+        
+        uint spellDuration = 24*60*60/15;
+        endTimer = endTimer+spellDuration;
+        emit levelTimer(endTimer);
 
         //need to add address with moveset..
     for (uint i=0;i<tPlayers.length;i++){
@@ -490,10 +499,71 @@ contract NeutralDragonTournament{
 
     }
 
-/*    function compareRankingsAndPush() public{
-        createMatchFixture();
+    function compareRankingsAndPush() public{
+        
+        uint256[] memory resultScoreAry;
+        for (uint i = 0;i<resultScores.length;i++){
+            resultScoreAry[i] = resultScores[i].totalScore;
+        }
+        
+        sortScoreAndRank(resultScoreAry, int(0), int(resultScoreAry.length - 1));
+         emit returnData(resultScoreAry);
+        // createMatchFixture();
     }
+    
+    function sortScoreAndRank(uint256[] memory arr, int left, int right) internal{
+        int i = left;
+        int j = right;
+        if(i==j) return;
+        uint pivot = arr[uint(left + (right - left) / 2)];
+        while (i <= j) {
+            while (arr[uint(i)] < pivot) i++;
+            while (pivot < arr[uint(j)]) j--;
+            if (i <= j) {
+                (arr[uint(i)], arr[uint(j)]) = (arr[uint(j)], arr[uint(i)]);
+                i++;
+                j--;
+            }
+        }
+        if (left < j)
+            sortScoreAndRank(arr, left, j);
+        if (i < right)
+            sortScoreAndRank(arr, i, right);
+    }
+    
+    
+   function distributePrize()  public payable{
+    
+     uint256 totalFeesCollected = totalOfParticipants*betAmt;
+     uint256 totalPrizeMoney = totalFeesCollected*90/100;
+     uint256 developerCommission = totalFeesCollected*10/100;
+     uint256 prize1 = totalPrizeMoney*60/100;
+     uint256 prize2 = totalPrizeMoney*30/100;
+     uint256 tableTopScorer = totalPrizeMoney*10/100;
+    
+     address payable adr; 
+     address payable adr1;
+     address payable tableTopScorerAdr;
+     //   uint commision = (100*10)/100;
+              //transfer to developer
+              if (tPlayers.length == 0) {
+                adr = address(uint160(tPlayers[0].player)); 
+                adr.transfer(developerCommission*100000000000000000);
+              }
+              else {
+                  adr = address(uint160(tPlayers[0].player));
+                  adr.transfer(prize1*100000000000000000);
+                  adr1 = address(uint160(tPlayers[1].player));
+                  adr1.transfer(prize2*100000000000000000);
+                  tableTopScorerAdr = address(uint160(resultScores[0].plrAddress));
+                  tableTopScorerAdr.transfer(tableTopScorer*100000000000000000);
+              }
+              
+                    for(uint i=0;i<finals.length;i++){
+                             delete finals[i].playerAddress;
+                        }
+       //  delete finalMatchArray;
+}
 
-*/
 
 }
