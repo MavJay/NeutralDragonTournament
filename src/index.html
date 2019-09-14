@@ -31,7 +31,7 @@
 
   <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
 
-
+  <link rel="stylesheet" href="./css/snackbar.min.css" />
 </head>
 
 
@@ -67,7 +67,7 @@
     </ul>
   </div>
 </nav>
-<!-- <div id="melt_parent"></div> -->
+ <div id="melt_parent"></div>
 <button id="switch">Switch</button>
 
 <div id="tournament_status">
@@ -88,10 +88,12 @@
 
 
 
-  <div id="ranking_table" style=" max-width: 90%; margin: 0 auto;right: 0;left: 0;">
+  <div id="ranking_table" style=" max-width: 90%; margin: 0 auto;right: 0;left: 0;display:none; margin-bottom: 6rem; align-items: center;">
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Wizard ID</th>
+        <th>Affinity</th>
         <th>Address</th>
         <th>Rank</th>
         <th>Score</th>
@@ -107,6 +109,8 @@
     </thead>
     <tbody>
       <tr>
+        <td>1234</td>
+        <td>Fire</td>
         <td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td>
        
         <td>1</td>
@@ -121,6 +125,8 @@
         <td>2</td>
       </tr>
       <tr>
+          <td>4311</td>
+        <td>Water</td>
         <td>0xb3e94487b8C4eF9169Ebc2b9672a3222b8df401f</td>
        
         <td>2</td>
@@ -135,6 +141,8 @@
         <td>2</td>
       </tr>
       <tr>
+            <td>2341</td>
+        <td>Wind</td>
         <td>0xa20a319098BF993eA6Cc93922c9b001F1A3dd7Db</td>
      
         <td>3</td>
@@ -177,6 +185,8 @@
 
     
   </script>
+  <script src="./js/snackbar.min.js"></script>
+  <script src="./js/truffle-contract.js"></script>
    <script src="./js/web3.min.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/index.js"></script>

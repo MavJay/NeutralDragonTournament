@@ -1,0 +1,306 @@
+body,html{
+	width:100%;
+	height: 100%;
+}
+
+
+#cw_logo{
+
+width: 100px;
+height: 50px;
+
+}
+#tournament_name{
+	vertical-align: -webkit-baseline-middle;
+    padding: 8px;
+    margin: 0;
+    font-family: 'Righteous';
+    font-size: 18px;
+
+}
+
+.navbar {
+    background-color: #ffef37 !important;
+    font-family: 'Righteous';
+    width: 100% !important;
+  
+  
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #000;
+    font-size: 18px;
+}
+
+.navbar-light .navbar-toggler {
+    color: #000;
+    border-color: #000;
+}
+
+
+
+
+.navbar-brand{
+/*	height: 80px; 
+	float: none;*/
+}
+
+#tournament_name{
+
+	vertical-align: middle;
+	font-family: 'Righteous';
+	font-size: 24px;
+	height: inherit;
+}
+
+
+#myNavbar{
+	height: 80px;
+}
+
+
+	footer{
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		padding-bottom: 5rem;
+    	background-image: url(../images/bg-checker.svg);
+    	background-size: contain;
+    	background-position: bottom;
+    	background-repeat: repeat-x;
+
+	}
+
+	#tower_div{
+		position: fixed;
+		width: 100%;
+		height: 500px;
+		bottom: 5rem;
+		background-image: url(../images/dragontower.svg);
+		background-position: center;
+		background-repeat: no-repeat;
+		
+
+	}
+
+
+
+
+/*home*/
+
+#tournament_status{
+	font-family: 'Righteous';
+	position: fixed;
+	height: 300px;
+	width: 30%;
+	background: #ffff85;
+	top: 40%;
+	margin-left: 18px;
+	border: solid #000 1px;
+	box-shadow:  1px 2px;
+	font-size: 18px;
+}
+
+
+#tournament_status p{
+	padding: 24px;
+	line-height: 2;
+}
+
+#tournament_status_two{
+	font-family: 'Righteous';
+	position: absolute;
+	height: 300px;
+	width: 30%;
+	top: 40%;
+	right: 0;
+}
+
+#enroll_btn{
+	position: absolute;
+	z-index: 3;
+
+	vertical-align: middle;
+	margin: 0 auto;
+	background: #fff032;
+	width: 150px;
+	height: 75px;
+	box-shadow:  1px 2px;
+	font-size: 18px;
+	padding: 24px;
+	top: 100px;
+	cursor: pointer;
+}
+
+
+
+	#melt_parent{
+	position: fixed;
+	top: 60px;
+	z-index: -1;
+	width: 100%;
+	padding-top: 9rem;
+    background-image: url(../images/bgMelt.svg);
+    background-size: contain;
+    background-position: top;
+    background-repeat: repeat-x;
+	}
+
+
+	#ranking_table td {
+		max-width: 150px;
+		word-wrap: break-word;
+	}
+
+
+@media only screen and (max-width: 600px) {
+ #tournament_name{
+
+ 	font-size: 14px;
+ 	width: 100px;
+ }
+ #cw_logo{
+
+width: 60px;
+height: 30px;
+
+}
+.fixture_table table{
+	max-width: 90vh;
+}
+
+}
+
+
+
+@media only screen and (max-width: 400px) {
+
+	#melt_parent{
+		visibility: hidden;
+	}
+
+}
+
+
+
+
+
+/* For Dual */
+h3 {
+	text-align: center;
+	font-family: 'Righteous', cursive;
+	margin-top: 10px; 
+}
+
+
+
+
+.spell_slot_container{
+
+	position: absolute;
+	width: 80%;
+
+	margin:auto;
+	right: 0;
+	left: 0;
+	margin-top: 100px;
+	margin-bottom: 100px;
+
+	background-color:#ffff85; 
+	text-align: center;
+}
+
+/*.fulldiv {
+
+	 background-color:#ffff85; 
+	display: inline-block;
+	justify-content: center;
+	border:2px solid yellow;
+	padding-right: 24px;
+	padding-left: 24px;
+	
+
+	 Center 
+	max-width: 900px;
+	margin: auto;
+	
+	margin-top: 5%;
+	text-align: center;
+	scroll-behavior: auto; 
+	margin-bottom: 100px;
+	margin-left: 5%;
+    margin-right: 5%;
+}*/
+
+/*.select {
+	overflow: hidden;
+	
+	display: inline !important;
+	 width: 15em; 
+	line-height: 3;
+	padding-bottom: 10px;
+}*/
+
+.column {
+	float: left;
+}
+
+.submit {
+	display: flex;
+	justify-content: center;
+	padding: 8px;
+	font-family: 'Righteous';
+	margin-bottom: 10px;
+	background: #000;
+	color: #fff;
+	float: right;
+	margin: 8px;
+}
+
+
+#wiz_image{
+
+	width: 250px;
+	height: 250px;
+	margin: 0 auto;
+
+
+}
+
+
+.submit:hover{
+	background-color: #fff;
+	color:#000;
+
+}
+
+
+
+/*fixtures */
+
+#fixtures{
+	width: 90% ;
+    margin: auto;
+    margin-top: 5%;
+    text-align: center;
+    right: 0;
+    left: 0;
+    margin-bottom: 100px;
+    scroll-behavior: a;
+    overflow: auto;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+
+.grayout {
+    -webkit-filter: grayscale(100%);
+       -moz-filter: grayscale(100%);
+         -o-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+            filter: grayscale(100%); 
+}
+
+

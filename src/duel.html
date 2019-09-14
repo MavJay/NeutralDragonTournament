@@ -58,70 +58,70 @@
     </ul>
   </div>
 </nav>
+ <div id="melt_parent"></div>
 
-<div>
+<!-- <div>
   <img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1235.svg">
-</div>
+</div> -->
+
+
+
 
 <!-- Select Wizards -->
-<section class="fulldiv" style="scroll-behavior: auto; margin-bottom: 100px;">
 
-<div class="select " ><!-- row -->
+<div class="spell_slot_container">
+<div class="spell_slots " ><!-- row -->
 <h3>PLACE YOUR SPELLS</h3><BR>
-
 <div class="form-group col-sm-3 column " >
-
-<select  id="spelltype" name="selspell1">
-<option value="selectspell1">Select spell</option>
-<option value="Fire">Fire</option>
-<option value="Wind">Wind</option>
-<option value="Water">Water</option>
-</select>
-
-  <!-- <Select class="form-control " id="spell1" name="selspell1">
-  <option value="selectspell1">Select spell</option> 
-  <option value="Fire">Fire</option>
-  <option value="Water">Water</option>
-  <option value="Wind">Wind</option>  </Select> -->
+<!-- <label class="paylabel" for="cardtype">Spell 1:</label> -->
+  <Select class="form-control "  id="cardtype1" name="cards" >
+    <option value="selectcard">Select spell</option>
+ <option value='0'>Fire</option>
+  <option value='2'>Water</option>
+  <option value='1'>Wind</option>  </Select>
 </div>
 
 <div class="form-group col-sm-3 column" >
-  <Select class="form-control " id="spell2">
-<option value="selectspell2">Select spell</option> 
- <option value="Fire">Fire</option>
-  <option value="Water">Water</option>
-  <option value="Wind">Wind</option>  </Select>
+  <Select class="form-control " id="cardtype2" name="cards" >
+<option value="selectcard">Select spell</option>
+ <option value='0'>Fire</option>
+  <option value='2'>Water</option>
+  <option value='1'>Wind</option>   </Select>
 </div>
 
 <div class="form-group col-sm-3 column" >
-  <Select class="form-control " id="spell3">
-   <option value="selectspell3">Select spell</option> 
- <option value="Fire">Fire</option>
-  <option value="Water">Water</option>
-  <option value="Wind">Wind</option>  </Select>
+  <Select class="form-control " id="cardtype3" name="cards">
+   <option value="selectcard">Select spell</option>
+  <option value='0'>Fire</option>
+  <option value='2'>Water</option>
+  <option value='1'>Wind</option>   </Select>
 </div>
 
 <div class="form-group col-sm-3 column" >
-  <Select class="form-control " id="spell4">
-    <option value="selectspell4">Select spell</option> 
-<option value="Fire">Fire</option>
-  <option value="Water">Water</option>
-  <option value="Wind">Wind</option>  </Select>
+  <Select class="form-control " id="cardtype4" name="cards" >
+    <option value="selectcard">Select spell</option>
+ <option value='0'>Fire</option>
+  <option value='2'>Water</option>
+  <option value='1'>Wind</option>  </Select>
 </div>
 <div class="form-group col-sm-3 column" >
-  <Select class="form-control " id="spell5">
-  <option value="selectspell5">Select spell</option> 
- <option value="Fire">Fire</option>
-  <option value="Water">Water</option>
-  <option value="Wind">Wind</option>  </Select>
+  <Select class="form-control " id="cardtype5" name="cards" >
+  <option value="selectcard">Select spell</option>
+  <option value='0'>Fire</option>
+  <option value='2'>Water</option>
+  <option value='1'>Wind</option>   </Select>
+</div>
 </div>
 
+<input type="button"onclick="placespells()" value="Place spells" class="btn btn-primary submit" >
+</div>
 
-
-<br><br>
-<div><input type="button" class="btn btn-primary submit" type="submit" value="Submit" onclick="validate()"/></div>
-</section>
 <footer></footer>
-<script src="./js/duel.js"></script>
-</body>
+
+ <script src="./js/snackbar.min.js"></script>
+  <script src="./js/truffle-contract.js"></script>
+   <script src="./js/web3.min.js"></script>
+    <script src="./js/app.js"></script>
+    <script type="text/javascript" src="./js/duel.js"></script>
+    </body>
 </html>
