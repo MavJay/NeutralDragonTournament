@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>MJ-CW</title>
+
+ <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+ 
+  
+	<link rel="stylesheet" type="text/css" href="./css/common.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
+
+</head>
+
+
+
+<body>
+
+<nav class="navbar navbar-expand-md bg-light navbar-light">
+  <!-- Brand -->
+    <a class="navbar-brand" href="#">
+    <img src="./images/full_logo.svg" alt="logo" id="cw_logo">
+    </a>
+  <div id="tournament_name">NEUTRAL DRAGON TOURNAMENT</div>
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">HOME</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="fixture.html">FIXTURE</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="duel.html">DUEL</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="results.html">RESULT</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+
+
+<div id="fixtures"></div>
+<table class="fixture_table" style="max-width: 400px;
+    max-height: 400px;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    margin-top: 10px;">
+  <tr>
+  <td><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1235.svg" style="width: 200px;height: 200px"></td>
+  <td style="width: 200px;height: 200px"><div> 
+<img src="./images/water.svg" style="max-width: 40px;max-height: 40px; vertical-align: top; "><br>
+<img src="./images/waterBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/fire.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/wind.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/windBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;">
+  </div><div style="float: right;">Rounds won 3</div></td>
+
+  
+ 
+    <td style="width: 200px;height: 200px"><div> 
+<img src="./images/fireBlk.svg" style="max-width: 40px;max-height: 40px; vertical-align: top; "><br>
+<img src="./images/wind.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/windBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/fireBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/fire.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;">
+  </div><div style="float: right;">Rounds won 2</div></td>
+   <td >
+    <img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1236.svg" 
+    style="width: 200px;height: 200px" class="grayout"></td>
+</tr>
+</table>
+
+
+
+<table class="fixture_table" style="max-width: 400px;max-height: 400px;margin: 0 auto;right: 0;left: 0;margin-top: 10px;">
+  <tr>
+  <td><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1238.svg" style="width: 200px;height: 200px"></td>
+  <td style="width: 200px;height: 200px"><div> 
+<img src="./images/water.svg" style="max-width: 40px;max-height: 40px; vertical-align: top; "><br>
+<img src="./images/waterBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/fire.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/wind.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/windBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;">
+  </div><div style="float: right;">Rounds won 3</div></td> 
+    <td style="width: 200px;height: 200px"><div> 
+<img src="./images/fireBlk.svg" style="max-width: 40px;max-height: 40px; vertical-align: top; "><br>
+<img src="./images/wind.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/windBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/fireBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
+<img src="./images/fire.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;">
+  </div><div style="float: right;">Rounds won 2</div></td>
+   <td >
+    <img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1237.svg" 
+    style="width: 200px;height: 200px" class="grayout"></td>
+</tr>
+</table>
+
+<script type="text/javascript">
+  // add method to receive wiz id and round wins
+var wizid1="1235"+".svg";
+var wizid2="1236"+".svg";
+var spellset1=[];
+var spellset2=[];
+var wiz1roundwins = 3;
+var wiz2roundwins = 2;
+// write a logic to push spellset into respective arrays
+
+spellset1.push("water.svg");
+spellset1.push("waterBlk.svg");
+spellset1.push("fire.svg");
+spellset1.push("wind.svg");
+spellset1.push("windBlk.svg");
+
+spellset2.push("fireBlk.svg");
+spellset2.push("wind.svg");
+spellset2.push("windBlk.svg");
+spellset2.push("fireBlk.svg");
+spellset2.push("fire.svg");
+
+
+var duelFixture = '<table class="fixture_table" style="width:400px; height:400px; margin: 0 auto; right:0 ; left:0 ; margin-top:10px;"><tr><td><img id="wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid1+'" style="width: 200px;height: 200px"></td> <td style="width: 200px;height: 200px"><div><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div><div style="float: right;">Rounds won '+wiz1roundwins+'</div></td><td style="width: 200px;height: 200px"><div><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div><div style="float: right;">Rounds won '+wiz1roundwins+'</div></td>  <td ><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2+'"style="width: 200px;height: 200px" class="grayout"></td></tr></table>';
+
+$("#fixtures").html(duelFixture);
+</script>
+
+<footer></footer>
+
+
+
+
+</body>
+</html>

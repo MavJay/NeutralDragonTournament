@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>MJ-CW</title>
+
+ <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+	 <link rel="stylesheet" type="text/css" href="./css/common.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
+
+</head>
+
+
+
+<body style="scroll-behavior: auto;">
+
+<nav class="navbar navbar-expand-md bg-light navbar-light">
+  <!-- Brand -->
+    <a class="navbar-brand" href="#">
+    <img src="./images/full_logo.svg" alt="logo" id="cw_logo">
+    </a>
+  <div id="tournament_name">NEUTRAL DRAGON TOURNAMENT</div>
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">HOME</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="fixture.html">FIXTURE</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="duel.html">DUEL</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="results.html">RESULT</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div>
+  <img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1235.svg">
+</div>
+
+<!-- Select Wizards -->
+<section class="fulldiv" style="scroll-behavior: auto; margin-bottom: 100px;">
+
+<div class="select " ><!-- row -->
+<h3>PLACE YOUR SPELLS</h3><BR>
+
+<div class="form-group col-sm-3 column " >
+
+<select  id="spelltype" name="selspell1">
+<option value="selectspell1">Select spell</option>
+<option value="Fire">Fire</option>
+<option value="Wind">Wind</option>
+<option value="Water">Water</option>
+</select>
+
+  <!-- <Select class="form-control " id="spell1" name="selspell1">
+  <option value="selectspell1">Select spell</option> 
+  <option value="Fire">Fire</option>
+  <option value="Water">Water</option>
+  <option value="Wind">Wind</option>  </Select> -->
+</div>
+
+<div class="form-group col-sm-3 column" >
+  <Select class="form-control " id="spell2">
+<option value="selectspell2">Select spell</option> 
+ <option value="Fire">Fire</option>
+  <option value="Water">Water</option>
+  <option value="Wind">Wind</option>  </Select>
+</div>
+
+<div class="form-group col-sm-3 column" >
+  <Select class="form-control " id="spell3">
+   <option value="selectspell3">Select spell</option> 
+ <option value="Fire">Fire</option>
+  <option value="Water">Water</option>
+  <option value="Wind">Wind</option>  </Select>
+</div>
+
+<div class="form-group col-sm-3 column" >
+  <Select class="form-control " id="spell4">
+    <option value="selectspell4">Select spell</option> 
+<option value="Fire">Fire</option>
+  <option value="Water">Water</option>
+  <option value="Wind">Wind</option>  </Select>
+</div>
+<div class="form-group col-sm-3 column" >
+  <Select class="form-control " id="spell5">
+  <option value="selectspell5">Select spell</option> 
+ <option value="Fire">Fire</option>
+  <option value="Water">Water</option>
+  <option value="Wind">Wind</option>  </Select>
+</div>
+
+
+
+<br><br>
+<div><input type="button" class="btn btn-primary submit" type="submit" value="Submit" onclick="validate()"/></div>
+</section>
+<footer></footer>
+<script src="./js/duel.js"></script>
+</body>
+</html>
