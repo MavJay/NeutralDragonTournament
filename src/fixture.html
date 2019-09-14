@@ -65,16 +65,19 @@
 
 
 
+<div id ="fixture_container"></div>
+<div id="fixtures">
+  
 
-<div id="fixtures"></div>
-<!-- <table class="fixture_table" style="max-width: 400px;
+</div>
+<!--  <table class="fixture_table" style="max-width: 400px;
     max-height: 400px;
     margin: 0 auto;
     right: 0;
     left: 0;
     margin-top: 10px;">
   <tr>
-  <td><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1235.svg" style="width: 200px;height: 200px"></td>
+  <td><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1235.svg" style="width: 200px;height: 200px"><br><div style="text-align: center;"> Wizard ID: 1234</div></td>
   <td style="width: 200px;height: 200px"><div> 
 <img src="./images/water.svg" style="max-width: 40px;max-height: 40px; vertical-align: top; "><br>
 <img src="./images/waterBlk.svg" style="max-width: 40px;max-height: 40px;vertical-align: top;"><br>
@@ -94,7 +97,7 @@
   </div><div style="float: right;">Rounds won 2</div></td>
    <td >
     <img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1236.svg" 
-    style="width: 200px;height: 200px" class="grayout"></td>
+    style="width: 200px;height: 200px" class="grayout"><br><div style="text-align: center;"> Wizard ID: 1234</div></td>
 </tr>
 </table>
 
@@ -125,8 +128,10 @@
 
 <script type="text/javascript">
   // add method to receive wiz id and round wins
-var wizid1="1235"+".svg";
-var wizid2="1236"+".svg";
+var wiz1="1235";
+var wiz2="1236";
+var wizid1img="1235"+".svg";
+var wizid2img="1236"+".svg";
 var spellset1=[];
 var spellset2=[];
 var wiz1roundwins = 3;
@@ -146,9 +151,12 @@ spellset2.push("fireBlk.svg");
 spellset2.push("fire.svg");
 
 
-var duelFixture = '<table class="fixture_table" style="width:400px; height:400px; margin: 0 auto; right:0 ; left:0 ; margin-top:10px;"><tr><td><img id="wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid1+'" style="width: 200px;height: 200px"></td> <td style="width: 200px;height: 200px"><div><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div><div style="float: right;">Rounds won '+wiz1roundwins+'</div></td><td style="width: 200px;height: 200px"><div><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div><div style="float: right;">Rounds won '+wiz1roundwins+'</div></td>  <td ><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2+'"style="width: 200px;height: 200px" class="grayout"></td></tr></table>';
+var duelFixture = '<table class="fixture_table" style="max-width:400px; max-height:400px; margin: 0 auto; right:0 ; left:0 ; margin-top:10px;"><tr><td><img id="wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid1img+'" style="width: 200px;height: 200px"><br><div style="text-align: center;"> Wizard ID: '+wiz1+'</div></td> <td style="width: 200px;height: 200px"><div><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div><div style="float: right;">Rounds won '+wiz1roundwins+'</div></td><td style="width: 200px;height: 200px"><div><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div><div style="float: right;">Rounds won '+wiz1roundwins+'</div></td>  <td ><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2img+'"style="width: 200px;height: 200px" class="grayout"><br><div style="text-align: center;"> Wizard ID: '+wiz2+'</div></td></tr></table>';
 
 $("#fixtures").html(duelFixture);
+
+$("#fixtures").append(duelFixture);
+  $("#fixtures").append(duelFixture);
 </script>
 
 <footer></footer>

@@ -286,8 +286,17 @@ h3 {
     right: 0;
     left: 0;
     margin-bottom: 100px;
-    scroll-behavior: a;
     overflow: auto;
+    max-height: 65%;
+}
+
+#fixture_container{
+	position: relative;
+}
+
+#fixture table,th,td {
+
+	padding-top:0;
 }
 
 table, th, td {
@@ -304,3 +313,33 @@ table, th, td {
 }
 
 
+/*results page*/
+
+
+#results_container {
+
+	max-width: 90%;
+	max-height: 400px;
+/*	font-family: 'Righteous';
+	background: #ffff85;
+	border: solid #000 1px;
+	box-shadow:  1px 2px;
+	font-size: 18px;*/
+	top: 130px;
+	position: relative;
+	vertical-align: middle;
+	margin: auto;
+
+
+}
+
+#results_container .container{
+	margin: auto;
+	border: solid #000 1px;
+	box-shadow:  1px 2px;
+	font-size: 18px;
+	
+	background: #ffff85;
+	margin-bottom: 100px;
+	text-align: center;
+}
