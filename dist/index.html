@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Go Mean</title>
+  <link rel="icon"
+  type="image/x-icon"
+  href="images/GoM.png">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <!-- Bootstrap -->
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/fontfamily.css" />
+  <link rel="stylesheet" href="./css/snackbar.min.css" />
+  <link rel="stylesheet" href="./css/jquerysctipttop.css" />
+  <link href="css/style.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="custom-container">
+    <div class="col-sm-12 col-md-8  arena">
+      <div class="row">
+        <div class="col-sm-12 col-md-4 live-arena">
+          <section>
+
+            <div class="modal fade" id="WinModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <p class="modal-title"><span id="win-detail"></span><span class="eth-amount"></span></p>
+
+                    </div>
+                    <div class="modal-body">
+                      <table class="table history-winscreen-table">
+                        <thead><tr><th>Address</th><th>Number</th><th>% Share</th></tr></thead>
+                         <tbody></tbody>
+                      </table>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <span  class="icon-help" data-toggle="modal" data-target="#exampleModalCenter"></span>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">How To Play</h5>
+
+                    </div>
+                    <div class="modal-body">
+                        1. Select your bet size and confirm by sending Ethereum transaction to the smart contract.<br>
+                        2. Enter a number between 1 and 100 and confirm your bet.<br>
+                        3. Once 10 Players have confirmed their bet, the average of the ten numbers are calculated.<br>
+                        4. The Player who has entered a number closest to the average gets the maximum share (of the
+                        total bet collected from 4 Players) and the Player with the number furthest away from the
+                        average gets the least share.<br>
+                        5. The share (minus the transaction gas and 10% House fee) is transferred to all the Players.<br>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          <section class="live-tab">
+            <ul class="nav nav-pills mb-3" id="live-pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="pill" href="#live1" role="tab"  aria-selected="true">0.05</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#live2" role="tab" aria-selected="false">0.1</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#live3" role="tab" aria-selected="false">0.5</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#live4" role="tab" aria-selected="false">0.01</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="live-pills-tabContent">
+              <div class="tab-pane fade active live-bet" id="live1" role="tabpanel">
+               <label>Players placing bets...
+                <span class="players-count"> 0 </span>
+                <span>of</span>
+                <span class="total-count"></span>
+               </label>
+              <ul>
+
+              </ul>
+              </div>
+              <div class="tab-pane fade live-bet" id="live2" role="tabpanel" aria-labelledby="pills-profile-tab">
+                  <label>Players placing bets...
+                      <span class="players-count"> 0 </span>
+                      <span>Of</span>
+                      <span class="total-count"></span>
+                     </label>
+                    <ul>
+
+                    </ul>
+              </div>
+
+              <div class="tab-pane fade live-bet" id="live3" role="tabpanel">
+                  <label>Players placing bets...
+                      <span class="players-count"> 0 </span>
+                      <span>Of</span>
+                      <span class="total-count"></span>
+                     </label>
+                    <ul>
+
+                    </ul>
+              </div>
+              <div class="tab-pane fade live-bet" id="live4" role="tabpanel">
+                  <label>Players placing bets...
+                      <span class="players-count"> 0 </span>
+                      <span>Of</span>
+                      <span class="total-count"></span>
+                     </label>
+                    <ul>
+
+                    </ul>
+              </div>
+            </div>
+            <div class="metamask-info">
+              <p></p>
+            </div>
+          </section>
+        </div>
+        <div class="col-sm-12 col-md-8  play-arena">
+          <figure>
+            <img src="./images/GoMean_white.png" class="logo-img">
+          </figure>
+          <section>
+          <section class="col-md-12 choose-ether">
+            <p class="text-center">Select an Ether value to place bet :</p>
+            <div class="col-md-12 ether">
+                    <div class="col-md-3 col-sm-6 coin-bet" >
+                            <div class= "select-ether" data-value=50>
+                                    <span class="ether-value">0.05</span>
+                                    <span class="icon-ether"></span>
+                            </div>
+                        </div>
+              <div class="col-md-3 col-sm-6 coin-bet" >
+                    <div class= "select-ether"  data-value=100>
+                      <span class="ether-value">0.1</span>
+                      <span class="icon-ether"></span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 coin-bet" >
+                        <div class= "select-ether"  data-value=500>
+                          <span class="ether-value">0.5</span>
+                          <span class="icon-ether"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 coin-bet" >
+                            <div class= "select-ether"  data-value=10>
+                              <span class="ether-value">0.01</span>
+                              <span class="icon-ether"></span>
+                            </div>
+                        </div>
+            </div>
+          </section>
+          <section class="col-md-12 bet-number">
+            <p class="text-center">YOUR NUMBER</p>
+            <input id="guessnum" type="number">
+            <p class="text-center">Enter a number between 0 and 100</p>
+          </section>
+          <div class="col-md-12 place-bet">
+            <button type="button" disabled="true" class="btn btn-default" id="place-bet">PLACE BET</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 history">
+    <p class="text-center"> Round History </p>
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#pool1" role="tab"  aria-selected="true">0.05</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#pool2" role="tab" aria-selected="false">0.1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#pool3" role="tab" aria-selected="false">0.5</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#pool4" role="tab" aria-selected="false">0.01</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#self-wins" role="tab" aria-selected="false">My Wins</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade active" id="pool1" role="tabpanel">
+        <table class="table history-table">
+          <thead><tr><th>Address</th><th>Number</th><th>% Share</th></tr></thead>
+          <tbody><tr></tr></tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="pool2" role="tabpanel" aria-labelledby="pills-profile-tab">
+          <table class="table history-table">
+            <thead><tr><th>Address</th><th>Number</th><th>% Share</th></tr></thead>
+            <tbody><tr></tr></tbody>
+          </table>
+      </div>
+      <div class="tab-pane fade" id="pool3" role="tabpanel">
+        <table class="table history-table">
+          <thead><tr><th>Address</th><th>Number</th><th>% Share</th></tr></thead>
+          <tbody><tr></tr></tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="pool4" role="tabpanel">
+        <table class="table history-table">
+          <thead><tr><th>Address</th><th>Number</th><th>% Share</th></tr></thead>
+          <tbody><tr></tr></tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="self-wins" role="tabpanel">
+        <table class="table history-table win-table">
+          <thead><tr><th>Bet</th><th>Date/Time</th><th>Number</th><th>% Share</th></tr></thead>
+          <tbody>
+            <tr></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/web3.min.js"></script>
+<script src="./js/truffle-contract.js"></script>
+<script src="./js/snackbar.min.js"></script>
+<script src="./js/jquery.fireworks.js"></script>
+<script src="./js/app.js"></script>
+</body>
+</html>
