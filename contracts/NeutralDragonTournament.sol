@@ -32,7 +32,7 @@ contract NeutralDragonTournament{
     uint256 betAmt = 100;
     uint addmissionDuration = 60/15;
     uint endTimer;
-
+uint constant public a =1;
    address payable developer; // to receive commission and owner of the contract.
    // Get wizard moves placed by player
     // Store winner array address
@@ -59,7 +59,7 @@ contract NeutralDragonTournament{
 }
     //Struct to hold player details..
     struct tournamentPlayers{
-        address player;
+        address payable player;
         uint256 wizardId;
         uint bet;
         uint256 timestamp;
@@ -108,6 +108,7 @@ contract NeutralDragonTournament{
 
     // CheckForValidWizard {
         tPlayers.push(tP);
+        emit player_count_event(tPlayers.length);
         // }
     }
 
@@ -128,19 +129,20 @@ contract NeutralDragonTournament{
         tP.wizardSpell4 = bPlayers[i].wizardSpell4;
         tP.wizardSpell5 = bPlayers[i].wizardSpell5;
         tP.winStatus = bPlayers[i].winStatus;
-    // CheckForValidWizard {
         tPlayers.push(tP);
             }
             delete bPlayers;
         }
-        if (tPlayers.length == 1) {
-        //   tPlayers[0].player.transfer(tPlayers[0].bet*10000000);//Calculate with respect to 100
-             distributePrize();
+require(totalOfParticipants != 0);
+        if (totalOfParticipants == a) {
+        uint amnt = tPlayers[0].bet/10;
+          tPlayers[0].player.transfer(amnt*1000000000000000);//Calculate with respect to 100
+            // distributePrize();
 
        } else{
 
-            if (tPlayers.length%2 == 0){
-                if (tPlayers.length == 2){
+            if (totalOfParticipants%2 == 0){
+                if (totalOfParticipants == 2){
                 finalMatchArray memory fMA = finalMatchArray(address(0));
                 for (uint i=0;i<tPlayers.length;i++){
                 fMA.playerAddress = tPlayers[i].player;

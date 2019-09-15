@@ -185,47 +185,7 @@ App = {
     // web3 has to be injected/present
     if (web3) {
       if (web3.eth.accounts.length) {
-        let account = getAccount();
-        let accountInterval = setInterval(() => {
-          if (getAccount() !== account) {
-            App.switched = true;
-            account = getAccount();
-            $("#place-bet").off('click');
-            $('#live-pills-tabContent .live-bet ul li').remove();
-            $('.history-table tbody tr:not(:last-child)').remove();
-              $('#live-pills-tabContent .live-bet label .players-count').text('0');
-            App.contracts.sample = {};
-            App.maininstance = {};
-            //location.reload();
-            return App.initContract();
-          }
-        }, 1000);
         // if not locked, get account
-        let network = getNetwork();
-        let networkInterval = setInterval(() => {
-          if (getNetwork() !== network) {
-            if(getNetwork() != 1){
-              //alert(network)
-              $(".metamask-info").text("Please switch to Mainnet");
-            }else{
-              $(".metamask-info").text("");
-              $("#place-bet").off('click');
-              $('#live-pills-tabContent .live-bet ul li').remove();
-              $('.history-table tbody tr:not(:last-child)').remove();
-                $('#live-pills-tabContent .live-bet label .players-count').text('0');
-              App.contracts.sample = {};
-              App.maininstance = {};
-              //location.reload();
-              return App.initContract();
-            }
-          }
-        },1000);
-        function getNetwork(){
-          const network = web3.version.network;
-          return network;
-        }
-
-        function getAccount(){
         const account = web3.eth.accounts[0];
         web3.eth.defaultAccount = web3.eth.accounts[0];
         return account;
@@ -266,9 +226,10 @@ App = {
 
 
   initContract: function() {
-     $.getJSON("Enroll.json", function(data) {
+    $.getJSON("NeutralDragonTournament.json", function(Tournament) {
+      console.log(Tournament)
       //  Instantiate a new truffle contract from the artifact
-      App.contracts.Sample = TruffleContract(data);
+      App.contracts.Sample = TruffleContract(Tournament);
       //  Connect provider to interact with contract
       App.contracts.Sample.setProvider(App.web3Provider);
 
@@ -295,67 +256,75 @@ App = {
               console.log(balance + " ETH");
             }
           });
-        }
 
-      }
-    });
+          // Game logic /////
 
-
-
-      // Load contract data
+          // Load contract data
           App.contracts.Sample.deployed().then(function(instance) {
             maininstance = instance;
-           debugger
+            //Check Player Valid
+            var playercount_event = maininstance.player_count_event({}, {fromBlock:'latest', toBlock: 'latest'});
+                if (playercount_event != undefined){
+              playercount_event.watch(function(error, result){
+                var playerCount = result.args.count.valueOf();
+                alert("Players in Tornament"+playerCount);
+            })
+            }
 
-           // instance.joinTournament(web3.eth.accounts[0],1,1).then(function(data){
-           //  console.log("data received",data);
-           // })
+            var matchFixture = maininstance.match_fixture({}, {fromBlock:'latest', toBlock: 'latest'});
+                if (playercount_event != undefined){
+              matchFixture.watch(function(error, result){
+                // var playerCount = result.args.count.valueOf();
+                alert(result);
+            })
+            }
 
-      //      maininstance.joinTournament({from: web3.eth.accounts[0],value: web3.toWei(1,'ether')},1);
+          });
+        }else{
+          $('#account-error').show()
+          $('#account-error').text("Please connect your wallet!");
+        }
+      }
 
-         // App.placebet(App.account,num,val,eth)
+    });
+  },
+  snackbarCall:function(text){
+    Snackbar.show({text: text,pos: 'bottom-center',actionText: 'OK',actionTextColor: "var(--text-c1)"});
+  },
+  joinTournament:function(playerAddress,wizardId,joiningFee,affinityType){
+    debugger
+      maininstance.checkPlayerExists(playerAddress).then(function(bool){
+        if(!bool){
+          App.snackbarCall("Please confirm your transaction");
+           maininstance.joinTournament(playerAddress,wizardId,joiningFee,affinityType,{from: App.account,value: web3.toWei(joiningFee,'ether')}).then(function(acc,error){
+            if(!error){
+                $(".metamask-info p").text("Bet submitted! Waiting for player to place a bet.");
+                App.snackbarCall("You have joined the tournament");
+            }else{
+              $(".metamask-info p").text("Something went wrong!");
+              console.error(error);
+            }
 
-         //   placebet:function(a,b,c,d)
-      App.account=web3.eth.accounts[0];
-      a=App.account;
-      b=1;
-      c=1;
-      d=0.2;
+          }).catch(function(err){
+            if(err.message.includes("User denied transaction signature")){
+              $(".metamask-info p").text("You rejected last transaction in metamask");
+            }else{
+              $(".metamask-info p").text("Something went wrong. Please check your metamask for detailed error");
+            }
 
-              maininstance.joinTournament(a,b,c,{from: App.account,value: web3.toWei(d,'ether')});
-
-    // maininstance.joinTournament();
-           //  .then(function(data){
-           //  console.log("data received",data);
-           // })
-         });
-
-         
+          });
+        } else {
+        App.snackbarCall("Already joined the tournament");
+        }
+      });
   },
 
+  placeSpells:function(){
+    debugger
+    maininstance.roundFixtures().then(function(acc,error){
 
-  // bindEvents: function() {
-  //   $(document).on('click', '.btn-adopt', App.handleAdopt);
-  // },
-
-  // markAdopted: function(adopters, account) {
-    
-  //    * Replace me...
-     
-  // },
-
-  // handleAdopt: function(event) {
-  //   event.preventDefault();
-
-  //   var petId = parseInt($(event.target).data('id'));
-
-  //   /*
-  //    * Replace me...
-  //    */
-  // }
-
-
-
+  });
+  }
 };
 
 
