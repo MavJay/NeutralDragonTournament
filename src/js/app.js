@@ -169,7 +169,8 @@ App = {
       if (window.web3.currentProvider.constructor.name == "MetamaskInpageProvider"){
         App.web3Provider = web3.currentProvider;
         web3 = new Web3(web3.currentProvider);
-      }}else if (window.web3.currentProvider.constructor.name == "DapperLegacyProvider"){
+      }
+      else if (window.web3.currentProvider.constructor.name == "DapperLegacyProvider"){
           App.web3Provider = web3.currentProvider;
           web3 = new Web3(web3.currentProvider);
        }
@@ -194,7 +195,7 @@ App = {
       } else {
         // locked. update UI. Ask user to unlock.
       }
-    }
+    
     //Detecting network of metamask connenction
     web3.version.getNetwork((err, netId) => {
       switch (netId) {

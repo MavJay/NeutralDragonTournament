@@ -16,6 +16,9 @@ $("#enroll_btn").click(function(){
     type: 'GET',
     contentType: 'application/json',
     success: function (data) {
+      alert(JSON.stringify(data));
+  	console.log(data);
+
   var count = Object.keys(data).length;
 
   if(data.wizards.length ==0){
@@ -24,8 +27,8 @@ $("#enroll_btn").click(function(){
 else{
 	var joiningFee = '0.1';
 	debugger
-	// App.joinTournament(walletAddress,data.wizards[0].id,joiningFee,data.wizards[0].affinity);
-	App.placeSpells();
+	 App.joinTournament(walletAddress,data.wizards[0].id,joiningFee,data.wizards[0].affinity);
+	//App.placeSpells();
 }
   
     },
@@ -34,3 +37,23 @@ else{
     }
 });
 })
+
+
+// $(window).load(function(){
+// 	
+// });
+$(window).on("load",function() {
+    setTournamentDetails();
+});
+
+function setTournamentDetails(){
+
+	var timerValue="2:00 hrs";
+	var playerCount =4;
+	var priceMoney = 2 ;
+
+
+	var details='<p> Tournament starts in :'+timerValue+' <br> Number of wizards enrolled:'+playerCount+'<br> Prize money: '+priceMoney+' ETH </p>';
+
+	$("#tournament_status").html(details);
+}

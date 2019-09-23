@@ -68,27 +68,95 @@
   </div>
 </nav>
  <div id="melt_parent"></div>
-<button id="switch">Switch</button>
+<button id="switch" style="position:fixed; top:0;right: 0;">Switch</button>
 
 <div id="tournament_status">
-    <p>
-      Tournament starts in : 02:00:00 hrs
-      <br>
-
-      Number of wizards enrolled: 54
-      <br>
-
-      Prize money: 4.86 ETH
-    </p>
-
-    
+ 
 
   </div>
 
+<div id="ranking_container" style="max-width: 90%;">
+<!--  <div><table style="position: fixed;height: 50px;"  class="table table-striped">
+</div> -->
+ <div style="position: absolute;"> <table style=" height: 100%; text-align: center; vertical-align: middle;">
+  <table  class="table table-striped" >
+      <thead>
+      <tr>
+        <th>Wizard ID</th>
+        <th>Affinity</th>
+        <th>Address</th>
+        <th>Rank</th>
+        <th>Score</th>
+        <th>Duels played</th>
+        <th>Normal wins</th>
+        <th>Normal losses</th>
+        <th>Ties</th>
+        <th>Wins against opponent’s Elemental spell</th>
+        <th>Losses against opponent’s Elemental spell</th>
+        <th>Elemental wins</th>
+        <th>Elemental losses</th>
+      </tr>
+    </thead>
 
+<tbody>
+      <tr>
+        <td>1234</td>
+        <td>Fire</td>
+        <td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td>
+       
+        <td>1</td>
+         <td>25</td>
+        <td>3</td>
+        <td>6</td>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+      </tr>
+      <tr>
+          <td>4311</td>
+        <td>Water</td>
+        <td>0xb3e94487b8C4eF9169Ebc2b9672a3222b8df401f</td>
+       
+        <td>2</td>
+         <td>20</td>
+        <td>3</td>
+        <td>6</td>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+      </tr>
+      <tr>
+            <td>2341</td>
+        <td>Wind</td>
+        <td>0xa20a319098BF993eA6Cc93922c9b001F1A3dd7Db</td>
+     
+        <td>3</td>
+         <td>19</td>
+        <td>3</td>
+        <td>6</td>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+      </tr>
+    </tbody>
+  </table>
+    
 
+  </table></div> 
+  
+</div>
 
-  <div id="ranking_table" style=" max-width: 90%; margin: 0 auto;right: 0;left: 0;display:none; margin-bottom: 6rem; align-items: center;">
+<!-- display:none; -->
+  <!-- <div id="ranking_table">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -98,13 +166,13 @@
         <th>Rank</th>
         <th>Score</th>
         <th>Duels played</th>
-        <th>Normal win</th>
-        <th>Normal loss</th>
-        <th>Tie</th>
-        <th>Win against opponent’s Elemental spell</th>
-        <th>Loss against opponent’s Elemental spell</th>
-        <th>Elemental win</th>
-        <th>Elemental loss</th>
+        <th>Normal wins</th>
+        <th>Normal losses</th>
+        <th>Ties</th>
+        <th>Wins against opponent’s Elemental spell</th>
+        <th>Losses against opponent’s Elemental spell</th>
+        <th>Elemental wins</th>
+        <th>Elemental losses</th>
       </tr>
     </thead>
     <tbody>
@@ -160,26 +228,40 @@
   </table>
     
   </div>
-
-<div id="tournament_status_two">
+ -->
+<div id="enroll_container">
     
     <button id="enroll_btn" > Enroll now</button>
 
   </div>
 
+  <div id="tower_div">
+    <img src="../images/dragontower.svg" style="position: fixed;bottom: 5rem; max-height: 70vh; z-index: -1;">
+  </div>
 
 <footer>
-  <div id="tower_div"></div>
+
 </footer>
   <script type="text/javascript">
        $("#tournament_status").show();
-           $("#ranking_table").hide();
-   
+           // $("#ranking_table").hide();
            $("#switch").click(function(){
-          $("#tournament_status").hide();
-           $("#ranking_table").show();
-           $("#tournament_status_two").hide();
-           $("#tower_div").css('opacity', '0.2');
+           // $("#tournament_status").hide();
+           // // $("#ranking_table").show();
+           // $("#enroll_container").hide();
+           
+
+              var div = document.getElementById('tournament_status');
+                div.style.visibility="hidden";
+                 var div = document.getElementById('enroll_container');
+                div.style.visibility="hidden";
+                var div = document.getElementById('tower_div');
+                div.style.opacity="0.2";
+                 var div = document.getElementById('ranking_container');
+                div.style.zIndex="5";
+
+           // $("#tower_div").css('opacity', '0.2');
+              
               });
 
 

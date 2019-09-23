@@ -101,7 +101,7 @@ uint constant public a =1;
         tournamentPlayers memory tP = tournamentPlayers(address(0),0,0,0,0,0,0,0,0,0,true);
         tP.player = adr;
         tP.bet = bet;
-        tp.affinityType = affinityType;
+        tP.affinityType = affinityType;
         // get wizardId from their method.
         tP.wizardId = wizardId;
         tP.timestamp = now;
