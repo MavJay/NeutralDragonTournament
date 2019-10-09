@@ -17,6 +17,31 @@ public class Tournament {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO) // for auto
 	private int tournamentId;	
+	@Column
+	private String player;
+	@Column
+	private int wizardId;
+	@Column
+	private double bet;
+	@Column
+	private long timestamp;
+	@Column
+	private int affinityType;
+	@Column
+	private int wizardSpell1;
+	@Column
+	private int wizardSpell2;
+	@Column
+	private int wizardSpell3;
+	@Column
+	private int wizardSpell4;
+	@Column
+	private int wizardSpell5;
+	@Column
+	private int winStatus;
+	@Column
+	private int playerStatus;
+	
 	public int getTournamentId() {
 		return tournamentId;
 	}
@@ -113,30 +138,7 @@ public class Tournament {
 		this.winStatus = winStatus;
 	}
 
-	@Column
-	private String player;
-	@Column
-	private int wizardId;
-	@Column
-	private double bet;
-	@Column
-	private long timestamp;
-	@Column
-	private int affinityType;
-	@Column
-	private int wizardSpell1;
-	@Column
-	private int wizardSpell2;
-	@Column
-	private int wizardSpell3;
-	@Column
-	private int wizardSpell4;
-	@Column
-	private int wizardSpell5;
-	@Column
-	private int winStatus;
-	@Column
-	private int playerStatus;
+
 	public int getPlayerStatus() {
 		return playerStatus;
 	}

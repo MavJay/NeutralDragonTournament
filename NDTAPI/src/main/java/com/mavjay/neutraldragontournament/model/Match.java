@@ -17,6 +17,14 @@ public class Match {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO) // for auto
 	private int matchId;	
+	
+	@Column
+	private String player1Address;
+	
+	@Column
+	private String player2Address;
+	
+	
 	public int getMatchId() {
 		return matchId;
 	}
@@ -47,10 +55,7 @@ public class Match {
 	}
 
 
-	@Column
-	private String player1Address;
-	@Column
-	private String player2Address;
+
 	
 	
 	public Match(int matchId, String player1Address, String player2Address) {

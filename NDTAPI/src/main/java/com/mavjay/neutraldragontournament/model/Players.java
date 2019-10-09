@@ -29,8 +29,7 @@ public class Players {
 
 	
 	
-	public Players(int plrid, String playeraddr, int wizardid, int wizardaffinity, String creationdate
-			) {
+	public Players(int plrid, String playeraddr, int wizardid, int wizardaffinity, String creationdate) {
 		super();
 		this.plrid = plrid;
 		this.playeraddr = playeraddr;
