@@ -3,7 +3,9 @@ package com.mavjay.neutraldragontournament.dao.impl;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mavjay.neutraldragontournament.dao.RestDao;
+import com.mavjay.neutraldragontournament.model.LevelFixture;
 import com.mavjay.neutraldragontournament.model.Match;
 import com.mavjay.neutraldragontournament.model.Tournament;
 import com.mavjay.neutraldragontournament.web3.ContractInteraction;;
@@ -92,6 +95,17 @@ public class RestDaoImpl implements RestDao {
 				insertQuery.executeUpdate();
 				i=i+2;
 			}
+			int levelNum = (int) session.createSQLQuery("select levelCount from FlagSettings").uniqueResult();
+			for(int i=0;i<matchArray.size();i++){
+				int wizardId = (int) session.createSQLQuery("select wizardId from Tournament where player=:player")
+						.setParameter("player", matchArray.get(i))
+						.uniqueResult();
+				Query insertQuery = session.createSQLQuery("INSERT INTO levelfixture(playerAddress,wizardId,levelNum) VALUES (?,?,?)");
+				insertQuery.setParameter(0, matchArray.get(i));
+				insertQuery.setParameter(1, wizardId);
+				insertQuery.setParameter(2, levelNum);
+				insertQuery.executeUpdate();
+			}
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
@@ -137,6 +151,18 @@ public class RestDaoImpl implements RestDao {
 			qry.setParameter("wizardSpell5", wizardSpell5);
 			qry.setParameter("tournamentId", tournamentId);
 			qry.executeUpdate();
+			
+			String updateLevelFixture = "UPDATE LevelFixture SET spell1=:wizardSpell1, spell2=:wizardSpell2,spell3=:wizardSpell3,"
+					+ "spell4=:wizardSpell4,spell5=:wizardSpell5 where playerAddress=:player and progress=:progress";
+			Query qry1 = session.createQuery(updateLevelFixture);
+			qry1.setParameter("wizardSpell1", wizardSpell1);
+			qry1.setParameter("wizardSpell2", wizardSpell2);
+			qry1.setParameter("wizardSpell3", wizardSpell3);
+			qry1.setParameter("wizardSpell4", wizardSpell4);
+			qry1.setParameter("wizardSpell5", wizardSpell5);
+			qry1.setParameter("player", player);
+			qry1.setParameter("progress", "inprogress");
+			qry1.executeUpdate();
 		System.out.println("updated successfully");		
 		return "success";
 		} else {
@@ -150,18 +176,44 @@ public class RestDaoImpl implements RestDao {
 	public ArrayList<Object> getMatchArr(){
 		Session session = sessionFact.getCurrentSession();
 		
-		ArrayList<Object> matchList = new ArrayList<Object>();
-		List<Match> matchDetails;
-		Query scheduledMatches=	session.createQuery("from Match");
-				matchDetails=scheduledMatches.list();
-		for (Match match : matchDetails) {
+		ArrayList<Object> completedmatchList = new ArrayList<Object>();
+		ArrayList<Object> scheduledmatchList = new ArrayList<Object>();
+		ArrayList<Object> resultList = new ArrayList<Object>();
+		List<LevelFixture> compeltedmatchDetails;
+		
+		Query completedMatches=	session.createQuery("from LevelFixture where progress=:progress")
+				.setParameter("progress", "completed");
+		compeltedmatchDetails=completedMatches.list();
+		Map<String, Object> appList = new HashMap<String, Object>();
+		for (LevelFixture match : compeltedmatchDetails) {
 			List<Object> dataList = new ArrayList<Object>();
-			dataList.add(match.getPlayer1Address());
-			dataList.add(match.getPlayer2Address());
-			matchList.add(dataList);
+			dataList.add(match.getPlayerAddress());
+			dataList.add(match.getWizardId());
+			dataList.add(match.getSpell1());
+			dataList.add(match.getSpell2());
+			dataList.add(match.getSpell3());
+			dataList.add(match.getSpell4());
+			dataList.add(match.getSpell5());
+			dataList.add(match.getRoundWon());
+			dataList.add(match.getLevelNum());
+			completedmatchList.add(dataList);
 		}
-		System.out.println("List ::::::"+matchList);
-		return matchList;
+		appList.put("complted", completedmatchList);
+		List<LevelFixture> scheduledmatchDetails;
+		Query scheduledMatches=	session.createQuery("from LevelFixture where progress=:progress")
+				.setParameter("progress", "inprogress");
+		scheduledmatchDetails=scheduledMatches.list();
+		for (LevelFixture match1 : scheduledmatchDetails) {
+			List<Object> dataList1 = new ArrayList<Object>();
+			dataList1.add(match1.getPlayerAddress());
+			dataList1.add(match1.getWizardId());
+			dataList1.add(match1.getLevelNum());
+			scheduledmatchList.add(dataList1);
+		}
+		appList.put("scheduled",scheduledmatchList);
+		resultList.add(appList);
+		System.out.println("List ::::::"+resultList);
+		return resultList;
 	}
 	
 	@SuppressWarnings("unchecked")
