@@ -18,7 +18,19 @@ public class FlagSettings {
 	private boolean roundFixture;
 	@Column
 	private boolean scoreUpdate;
+	@Column
+	private String contractAddress;
 	
+	public String getContractAddress() {
+		return contractAddress;
+	}
+
+
+	public void setContractAddress(String contractAddress) {
+		this.contractAddress = contractAddress;
+	}
+
+
 	public int getLevelCOunt() {
 		return levelCount;
 	}

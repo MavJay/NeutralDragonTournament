@@ -23,17 +23,19 @@ public class ContractInteraction {
 	Credentials credentials = null;
 	private NeutralDragonTournament contract1;
 	private String contractAddress = null;
-	public int loadContract() throws Exception{
-		credentials = Credentials.create("0x37e1de971d2d11d47bafb15cb6509e711510d8ee19e049d029107ff794703d35"); 
+	public String loadContract() throws Exception{
+		credentials = Credentials.create("3fc0866d5c6eabf9d029ddb8036f5789668c916a0a1a576dd6074de8f062a9f3"); 
 		@SuppressWarnings("deprecation")
 		NeutralDragonTournament contract = NeutralDragonTournament.deploy(this.web3j, credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT).send();
 		contractAddress = contract.getContractAddress();
 		System.out.println("Is contract Valid :"+contract.isValid());
 		System.out.println("Is contract Valid :"+contract.getContractBinary());
 		RemoteCall<BigInteger> contractCall = contract.tournamentStartTimer();
+		contract.getContractAddress();
 		BigInteger result = contractCall.send();
-	System.out.println("Contarct Interaction Inside"+result);
-		return result.intValue();
+		System.out.println("Contarct Interaction Inside"+result);
+	//	return result.intValue();
+		return contractAddress;
 	}
 	
 	@SuppressWarnings("deprecation")
