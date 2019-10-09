@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+ 		<mapping class="com.mavjay.neutraldragontournament.model.Score" /> 
+ 		<mapping class="com.mavjay.neutraldragontournament.model.Match" /> 
+ 		<mapping class="com.mavjay.neutraldragontournament.model.Tournament" /> 
+ 		<mapping class="com.mavjay.neutraldragontournament.model.Players" /> 
+ 		<mapping class="com.mavjay.neutraldragontournament.model.FlagSettings" /> 
+	</session-factory>
+</hibernate-configuration>
