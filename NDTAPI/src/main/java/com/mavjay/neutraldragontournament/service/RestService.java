@@ -13,4 +13,6 @@ public interface RestService {
 	public ArrayList<Object> getMatchArr();
 	public String getPlayerDetails(String playerAddr);
 	public String updateMatchFixture(String matchArr);
+	public String calculateScore();
+	public ArrayList<Object> getScoreArr();
 }

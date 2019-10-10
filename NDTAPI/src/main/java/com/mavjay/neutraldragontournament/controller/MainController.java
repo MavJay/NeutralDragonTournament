@@ -72,5 +72,11 @@ public class MainController {
 		int result1 = contractInteraction.getTimer();
 		return result;
 	}
+	
+	@RequestMapping(value = { "getScoreArr" },produces = "application/json", method = RequestMethod.POST)
+	public ArrayList<Object> getScoreArr(@RequestParam Map<String, String> allRequestParam) {
+		ArrayList<Object> result = restService.getScoreArr();
+		return result;
+	}
 
 }

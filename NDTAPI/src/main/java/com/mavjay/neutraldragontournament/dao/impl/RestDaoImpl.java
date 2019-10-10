@@ -247,13 +247,233 @@ public class RestDaoImpl implements RestDao {
 	public String updateMatchFixture(String matchArr){
 //		System.out.println("Array in IMpl"+arr);
 		ContractInteraction cI = new ContractInteraction();
-		try {
-			cI.loadContract();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+////			cI.loadContract();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return "success";
+	}
+	
+	@SuppressWarnings("null")
+	public String calculateScore(){
+		try{
+		Session session = sessionFact.getCurrentSession();
+		List<Match> matchFixture;
+		Query matchQuery = session.createQuery("from Match");
+		matchFixture = matchQuery.list();
+		String wizard1Address = null,wizard2Address=null;
+		int wizard1Spell[] = new int[5];
+		int wizard2Spell[] = new int[5];
+		int wizard1Affinity=0,wizard2Affinity=0;
+		
+		for(Match match : matchFixture){
+			int wizard1RoundWin = 0; int wizard2RoundWin = 0; int wizard1RoundLoss = 0; int wizard2RoundLoss = 0;
+			int wizard1RoundTie = 0; int wizard2RoundTie = 0; int wizard1ElementalWin = 0; int wizard2ElementalWin = 0;
+			int wizard1ElementalLoss = 0; int wizard2ElementalLoss = 0; int wizard1WinAgainst = 0; int wizard2WinAgainst = 0;
+			int wizard1LossAgainst = 0; int wizard2LossAgainst = 0; int wizard1NormalWin =0; int wizard2NormalWin =0; int wizard1NormalLoss =0;
+			int wizard2NormalLoss =0; int wizard1Score = 0; int wizard2Score = 0; int wizard1Status =0; int wizard2Status = 0;
+			List<Tournament> wizardDetails;
+			Query getWizardDetails = session.createQuery("from Tournament where player IN(:player1,:player2)")
+					.setParameter("player1", match.getPlayer1Address())
+					.setParameter("player2", match.getPlayer2Address());
+			wizardDetails = getWizardDetails.list();
+			int j=1;
+			for(Tournament tournament : wizardDetails){
+				if(j == 1){
+					wizard1Address = tournament.getPlayer();
+					wizard1Affinity = tournament.getAffinityType();
+					wizard1Spell[0] = tournament.getWizardSpell1();
+					wizard1Spell[1] = tournament.getWizardSpell2();
+					wizard1Spell[2] = tournament.getWizardSpell3();
+					wizard1Spell[3] = tournament.getWizardSpell4();
+					wizard1Spell[4] = tournament.getWizardSpell5();
+				} else {
+					wizard2Address = tournament.getPlayer();
+					wizard2Affinity = tournament.getAffinityType();
+					wizard2Spell[0] = tournament.getWizardSpell1();
+					wizard2Spell[1] = tournament.getWizardSpell2();
+					wizard2Spell[2] = tournament.getWizardSpell3();
+					wizard2Spell[3] = tournament.getWizardSpell4();
+					wizard2Spell[4] = tournament.getWizardSpell5();
+				}
+				j++;
+			}
+			for(int i=0;i<5;i++){
+				  if ((wizard1Spell[i]-wizard2Spell[i]) == 1 || (wizard1Spell[i]-wizard2Spell[i]) == -2) {
+                      wizard1RoundWin = wizard1RoundWin+1;
+                      wizard2RoundLoss = wizard2RoundLoss+1;
+                      if(wizard1Spell[i] == wizard1Affinity && wizard2Spell[i] == wizard2Affinity){
+                    	  wizard1Score = wizard1Score+3+2;
+                    	  wizard2Score = wizard2Score-2-3;
+                    	  wizard1ElementalWin = wizard1ElementalWin+1;
+                    	  wizard2ElementalLoss = wizard2ElementalLoss+1;
+                    	  wizard1WinAgainst = wizard1WinAgainst+1;
+                    	  wizard2LossAgainst = wizard2LossAgainst+1;
+                      } else if(wizard1Spell[i] == wizard1Affinity && wizard2Spell[i] != wizard2Affinity){
+                    	  wizard1Score = wizard1Score+2;
+                    	  wizard2Score = wizard2Score-3;
+                    	  wizard1WinAgainst = wizard1WinAgainst+1;
+                    	  wizard2ElementalLoss = wizard2ElementalLoss+1;
+                      } else if(wizard1Spell[i] != wizard1Affinity && wizard2Spell[i] == wizard2Affinity){
+                    	  wizard1Score = wizard1Score+3;
+                    	  wizard2Score = wizard2Score-2;
+                    	  wizard1ElementalWin = wizard1ElementalWin+1;
+                    	  wizard2LossAgainst = wizard2LossAgainst+1;
+                      } else if(wizard1Spell[i] != wizard1Affinity && wizard2Spell[i] != wizard2Affinity){
+                    	  wizard1Score = wizard1Score+1;
+                    	  wizard2Score = wizard2Score-1;
+                    	  wizard1NormalWin = wizard1NormalWin+1;
+                    	  wizard2NormalLoss = wizard2NormalLoss+1;
+                      }
+                 } else if ((wizard1Spell[i]-wizard2Spell[i]) == -1 || (wizard1Spell[i]-wizard2Spell[i]) == 2) {
+                	 wizard2RoundWin = wizard2RoundWin+1;
+                     wizard1RoundLoss = wizard1RoundLoss+1;
+                     if(wizard1Spell[i] == wizard1Affinity && wizard2Spell[i] == wizard2Affinity){
+                   	  wizard2Score = wizard2Score+3+2;
+                   	  wizard1Score = wizard1Score-2-3;
+                   	 wizard2ElementalWin = wizard2ElementalWin+1;
+               	  wizard1ElementalLoss = wizard1ElementalLoss+1;
+               	  wizard2WinAgainst = wizard2WinAgainst+1;
+               	  wizard1LossAgainst = wizard1LossAgainst+1;
+                     } else if(wizard1Spell[i] == wizard1Affinity && wizard2Spell[i] != wizard2Affinity){
+                   	  wizard2Score = wizard2Score+2;
+                   	  wizard1Score = wizard1Score-3;
+                   	 wizard2WinAgainst = wizard2WinAgainst+1;
+               	  wizard1ElementalLoss = wizard1ElementalLoss+1;
+                     } else if(wizard1Spell[i] != wizard1Affinity && wizard2Spell[i] == wizard2Affinity){
+                   	  wizard2Score = wizard2Score+3;
+                   	  wizard1Score = wizard1Score-2;
+                   	wizard2ElementalWin = wizard2ElementalWin+1;
+              	  wizard1LossAgainst = wizard1LossAgainst+1;
+                     } else if(wizard1Spell[i] != wizard1Affinity && wizard2Spell[i] != wizard2Affinity){
+                   	  wizard2Score = wizard2Score+1;
+                   	  wizard1Score = wizard1Score-1;
+                   	wizard2NormalWin = wizard2NormalWin+1;
+              	  wizard1NormalLoss = wizard1NormalLoss+1;
+                     }
+                 }else{
+                     wizard1RoundTie = wizard1RoundTie+1;
+                     wizard2RoundTie = wizard2RoundTie+1;
+                 }
+			}
+			if(wizard1RoundWin>wizard2RoundWin){
+				wizard1Status = 0;
+				wizard2Status = 1;
+			} else if(wizard1RoundWin<wizard2RoundWin){
+				wizard1Status = 1;
+				wizard2Status = 0;
+			} else if(wizard1Score>wizard2Score){
+				wizard1Status = 0;
+				wizard2Status = 1;
+			} else if(wizard1Score<wizard2Score){
+				wizard1Status = 1;
+				wizard2Status = 0;
+			}
+			List<Score> getScore;
+			Query scoreQuery = session.createQuery("from Score where plrAddress IN(:player1,:player2)")
+					.setParameter("player1", match.getPlayer1Address())
+					.setParameter("player2", match.getPlayer2Address());
+			getScore = scoreQuery.list();
+			if(getScore.isEmpty() || getScore == null){
+				for(int i=0;i<2;i++){
+					Score score1 = new Score();
+					if(i==0){
+					score1.setPlrAddress(wizard1Address);
+					score1.setPlrStatus(wizard1Status);
+					score1.setTotalScore(wizard1Score);
+					score1.setNoOfWins(wizard1RoundWin);
+					score1.setNoOfLoss(wizard1RoundLoss);
+					score1.setNoOftie(wizard1RoundTie);
+					score1.setElementalWin(wizard1ElementalWin);
+					score1.setElementalLoss(wizard1ElementalLoss);
+					score1.setNoOfWinAgainstElemental(wizard1WinAgainst);
+					score1.setNoOfLossAgainstElemental(wizard1LossAgainst);
+					session.save(score1);
+					} else {
+						score1.setPlrAddress(wizard2Address);
+						score1.setPlrStatus(wizard2Status);
+						score1.setTotalScore(wizard2Score);
+						score1.setNoOfWins(wizard2RoundWin);
+						score1.setNoOfLoss(wizard2RoundLoss);
+						score1.setNoOftie(wizard2RoundTie);
+						score1.setElementalWin(wizard2ElementalWin);
+						score1.setElementalLoss(wizard2ElementalLoss);
+						score1.setNoOfWinAgainstElemental(wizard2WinAgainst);
+						score1.setNoOfLossAgainstElemental(wizard2LossAgainst);
+						session.save(score1);
+					}
+				}
+				
+				
+			} else {
+				for(Score score : getScore){
+					if(wizard1Address.equals(score.getPlrAddress())){
+						int updateScore = session.createQuery("UPDATE Score SET plrStatus=:status,totalScore=:score,noOfWins=:win,"
+								+ "noOfLoss=:loss,noOfTie=:tie,elementalWin=:elementalWin,elementalLoss=:elementalLoss,noOfWinAgainstElemental=:winAgainst,noOfLossAgainstElemental=:lossAgainst "
+								+ "where plrAddress=:player").setParameter("player", wizard1Address)
+								.setParameter("status", wizard1Status)
+								.setParameter("score", score.getTotalScore()+wizard1Score)
+								.setParameter("win", score.getNoOftie()+wizard1RoundWin)
+								.setParameter("loss", score.getNoOfLoss()+wizard1RoundLoss)
+								.setParameter("tie", score.getNoOftie()+wizard1RoundTie)
+								.setParameter("elementalWin", score.getElementalWin()+wizard1ElementalWin)
+								.setParameter("elementalLoss", score.getElementalLoss()+wizard1ElementalLoss)
+								.setParameter("winAgainst", score.getNoOfWinAgainstElemental()+wizard1WinAgainst)
+								.setParameter("lossAgainst", score.getNoOfLossAgainstElemental()+wizard1LossAgainst).executeUpdate();
+					} else {
+						int updateScore = session.createQuery("UPDATE Score SET plrStatus=:status,totalScore=:score,noOfWins=:win,"
+								+ "noOfLoss=:loss,noOfTie=:tie,elementalWin=:elementalWin,elementalLoss=:elementalLoss,noOfWinAgainstElemental=:winAgainst,noOfLossAgainstElemental=:lossAgainst "
+								+ "where plrAddress=:player").setParameter("player", wizard2Address)
+								.setParameter("status", wizard2Status)
+								.setParameter("score", score.getTotalScore()+wizard2Score)
+								.setParameter("win", score.getNoOftie()+wizard2RoundWin)
+								.setParameter("loss", score.getNoOfLoss()+wizard2RoundLoss)
+								.setParameter("tie", score.getNoOftie()+wizard2RoundTie)
+								.setParameter("elementalWin", score.getElementalWin()+wizard2ElementalWin)
+								.setParameter("elementalLoss", score.getElementalLoss()+wizard2ElementalLoss)
+								.setParameter("winAgainst", score.getNoOfWinAgainstElemental()+wizard2WinAgainst)
+								.setParameter("lossAgainst", score.getNoOfLossAgainstElemental()+wizard2LossAgainst).executeUpdate();
+					}
+				}
+			}
+			
+		}
+		if(matchFixture.size() == 1){
+			//distribute Prize Money
+		}
+		int deleteMatchFixtures = session.createQuery("delete Match").executeUpdate();
+		return "success";
+		} catch(Exception e){
+			e.printStackTrace();
+			return "failed";
+		}
+	}
+	
+	public ArrayList<Object> getScoreArr(){
+		Session session = sessionFact.getCurrentSession();
+		
+		ArrayList<Object> resultScore = new ArrayList<>();
+		List<Score> getScore;
+		Query queryScore = session.createQuery("from Score s ORDER BY s.totalScore DESC");
+		getScore = queryScore.list();
+		for(Score score : getScore){
+			List<Object> scoreTable = new ArrayList<>();
+			scoreTable.add(score.getPlrAddress());
+			scoreTable.add(score.getPlrStatus());
+			scoreTable.add(score.getTotalScore());
+			scoreTable.add(score.getNoOfWins());
+			scoreTable.add(score.getNoOfLoss());
+			scoreTable.add(score.getElementalWin());
+			scoreTable.add(score.getElementalLoss());
+			scoreTable.add(score.getNoOfWinAgainstElemental());
+			scoreTable.add(score.getNoOfLossAgainstElemental());
+			scoreTable.add(score.getNoOftie());
+			resultScore.add(scoreTable);
+		}
+		System.out.println("Result update SCore ::;:: "+resultScore);
+		return resultScore;
 	}
 	
 }
