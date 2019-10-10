@@ -149,21 +149,43 @@ console.log(App.maininstance);
                                       }
                                     }
                                     });
-//Get Match array
-$.ajax({
-type: "POST",
-        url: "http://localhost:8080/neutraldragontournament/rest/getMatchArr",
-        crossDomain: true,
-        data: {},
-        header:{
-        },
-        success: function (data) {
-      // Need to check response type
-      console.log("Match Fixtures:::::::"+data);
-      },
-                          error: function (err) {
-                          }
-                          });
+// //Get Match array
+// $.ajax({
+// type: "POST",
+//         url: "http://localhost:8080/neutraldragontournament/rest/getMatchArr",
+//         crossDomain: true,
+//         data: {},
+//         header:{
+//         },
+//         success: function (data) {
+//       // Need to check response type
+//       console.log("Match Fixtures:::::::"+data);
+//       },
+//                           error: function (err) {
+//                           }
+//                           });
+
+                          //Get Match array
+                          $.ajax({
+                          type: "POST",
+                                  url: "http://localhost:8080/neutraldragontournament/rest/getScoreArr",
+                                  crossDomain: true,
+                                  data: {},
+                                  header:{
+                                  },
+                                  success: function (data) {
+                                // Need to check response type
+                                console.log("Score Fixtures:::::::"+data);
+                                debugger
+                                for(var i=0;i<data.length;i++){
+                                  var details1='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td></tr>'
+	$("#tableRow").append(details1);
+                                }
+
+                                },
+                                                    error: function (err) {
+                                                    }
+                                                    });
 
 
         }else{
