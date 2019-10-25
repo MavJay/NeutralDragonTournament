@@ -90,429 +90,24 @@ console.log(account);
 
 
   initContract: function() {
-    var GambleContract = web3.eth.contract([
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "totalBetAmountPlaced",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "numberOfBets",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "prizeDistributed",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "ethToWei",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "wizardId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "totalBetters",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "wizardTotalBet",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "totalBetPlaced",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "player",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "betAmountOnwizard",
-          "type": "uint256"
-        }
-      ],
-      "name": "detailsOnLoad",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "wizardId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "transferAmount",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "playerAddress",
-          "type": "address"
-        }
-      ],
-      "name": "finalWinner",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "remainder",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "quotient",
-          "type": "uint256"
-        }
-      ],
-      "name": "returnValue",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "wizardId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "wizardTotalBet",
-          "type": "uint256"
-        }
-      ],
-      "name": "throwWizardInfo",
-      "type": "event"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "playerAddress",
-          "type": "address"
-        }
-      ],
-      "name": "checkPlayerExists",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "userAddress",
-          "type": "address"
-        },
-        {
-          "name": "selectedWizard",
-          "type": "uint256"
-        },
-        {
-          "name": "betAmt",
-          "type": "uint256"
-        },
-        {
-          "name": "wizardPower",
-          "type": "uint256"
-        },
-        {
-          "name": "tPWizards",
-          "type": "uint256"
-        },
-        {
-          "name": "wizardSOT",
-          "type": "uint256"
-        },
-        {
-          "name": "wizardTOB",
-          "type": "uint256"
-        }
-      ],
-      "name": "joinTournamentByBet",
-      "outputs": [],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "wizardSOT",
-          "type": "uint256"
-        },
-        {
-          "name": "wizardTOB",
-          "type": "uint256"
-        }
-      ],
-      "name": "calculateWizardRatio",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "numerator",
-          "type": "uint256"
-        },
-        {
-          "name": "denominator",
-          "type": "uint256"
-        }
-      ],
-      "name": "getDivided",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "numerator",
-          "type": "uint256"
-        },
-        {
-          "name": "denominator",
-          "type": "uint256"
-        },
-        {
-          "name": "precision",
-          "type": "uint256"
-        }
-      ],
-      "name": "percent",
-      "outputs": [
-        {
-          "name": "quotient",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "wizardPower",
-          "type": "uint256"
-        },
-        {
-          "name": "tPWizards",
-          "type": "uint256"
-        }
-      ],
-      "name": "calculatePowerRatio",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "betAmt",
-          "type": "uint256"
-        },
-        {
-          "name": "powerRatio",
-          "type": "uint256"
-        },
-        {
-          "name": "wizardRatio",
-          "type": "uint256"
-        }
-      ],
-      "name": "calculateStandardizedBet",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "wizardId",
-          "type": "uint256"
-        }
-      ],
-      "name": "calculateTotalBetAmoutnOnThisWizard",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "wizardId",
-          "type": "uint256"
-        }
-      ],
-      "name": "calculateSsbFromTournamentWinningWizard",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "getContractBalance",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "wizardId",
-          "type": "uint256"
-        }
-      ],
-      "name": "distributePrizeMoney",
-      "outputs": [],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "playerAddress",
-          "type": "address"
-        }
-      ],
-      "name": "getAllInfoOfAUser",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-  ]);
+    $.getJSON("BigGamble.json", function(Gamble) {
+      // console.log(Gamble)
+      //  Instantiate a new truffle contract from the artifact
+      App.contracts.Sample = TruffleContract(Gamble);
+      //  Connect provider to interact with contract
+      App.contracts.Sample.setProvider(App.web3Provider);
 
-    App.maininstance = GambleContract.at('0x4bbD126E6dD7D36a40269596189DA23c8DE051c2');
-    console.log(App.maininstance);
-     return App.render();
+      return App.render();
+
+    });
+
+    // return App.bindEvents();
   },
-
 
   render: function(){
 
     web3.eth.getCoinbase(function(error,account){
-      if(error === null){
+    if(error === null){
         if(account !== null){
           App.account = account;
           web3.eth.getBalance(account, function (error, wei) {
@@ -520,55 +115,56 @@ console.log(account);
               //web3.fromWei(eth.getBalance(eth.coinbase));
               var balance = web3.fromWei(wei, 'ether');
               App.eth_balance = balance;
-              console.log(balance + " ETH");
+              // console.log(balance + " ETH");
 
-
+              
             }
           });
 
-          // Game logic /////
 
-          // Load contract data
-          // App.contracts.Sample.deployed().then(function(instance) {
-          //   maininstance = instance;
-          //
-          //
-          // });
-        }else{
-          $('#account-error').show()
-          $('#account-error').text("Please connect your wallet!");
-        }
-      }
+  App.contracts.Sample.deployed().then(function(instance) {
+            debugger
+            maininstance = instance;
 
-    });
 
-    var finalWinner = maininstance.finalWinner({}, {fromBlock:'latest', toBlock: 'latest'});
-        if (finalWinner != undefined){
-      finalWinner.watch(function(error, result){
-        var winingWizard = result.args.wizardId.valueOf();
-        var winingAmount = result.args.transferAmount.valueOf();
-        var winnerAddress = result.args.playerAddress.valueOf();
+          });
 
-        alert(winingWizard,winingAmount,winnerAddress);
 
-    })
-    }
+         
+
+  }
+}
+});
 
   },
+
+        // claimPrize:function(){
+        //   debugger
+        //   var inputVal = document.getElementById("myInput").value;
+        //   alert(inputVal)
+        //     App.maininstance.distributePrizeMoney(inputVal, function(acc,error){
+        //       if(!error){
+        //         debugger
+        //       //  location.reload(true);
+        //       console.log("success",acc,error);
+
+        //       }else{
+        //         console.log("error",acc,error);
+        //       }
+
+        //     })
+        // }
+
+
+
 
         claimPrize:function(){
           var inputVal = document.getElementById("myInput").value;
           alert(inputVal)
-            App.maininstance.distributePrizeMoney(inputVal, function(acc,error){
-              if(!error){
-              //  location.reload(true);
 
-              }else{
-                console.error(error);
-              }
-
-            })
-        }
+          maininstance.distributePrizeMoney(parseInt(inputVal));
+           
+        },
 
    };
 
@@ -578,3 +174,12 @@ console.log(account);
     App.init();
 
   });
+
+
+//   var account1 = web3.eth.accounts[0];
+//   var accountInterval = setInterval(function() {
+//   if (web3.eth.accounts[0] !== account1) {
+//   account1 = web3.eth.accounts[0];
+//   location.reload();
+//   }
+// }, 100);
