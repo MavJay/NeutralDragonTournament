@@ -9,10 +9,10 @@ struct tournamentPlayers{
 tournamentPlayers[] public tPlayers;
 uint totalNOfParticipants;
 address payable developer;
-uint admissionDuration = 120/15;
+uint256 admissionDuration = 120/15;
 uint levelDuration = 60/15;
 uint endTimer;
-uint blockNumber;
+uint256 blockNumber;
 uint levelCount = 0;
 event player_count_event(uint count);
 event eliminatedWizard(address adr,uint wizardId);
@@ -29,21 +29,32 @@ event prizeAmount(uint prize1,uint prize2,uint tableTopScorer,uint developerComm
         blockNumber = block.number;
         /* tournamentStartTimer(); */
     }
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+      uint256 c = a + b;
+      require(c >= a);
 
-function tournamentStartTimer() public view returns(uint){
-         uint timer = blockNumber+admissionDuration;
+      return c;
+    }
+
+function tournamentStartTimer() public view returns(uint256){
+        require(blockNumber > 0);
+        require(admissionDuration >= 0);
+         uint256 timer = add(blockNumber,admissionDuration);
          /* emit admissionTimeDuration(timer); */
          return timer;
     }
 
-    function tournamentEndTimer(uint startDuration) public view returns(uint){
-             uint timer = startDuration+admissionDuration;
+    function tournamentEndTimer(uint startDuration) public view returns(uint256){
+        require(startDuration > 0);
+        require(admissionDuration >= 0);
+             uint256 timer = add(startDuration,admissionDuration);
              /* emit admissionTimeDuration(timer); */
              return timer;
         }
 
-function levelTimer(uint levelStartDuration) public view returns(uint){
-    uint timer = levelStartDuration+levelDuration;
+function levelTimer(uint256 levelStartDuration) public view returns(uint256){
+    require(levelStartDuration >= 0);
+    uint256 timer = add(levelStartDuration,levelDuration);
     return timer;
 }
 
@@ -84,8 +95,10 @@ function roundFixture(address[] memory wizardAddress) public view returns(addres
     return(match_Array_Wizard1,match_Array_Wizard2);
     }
 
-function resendJoiningFee(address payable playerAdress) public payable{
-          playerAdress.transfer(100000000000000000);//Transfer 0.1 amount in wei
+function resendJoiningFee(address playerAdress) public payable{
+          //require(playerAdress == msg.sender);
+          playerAdress = msg.sender;
+          msg.sender.transfer(100000000000000000);//Transfer 0.1 amount in wei
 }
 
  function startDuel(uint[] memory wizard1MoveSpells,uint[] memory wizard2MoveSpells) public view returns(uint[] memory,uint[] memory,uint[] memory){
