@@ -131,6 +131,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		</dependency>
 		<!-- Web Socket -->
 		<dependency>
+	<groupId>commons-configuration</groupId>
+	<artifactId>commons-configuration</artifactId>
+	<version>1.10</version>
+</dependency>
+		<!-- Web Socket -->
+		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
 			<version>1.0</version>
@@ -261,7 +267,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <dependency>
   <groupId>org.web3j</groupId>
   <artifactId>core</artifactId>
-  <version>4.2.0</version>
+  <version>4.5.5</version>
 </dependency>
 
 		<dependency>

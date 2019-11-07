@@ -17,31 +17,6 @@ public class Tournament {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO) // for auto
 	private int tournamentId;	
-	@Column
-	private String player;
-	@Column
-	private int wizardId;
-	@Column
-	private double bet;
-	@Column
-	private long timestamp;
-	@Column
-	private int affinityType;
-	@Column
-	private int wizardSpell1;
-	@Column
-	private int wizardSpell2;
-	@Column
-	private int wizardSpell3;
-	@Column
-	private int wizardSpell4;
-	@Column
-	private int wizardSpell5;
-	@Column
-	private int winStatus;
-	@Column
-	private int playerStatus;
-	
 	public int getTournamentId() {
 		return tournamentId;
 	}
@@ -138,7 +113,42 @@ public class Tournament {
 		this.winStatus = winStatus;
 	}
 
+	@Column
+	private String player;
+	@Column
+	private int wizardId;
+	@Column
+	private double bet;
+	@Column
+	private long timestamp;
+	@Column
+	private int affinityType;
+	@Column
+	private int wizardSpell1;
+	@Column
+	private int wizardSpell2;
+	@Column
+	private int wizardSpell3;
+	@Column
+	private int wizardSpell4;
+	@Column
+	private int wizardSpell5;
+	@Column
+	private int winStatus;
+	@Column
+	private int playerStatus;
+	@Column
+	private int duelsPlayed;
+	
+	public int getDuelsPlayed() {
+		return duelsPlayed;
+	}
 
+	public void setDuelsPlayed(int duelsPlayed) {
+		this.duelsPlayed = duelsPlayed;
+	}
+	
+	
 	public int getPlayerStatus() {
 		return playerStatus;
 	}
@@ -179,7 +189,7 @@ public class Tournament {
 	private int byeStatus;
 		
 	public Tournament(int tournamentId, String player, int wizardId,int bet,long timestamp,int affinityType,int wizardSpell1,
-			int wizardSpell2,int wizardSpell3,int wizardSpell4,int wizardSpell5,int winStatus,int playerStatus, int finalStatus, int winnerStatus, int byeStatus) {
+			int wizardSpell2,int wizardSpell3,int wizardSpell4,int wizardSpell5,int winStatus,int playerStatus,int duelsPlayed, int finalStatus, int winnerStatus, int byeStatus) {
 		super();
 		this.tournamentId = tournamentId;
 		this.player = player;
@@ -194,6 +204,7 @@ public class Tournament {
 		this.wizardSpell5 = wizardSpell5;
 		this.winStatus = winStatus;
 		this.playerStatus = playerStatus;
+		this.duelsPlayed = duelsPlayed;
 		this.finalStatus = finalStatus;
 		this.winnerStatus = winnerStatus;
 		this.byeStatus = byeStatus;

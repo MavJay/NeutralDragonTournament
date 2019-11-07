@@ -64,14 +64,18 @@ public class MainController {
 		return result;
 	}
 	
-	@RequestMapping(value = { "updateMatchFixture" },produces = "application/json", method = RequestMethod.POST)
-	public int updateMatchFixture(@RequestParam Map<String, String> allRequestParam) throws Exception {
-		System.out.println("Address pf Match arr"+allRequestParam);
-//		String result = String.valueOf(restService.updateMatchFixture(allRequestParam.get("matchArr")));
-		int result = contractInteraction.loadContract();
-		int result1 = contractInteraction.getTimer();
-		return result;
-	}
+//	@RequestMapping(value = { "updateMatchFixture" },produces = "application/json", method = RequestMethod.POST)
+//	public String updateMatchFixture(@RequestParam Map<String, String> allRequestParam) throws Exception {
+//		System.out.println("Address pf Match arr"+allRequestParam);
+////		String result = String.valueOf(restService.updateMatchFixture(allRequestParam.get("matchArr")));
+//		String winner1 = "0x2Cd82Fc938537aE573e88d7c6199C5142981D996";
+//		String winner2 = "0xe28713AD22c9f568888b980139dCc3A96Fe434aE";
+//		String winner3 = "0x0fb380FF187f437365a1BBdF3951EdFA4f9243f3";
+////		String result = contractInteraction.distributePrize(winner1, winner2, winner3);
+//		String result = contractInteraction.loadContract();
+////		String result = restService.calculateScore();
+//		return result;
+//	}
 	
 	@RequestMapping(value = { "getScoreArr" },produces = "application/json", method = RequestMethod.POST)
 	public ArrayList<Object> getScoreArr(@RequestParam Map<String, String> allRequestParam) {

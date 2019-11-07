@@ -19,26 +19,6 @@ public class Score {
 	private int scoreId;
 	@Column
 	private String plrAddress;
-	@Column
-	private int totalScore;
-	@Column
-	private int plrStatus;
-	@Column
-	private int noOfWins;
-	@Column
-	private int noOfLoss;
-	@Column
-	private int noOftie;
-	@Column
-	private int elementalWin;
-	@Column
-	private int elementalLoss;
-	@Column
-	private int noOfWinAgainstElemental;
-	@Column
-	private int noOfLossAgainstElemental;
-	
-	
 	public int getScoreId() {
 		return scoreId;
 	}
@@ -149,11 +129,30 @@ public class Score {
 	}
 
 
+	@Column
+	private int totalScore;
+	@Column
+	private int plrStatus;
+	@Column
+	private int noOfWins;
+	@Column
+	private int noOfLoss;
+	@Column
+	private int noOftie;
+	@Column
+	private int elementalWin;
+	@Column
+	private int elementalLoss;
+	@Column
+	private int noOfWinAgainstElemental;
+	@Column
+	private int noOfLossAgainstElemental;
 
 	
 	
 	public Score(int scoreId, String plrAddress, int totalScore, int plrStatus, int noOfWins, int noOfLoss, int noOftie, 
-			int elementalWin, int elementalLoss, int noOfWinAgainstElemental, int noOfLossAgainstElemental) {
+			int elementalWin, int elementalLoss, int noOfWinAgainstElemental, int noOfLossAgainstElemental 
+			) {
 		super();
 		this.scoreId = scoreId;
 		this.plrAddress = plrAddress;

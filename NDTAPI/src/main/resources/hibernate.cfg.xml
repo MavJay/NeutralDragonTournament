@@ -10,5 +10,6 @@
  		<mapping class="com.mavjay.neutraldragontournament.model.Tournament" /> 
  		<mapping class="com.mavjay.neutraldragontournament.model.Players" /> 
  		<mapping class="com.mavjay.neutraldragontournament.model.FlagSettings" /> 
+ 		<mapping class="com.mavjay.neutraldragontournament.model.LevelFixture" /> 
 	</session-factory>
 </hibernate-configuration>
