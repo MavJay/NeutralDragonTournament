@@ -67,27 +67,54 @@ public class SchedulerServiceImpl  {
 				List<FlagSettings> list =  (List<FlagSettings>)userQuery.list();
 				String strCntSTime = new String();
 				System.out.println("data in DB size-->"+list.size());
-				System.out.println("data in DB value-->"+list.toString());
-				Date dateCDT = null;
+				//System.out.println("data in DB value-->"+list.toString());
+				String dateCDT = null;
+				Date currDate = new Date();
+				//String strCurrDate = (String)currDate;
 				DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String currFormatDate = df1.format(currDate);
 				if (list != null) {
 					for(FlagSettings user : list){
 						
-						try {
-							dateCDT = df1.parse(user.getContractdeploystarttime());
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
-						//dateCDT = (Date) formatter.parse(user.getContractdeploystarttime());
+						//dateCDT = df1.parse(user.getContractdeploystarttime());
+						dateCDT = user.getContractdeploystarttime();
 					}
-				}else {
-					System.out.println("No data in DB");
 				}
-		
-	        	System.out.println("CntSTime-->"+dateCDT);
-	       if(strCntSTime!="") {
+				//dateCDT -->Wed Nov 06 19:06:47 IST 2019
+				//currDate-->Thu Nov 07 11:48:41 IST 2019
+	        	System.out.println("dateCDT-->"+dateCDT);//2019-11-06 19:06:47
+	        	//System.out.println("currDate-->"+currDate);
+	        	System.out.println("currFormatDate-->"+currFormatDate);//2019-11-06 19:06:47
+	        	
+	        	Date CntDSTdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateCDT);  
+	        	Date CurrDTdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(currFormatDate);
+	        	System.out.println("Date CntDSTdate-->"+CntDSTdate);
+	        	System.out.println("Date CurrDTdate-->"+CurrDTdate);
+	        	boolean bdate; 
+	        	//if(DF.equals(DT))
+	        	if(CntDSTdate.equals(CurrDTdate))
+	            {
+	       	    // if the date is same
+	        		System.out.println("Contract Deployment Date and  Current Date are same"); 
+	        		bdate = false;
+	            }
+	            else if(CntDSTdate.before(CurrDTdate))
+	            {
+	       	    //if the from date is before the to date
+	            	System.out.println("Contract Deployment Date is less than Current Date"); 
+	            	bdate = true;
+	            }
+	            else
+	            {
+	               // if the date from is after the to date
+	            	//never happen
+	            	System.out.println("Contract Deployment Date is greater than the Current Date"); 
+	            	bdate = false;
+	            }
+	        	System.out.println("bdate--->"+bdate);
+	        if(!bdate) {
 	        		System.out.println("Contract already deployed");
-	        		startTournament();
+	        		//startTournament();
 		        		
 	        	}else {
 	        		System.out.println("Contract not deployed. So, inserting in FlagSettings table and loading contract");
