@@ -1,6 +1,7 @@
 package com.mavjay.neutraldragontournament.dao.impl;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.mavjay.neutraldragontournament.dao.RestDao;
 import com.mavjay.neutraldragontournament.model.LevelFixture;
 import com.mavjay.neutraldragontournament.model.Match;
+import com.mavjay.neutraldragontournament.model.Score;
 import com.mavjay.neutraldragontournament.model.Tournament;
 import com.mavjay.neutraldragontournament.web3.ContractInteraction;;
 
@@ -43,6 +45,7 @@ public class RestDaoImpl implements RestDao {
 		tn.setWizardSpell5(0);
 		tn.setWinStatus(0);
 		tn.setPlayerStatus(0);
+		tn.setDuelsPlayed(0);
 		tn.setFinalStatus(0);
 		tn.setWinnerStatus(0);
 		tn.setByeStatus(0);	
@@ -132,17 +135,19 @@ public class RestDaoImpl implements RestDao {
 		{
 			int tournamentId = 0;
 			int wizardSpell = 0;
+			int duelsPlayed = 0;
 			//player exist so continue to update their spells in DB
 			for (Tournament tournament : uniqueappointment) {
 				tournamentId = tournament.getTournamentId();	
 				wizardSpell = tournament.getWizardSpell1();
+				duelsPlayed = tournament.getDuelsPlayed();
 			}
 			if(wizardSpell == 0){
 				
 			
 			System.out.println("tournamentId-->"+tournamentId);
 			String updateQuery = "UPDATE Tournament SET wizardSpell1 = :wizardSpell1, wizardSpell2=:wizardSpell2,wizardSpell3=:wizardSpell3,"
-					+ "wizardSpell4=:wizardSpell4,wizardSpell5=:wizardSpell5 where tournamentId=:tournamentId";
+					+ "wizardSpell4=:wizardSpell4,wizardSpell5=:wizardSpell5,duelsPlayed=:duelsPlayed where tournamentId=:tournamentId";
 			Query qry = session.createQuery(updateQuery);
 			qry.setParameter("wizardSpell1", wizardSpell1);
 			qry.setParameter("wizardSpell2", wizardSpell2);
@@ -150,6 +155,7 @@ public class RestDaoImpl implements RestDao {
 			qry.setParameter("wizardSpell4", wizardSpell4);
 			qry.setParameter("wizardSpell5", wizardSpell5);
 			qry.setParameter("tournamentId", tournamentId);
+			qry.setParameter("duelsPlayed", duelsPlayed+1);
 			qry.executeUpdate();
 			
 			String updateLevelFixture = "UPDATE LevelFixture SET spell1=:wizardSpell1, spell2=:wizardSpell2,spell3=:wizardSpell3,"
@@ -267,13 +273,14 @@ public class RestDaoImpl implements RestDao {
 		int wizard1Spell[] = new int[5];
 		int wizard2Spell[] = new int[5];
 		int wizard1Affinity=0,wizard2Affinity=0;
+		int wizard1Status =0; int wizard2Status = 0;
 		
 		for(Match match : matchFixture){
-			int wizard1RoundWin = 0; int wizard2RoundWin = 0; int wizard1RoundLoss = 0; int wizard2RoundLoss = 0;
+			int wizard1RoundWin = 0; int wizard2RoundWin = 0; int wizard1RoundLoss = 0; int wizard2RoundLoss = 0; long wizard1Timestamp=0; long wizard2Timestamp=0;
 			int wizard1RoundTie = 0; int wizard2RoundTie = 0; int wizard1ElementalWin = 0; int wizard2ElementalWin = 0;
 			int wizard1ElementalLoss = 0; int wizard2ElementalLoss = 0; int wizard1WinAgainst = 0; int wizard2WinAgainst = 0;
 			int wizard1LossAgainst = 0; int wizard2LossAgainst = 0; int wizard1NormalWin =0; int wizard2NormalWin =0; int wizard1NormalLoss =0;
-			int wizard2NormalLoss =0; int wizard1Score = 0; int wizard2Score = 0; int wizard1Status =0; int wizard2Status = 0;
+			int wizard2NormalLoss =0; int wizard1Score = 0; int wizard2Score = 0; 
 			List<Tournament> wizardDetails;
 			Query getWizardDetails = session.createQuery("from Tournament where player IN(:player1,:player2)")
 					.setParameter("player1", match.getPlayer1Address())
@@ -283,6 +290,7 @@ public class RestDaoImpl implements RestDao {
 			for(Tournament tournament : wizardDetails){
 				if(j == 1){
 					wizard1Address = tournament.getPlayer();
+					wizard1Timestamp = tournament.getTimestamp();
 					wizard1Affinity = tournament.getAffinityType();
 					wizard1Spell[0] = tournament.getWizardSpell1();
 					wizard1Spell[1] = tournament.getWizardSpell2();
@@ -291,6 +299,7 @@ public class RestDaoImpl implements RestDao {
 					wizard1Spell[4] = tournament.getWizardSpell5();
 				} else {
 					wizard2Address = tournament.getPlayer();
+					wizard2Timestamp = tournament.getTimestamp();
 					wizard2Affinity = tournament.getAffinityType();
 					wizard2Spell[0] = tournament.getWizardSpell1();
 					wizard2Spell[1] = tournament.getWizardSpell2();
@@ -370,6 +379,12 @@ public class RestDaoImpl implements RestDao {
 			} else if(wizard1Score<wizard2Score){
 				wizard1Status = 1;
 				wizard2Status = 0;
+			} else if(wizard1Timestamp>wizard2Timestamp){
+				wizard1Status = 0;
+				wizard2Status = 1;
+			} else if(wizard1Timestamp<wizard2Timestamp){
+				wizard1Status = 1;
+				wizard2Status = 0;
 			}
 			List<Score> getScore;
 			Query scoreQuery = session.createQuery("from Score where plrAddress IN(:player1,:player2)")
@@ -391,6 +406,16 @@ public class RestDaoImpl implements RestDao {
 					score1.setNoOfWinAgainstElemental(wizard1WinAgainst);
 					score1.setNoOfLossAgainstElemental(wizard1LossAgainst);
 					session.save(score1);
+					String updateSpell = "UPDATE LevelFixture SET wizardSpell1=:wizardSpell1, wizardSpell2=:wizardSpell2,wizardSpell3=:wizardSpell3,"
+							+ "wizardSpell4=:wizardSpell4,wizardSpell5=:wizardSpell5 where player=:player";
+					Query qry1 = session.createQuery(updateSpell);
+					qry1.setParameter("wizardSpell1", 0);
+					qry1.setParameter("wizardSpell2", 0);
+					qry1.setParameter("wizardSpell3", 0);
+					qry1.setParameter("wizardSpell4", 0);
+					qry1.setParameter("wizardSpell5", 0);
+					qry1.setParameter("player", wizard1Address);
+					qry1.executeUpdate();
 					} else {
 						score1.setPlrAddress(wizard2Address);
 						score1.setPlrStatus(wizard2Status);
@@ -403,6 +428,16 @@ public class RestDaoImpl implements RestDao {
 						score1.setNoOfWinAgainstElemental(wizard2WinAgainst);
 						score1.setNoOfLossAgainstElemental(wizard2LossAgainst);
 						session.save(score1);
+						String updateSpell = "UPDATE LevelFixture SET wizardSpell1=:wizardSpell1, wizardSpell2=:wizardSpell2,wizardSpell3=:wizardSpell3,"
+								+ "wizardSpell4=:wizardSpell4,wizardSpell5=:wizardSpell5 where player=:player";
+						Query qry1 = session.createQuery(updateSpell);
+						qry1.setParameter("wizardSpell1", 0);
+						qry1.setParameter("wizardSpell2", 0);
+						qry1.setParameter("wizardSpell3", 0);
+						qry1.setParameter("wizardSpell4", 0);
+						qry1.setParameter("wizardSpell5", 0);
+						qry1.setParameter("player", wizard2Address);
+						qry1.executeUpdate();
 					}
 				}
 				
@@ -422,6 +457,16 @@ public class RestDaoImpl implements RestDao {
 								.setParameter("elementalLoss", score.getElementalLoss()+wizard1ElementalLoss)
 								.setParameter("winAgainst", score.getNoOfWinAgainstElemental()+wizard1WinAgainst)
 								.setParameter("lossAgainst", score.getNoOfLossAgainstElemental()+wizard1LossAgainst).executeUpdate();
+						String updateSpell = "UPDATE LevelFixture SET wizardSpell1=:wizardSpell1, wizardSpell2=:wizardSpell2,wizardSpell3=:wizardSpell3,"
+								+ "wizardSpell4=:wizardSpell4,wizardSpell5=:wizardSpell5 where player=:player";
+						Query qry1 = session.createQuery(updateSpell);
+						qry1.setParameter("wizardSpell1", 0);
+						qry1.setParameter("wizardSpell2", 0);
+						qry1.setParameter("wizardSpell3", 0);
+						qry1.setParameter("wizardSpell4", 0);
+						qry1.setParameter("wizardSpell5", 0);
+						qry1.setParameter("player", wizard1Address);
+						qry1.executeUpdate();
 					} else {
 						int updateScore = session.createQuery("UPDATE Score SET plrStatus=:status,totalScore=:score,noOfWins=:win,"
 								+ "noOfLoss=:loss,noOfTie=:tie,elementalWin=:elementalWin,elementalLoss=:elementalLoss,noOfWinAgainstElemental=:winAgainst,noOfLossAgainstElemental=:lossAgainst "
@@ -435,13 +480,44 @@ public class RestDaoImpl implements RestDao {
 								.setParameter("elementalLoss", score.getElementalLoss()+wizard2ElementalLoss)
 								.setParameter("winAgainst", score.getNoOfWinAgainstElemental()+wizard2WinAgainst)
 								.setParameter("lossAgainst", score.getNoOfLossAgainstElemental()+wizard2LossAgainst).executeUpdate();
+						String updateSpell = "UPDATE LevelFixture SET wizardSpell1=:wizardSpell1, wizardSpell2=:wizardSpell2,wizardSpell3=:wizardSpell3,"
+								+ "wizardSpell4=:wizardSpell4,wizardSpell5=:wizardSpell5 where player=:player";
+						Query qry1 = session.createQuery(updateSpell);
+						qry1.setParameter("wizardSpell1", 0);
+						qry1.setParameter("wizardSpell2", 0);
+						qry1.setParameter("wizardSpell3", 0);
+						qry1.setParameter("wizardSpell4", 0);
+						qry1.setParameter("wizardSpell5", 0);
+						qry1.setParameter("player", wizard2Address);
+						qry1.executeUpdate();
+						
 					}
 				}
 			}
 			
 		}
 		if(matchFixture.size() == 1){
+			String winner3 =null;
+			List<Score> getScore;
+			Query queryScore = session.createSQLQuery("SELECT TOP 1 * from Score s ORDER BY s.totalScore DESC");
+			getScore = queryScore.list();
+			for(Score score : getScore){
+				winner3 = score.getPlrAddress();
+			}
+			String winner1 =null,winner2 = null;
 			//distribute Prize Money
+			if(wizard1Status == 0){
+				ContractInteraction contract = new ContractInteraction();
+				winner1 = wizard1Address;
+				winner2 = wizard2Address;
+				contract.distributePrize(winner1,winner2,winner3);
+			} else if(wizard2Status == 0){
+				ContractInteraction contract = new ContractInteraction();
+				winner1 = wizard2Address;
+				winner2 = wizard1Address;
+				contract.distributePrize(winner1,winner2,winner3);
+			}
+			
 		}
 		int deleteMatchFixtures = session.createQuery("delete Match").executeUpdate();
 		return "success";
@@ -458,19 +534,31 @@ public class RestDaoImpl implements RestDao {
 		List<Score> getScore;
 		Query queryScore = session.createQuery("from Score s ORDER BY s.totalScore DESC");
 		getScore = queryScore.list();
+		int i=1;
 		for(Score score : getScore){
 			List<Object> scoreTable = new ArrayList<>();
+			Query getPlayerDetails = (Query) session.createQuery("from Tournament where player=:player")
+					.setParameter("player", score.getPlrAddress()).uniqueResult();
+			List<Tournament> getPlayer = getPlayerDetails.list();
+			int duelsPlayed = 0;
+			for(Tournament tournament: getPlayer){
+				scoreTable.add(tournament.getWizardId());
+				scoreTable.add(tournament.getAffinityType());
+				duelsPlayed = tournament.getDuelsPlayed();
+			}
 			scoreTable.add(score.getPlrAddress());
-			scoreTable.add(score.getPlrStatus());
+			scoreTable.add(i);
 			scoreTable.add(score.getTotalScore());
+			scoreTable.add(duelsPlayed);
 			scoreTable.add(score.getNoOfWins());
 			scoreTable.add(score.getNoOfLoss());
-			scoreTable.add(score.getElementalWin());
-			scoreTable.add(score.getElementalLoss());
+			scoreTable.add(score.getNoOftie());
 			scoreTable.add(score.getNoOfWinAgainstElemental());
 			scoreTable.add(score.getNoOfLossAgainstElemental());
-			scoreTable.add(score.getNoOftie());
+			scoreTable.add(score.getElementalWin());
+			scoreTable.add(score.getElementalLoss());
 			resultScore.add(scoreTable);
+			i++;
 		}
 		System.out.println("Result update SCore ::;:: "+resultScore);
 		return resultScore;
