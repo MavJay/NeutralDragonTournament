@@ -60,14 +60,15 @@ function resendJoiningFee(address playerAdress) public payable{
           require(playerAdress == msg.sender);
          developer.transfer(0.1 ether);//Transfer 0.1 amount in wei
 }
- function distributePrize(address payable wizard1Address,address payable wizard2Address,address payable wizard3Address)  public payable
-{
-    uint256 totalFeesCollected = totalNOfParticipants*100000000000000000;
-    uint256 totalPrizeMoney = totalFeesCollected*90/100;
-    uint256 developerCommission = totalFeesCollected*10/100;
-    uint256 prize1 = totalPrizeMoney*60/100;
-    uint256 prize2 = totalPrizeMoney*30/100;
-    uint256 tableTopScorer = totalPrizeMoney*10/100;
+
+ function distributePrize(address payable wizard1Address,address payable wizard2Address,address payable wizard3Address)  public payable{
+     uint256 totalFeesCollected = totalNOfParticipants*100000000000000000;
+     uint256 developerCommission = totalFeesCollected*10/100;
+     uint256 totalPrizeMoney = totalFeesCollected - developerCommission;
+
+     uint256 prize1 = totalPrizeMoney*60/100;
+     uint256 prize2 = totalPrizeMoney*30/100;
+     uint256 tableTopScorer = totalPrizeMoney*10/100;
      address payable[] memory winAddrs = new address payable[](4);
     winAddrs[0] = wizard1Address;
     winAddrs[1] = wizard2Address;
@@ -84,10 +85,9 @@ function resendJoiningFee(address playerAdress) public payable{
 require(winAddrs[i] == msg.sender);
 winAddrs[i].transfer(prizeAmtAry[i]);
     }
-   //  wizard1Address.transfer(prize1);
-   //  wizard2Address.transfer(prize2);
-   //  wizard3Address.transfer(tableTopScorer);
-   //  developer.transfer(developerCommission);
-   emit prizeAmount(prize1,prize2,tableTopScorer,developerCommission);
+     wizard1Address.transfer(prize1);
+     wizard2Address.transfer(prize2);
+     wizard3Address.transfer(tableTopScorer);
+    emit prizeAmount(prize1,prize2,tableTopScorer,developerCommission);
 }
 }  

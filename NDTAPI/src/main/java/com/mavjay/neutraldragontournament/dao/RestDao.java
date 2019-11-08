@@ -20,4 +20,5 @@ public interface RestDao {
 	public String calculateScore();
 
 	public ArrayList<Object> getScoreArr();
+	public String getContractAddress();
 }

@@ -9,6 +9,7 @@ App = {
   tournamentEnrollEndTimer:0,
   levelStartDuration:0,
   levelEndDuration:0,
+  contractAddress:'0x0',
   init: async function() {
     //return await App.initWeb3();
     window.addEventListener('load', async () => {
@@ -35,6 +36,21 @@ App = {
         console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
       }
     });
+
+    $.ajax({
+type: "POST",
+  url: "http://localhost:8080/neutraldragontournament/rest/getContractAddress",
+  crossDomain: true,
+  data: {},
+  header:{
+  },
+  success: function (data) {
+// Need to check response type
+},
+                    error: function (err) {
+App.contractAddress = err.responseText;
+                    }
+                    });
   },
   initWeb3: async function() {
     if (typeof web3 !== 'undefined') {
@@ -88,17 +104,9 @@ App = {
     return App.initContract();
   },
 
-
-
- snackbarCall:function(text){
-    Snackbar.show({text: text,pos: 'bottom-center',actionText: 'OK',actionTextColor: "var(--text-c1)"});
-  },
-
-
   initContract: function() {
-var NDTContract = web3.eth.contract([{"constant":false,"inputs":[{"internalType":"address payable","name":"playerAdress","type":"address"}],"name":"resendJoiningFee","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"playerAddress","type":"address"}],"name":"checkPlayerExists","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address[]","name":"wizardAddress","type":"address[]"}],"name":"roundFixture","outputs":[{"internalType":"address[]","name":"","type":"address[]"},{"internalType":"address[]","name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"wizard1","type":"address"},{"internalType":"address","name":"wizard2","type":"address"},{"internalType":"uint256","name":"wizard1RoundWin","type":"uint256"},{"internalType":"uint256","name":"wizard2RoundWin","type":"uint256"},{"internalType":"uint256","name":"wizard1LevelScore","type":"uint256"},{"internalType":"uint256","name":"wizard2LevelScore","type":"uint256"},{"internalType":"uint256","name":"wizard1TimeStamp","type":"uint256"},{"internalType":"uint256","name":"wizard2TimeStamp","type":"uint256"},{"internalType":"uint256","name":"currentLevelCount","type":"uint256"},{"internalType":"uint256","name":"currentMatchCount","type":"uint256"}],"name":"getWinner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"adr","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"},{"internalType":"uint256","name":"affinityType","type":"uint256"}],"name":"joinTournament","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"wizard1Address","type":"address"},{"internalType":"address payable","name":"wizard2Address","type":"address"},{"internalType":"address payable","name":"wizard3Address","type":"address"}],"name":"distributePrize","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"startDuration","type":"uint256"}],"name":"tournamentEndTimer","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"levelStartDuration","type":"uint256"}],"name":"levelTimer","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"adr","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"}],"name":"wizardEliminated","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256[]","name":"wizard1MoveSpells","type":"uint256[]"},{"internalType":"uint256[]","name":"wizard2MoveSpells","type":"uint256[]"}],"name":"startDuel","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tPlayers","outputs":[{"internalType":"address payable","name":"player","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"},{"internalType":"uint256","name":"affinityType","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tournamentStartTimer","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"count","type":"uint256"}],"name":"player_count_event","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"adr","type":"address"},{"indexed":false,"internalType":"uint256","name":"wizardId","type":"uint256"}],"name":"eliminatedWizard","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"status","type":"string"}],"name":"playerJoiningEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"levelCount","type":"uint256"}],"name":"levelNumber","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"currentLevelCount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"currentMatchCount","type":"uint256"},{"indexed":false,"internalType":"address","name":"winner","type":"address"}],"name":"levelWinner","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"prize1","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"prize2","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"tableTopScorer","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"developerCommission","type":"uint256"}],"name":"prizeAmount","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"duration","type":"uint256"}],"name":"admissionTimeDuration","type":"event"}]);
-
-App.maininstance = NDTContract.at('0x8ba551495a32a88cdf47d736d86b03adcdb7eb89');
+var NDTContract = web3.eth.contract([{"constant":false,"inputs":[{"internalType":"address payable","name":"playerAdress","type":"address"}],"name":"resendJoiningFee","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"playerAddress","type":"address"}],"name":"checkPlayerExists","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address[]","name":"wizardAddress","type":"address[]"}],"name":"roundFixture","outputs":[{"internalType":"address[]","name":"","type":"address[]"},{"internalType":"address[]","name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"wizard1","type":"address"},{"internalType":"address","name":"wizard2","type":"address"},{"internalType":"uint256","name":"wizard1RoundWin","type":"uint256"},{"internalType":"uint256","name":"wizard2RoundWin","type":"uint256"},{"internalType":"uint256","name":"wizard1LevelScore","type":"uint256"},{"internalType":"uint256","name":"wizard2LevelScore","type":"uint256"},{"internalType":"uint256","name":"wizard1TimeStamp","type":"uint256"},{"internalType":"uint256","name":"wizard2TimeStamp","type":"uint256"},{"internalType":"uint256","name":"currentLevelCount","type":"uint256"},{"internalType":"uint256","name":"currentMatchCount","type":"uint256"}],"name":"getWinner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"adr","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"},{"internalType":"uint256","name":"affinityType","type":"uint256"}],"name":"joinTournament","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"wizard1Address","type":"address"},{"internalType":"address payable","name":"wizard2Address","type":"address"},{"internalType":"address payable","name":"wizard3Address","type":"address"}],"name":"distributePrize","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"startDuration","type":"uint256"}],"name":"tournamentEndTimer","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"levelStartDuration","type":"uint256"}],"name":"levelTimer","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"adr","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"}],"name":"wizardEliminated","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256[]","name":"wizard1MoveSpells","type":"uint256[]"},{"internalType":"uint256[]","name":"wizard2MoveSpells","type":"uint256[]"}],"name":"startDuel","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tPlayers","outputs":[{"internalType":"address payable","name":"player","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"},{"internalType":"uint256","name":"affinityType","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tournamentStartTimer","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"count","type":"uint256"}],"name":"player_count_event","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"adr","type":"address"},{"indexed":false,"internalType":"uint256","name":"wizardId","type":"uint256"}],"name":"eliminatedWizard","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"status","type":"string"},{"indexed":false,"internalType":"uint256","name":"count","type":"uint256"}],"name":"playerJoiningEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"levelCount","type":"uint256"}],"name":"levelNumber","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"currentLevelCount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"currentMatchCount","type":"uint256"},{"indexed":false,"internalType":"address","name":"winner","type":"address"}],"name":"levelWinner","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"tableTopScorer","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"developerCommission","type":"uint256"}],"name":"prizeAmount","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"duration","type":"uint256"}],"name":"admissionTimeDuration","type":"event"}]);
+App.maininstance = NDTContract.at(App.contractAddress);
 console.log(App.maininstance);
       return App.render();
   },
@@ -115,14 +123,16 @@ console.log(App.maininstance);
               console.log(balance + " ETH");
             }
           });
-            //Check Player Valid
-            // var playerJoinStatus = maininstance.playerJoiningEvent({}, {fromBlock:'latest', toBlock: 'latest'});
-            //     if (playerJoinStatus != undefined){
-            //   playerJoinStatus.watch(function(error, result){
-            //     App.joiningStatus = result.args.status.valueOf();
-            //     App.playerCount = result.args.count.valueOf();
-            // })
-            // }
+          //  Check Player Valid
+            var playerJoinStatus = App.maininstance.playerJoiningEvent({}, {fromBlock:'latest', toBlock: 'latest'});
+                if (playerJoinStatus != undefined){
+                  debugger
+              playerJoinStatus.watch(function(error, result){
+                App.joiningStatus = result.args.status.valueOf();
+                App.playerCount = result.args.count.valueOf();
+                alert(App.playerCount);
+            })
+            }
 
 //Get Player Notification Details
                     $.ajax({
@@ -175,11 +185,10 @@ console.log(App.maininstance);
                                   },
                                   success: function (data) {
                                 // Need to check response type
-                                console.log("Score Fixtures:::::::"+data);
-                                debugger
                                 for(var i=0;i<data.length;i++){
-                                  var details1='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td></tr>'
-	$("#tableRow").append(details1);
+                                  var scoreDetails='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td>'+
+                                  '<td>'+data[i][8]+'</td><td>'+data[i][9]+'</td><td>'+data[i][10]+'</td><td>'+data[i][11]+'</td><td>'+data[i][12]+'</td></tr>';
+	$("#scoreRow").append(scoreDetails);
                                 }
 
                                 },
@@ -229,7 +238,7 @@ console.log(App.maininstance);
            }
         });
       } else {
-        App.snackbarCall("You have joined the tournament");
+        App.snackbarCall("You have joined the tournament already");
       }
     });
   },

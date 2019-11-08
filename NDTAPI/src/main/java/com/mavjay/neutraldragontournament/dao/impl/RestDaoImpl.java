@@ -564,4 +564,9 @@ public class RestDaoImpl implements RestDao {
 		return resultScore;
 	}
 	
+	public String getContractAddress(){
+		Session session = sessionFact.getCurrentSession();
+		 String contractAddress = (String) session.createSQLQuery("select contractAddress from FlagSettings").uniqueResult();
+		return contractAddress;
+	}
 }

@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.poi.util.SystemOutLogger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.crypto.Credentials;
@@ -28,8 +29,16 @@ import org.web3j.tx.Transfer;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.utils.Convert.Unit;
 
+import com.mavjay.neutraldragontournament.service.RestService;
+
+
 @Service
 public class ContractInteraction {
+@Autowired
+private RestService restService;
+	
+	
+	
 //	Web3j web3j = Web3j.build(new HttpService("http://127.0.0.1:8545"));
 	Credentials credentials = null;
 	private NeutralDragonTournament contract1;
@@ -73,9 +82,8 @@ public class ContractInteraction {
 		String keyPair = prop.getProperty("privateKey").toString();
 		Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/"+prop.getProperty("infuraKey").toString()));
 		ArrayList<Object> dataList = new ArrayList<Object>();
-		contractAddress = "0x9dafb073428b1f12ec32c62dd08db0cbbcbf05a6";
+		contractAddress = restService.getContractAddress();
 		credentials = Credentials.create(keyPair);
-		System.out.println("Contract and Web3j and Credentials :::::::"+contractAddress+"  "+web3j+"     "+credentials);
 		contract1 = NeutralDragonTournament.load(contractAddress, web3j, credentials, ManagedTransaction.GAS_PRICE,Contract.GAS_LIMIT);
 		System.out.println("Contract ADdress::::::"+contract1.getContractAddress());
 		RemoteCall<Tuple2<List<String>, List<String>>> contractCall = contract1.roundFixture(dataList2);
@@ -94,10 +102,8 @@ public class ContractInteraction {
 		prop.load(inputStream);
 		String keyPair = prop.getProperty("privateKey").toString();
 		Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/"+prop.getProperty("infuraKey").toString()));
-		ArrayList<Object> dataList = new ArrayList<Object>();
-		contractAddress = "0x9dafb073428b1f12ec32c62dd08db0cbbcbf05a6";
+		contractAddress = restService.getContractAddress();
 		credentials = Credentials.create(keyPair);
-		System.out.println("Contract and Web3j and Credentials :::::::"+contractAddress+"  "+web3j+"     "+credentials);
 		contract1 = NeutralDragonTournament.load(contractAddress, web3j, credentials, ManagedTransaction.GAS_PRICE,Contract.GAS_LIMIT);
 //		System.out.println("Contract ADdress::::::"+contract1.getContractAddress());
 		BigInteger weivalue = new BigInteger("0");

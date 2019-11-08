@@ -58,4 +58,9 @@ public class RestServiceImpl implements RestService {
 	public ArrayList<Object> getScoreArr(){
 		return restDao.getScoreArr();
 	}
+	
+	@Transactional
+	public String getContractAddress(){
+		return restDao.getContractAddress();
+	}
 }

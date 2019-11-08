@@ -16,9 +16,6 @@ $("#enroll_btn").click(function(){
     type: 'GET',
     contentType: 'application/json',
     success: function (data) {
-      alert(JSON.stringify(data));
-  	console.log(data);
-
   var count = Object.keys(data).length;
 
   if(data.wizards.length ==0){
@@ -26,9 +23,8 @@ $("#enroll_btn").click(function(){
   }
 else{
 	var joiningFee = '0.1';
-	debugger
-	 App.joinTournament(walletAddress,data.wizards[0].id,joiningFee,data.wizards[0].affinity);
-	//App.placeSpells();
+	App.joinTournament(walletAddress,data.wizards[0].id,joiningFee,data.wizards[0].affinity);
+	// App.checkDuplicate();
 }
   
     },

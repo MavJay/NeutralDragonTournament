@@ -39,12 +39,12 @@ public class MainController {
 				Integer.parseInt(allRequestParam.get("affinitytype")));
 	}
 	
-	@RequestMapping(value = { "roundfixture" }, produces = "application/json", method = RequestMethod.POST)
-	public List<String> roundFixture(@RequestHeader Map<String, String> headers) {
-		//System.out.println(headers);
-		List<String> playerList = restService.roundFixture(); 
-		return playerList;
-	}
+//	@RequestMapping(value = { "roundfixture" }, produces = "application/json", method = RequestMethod.POST)
+//	public List<String> roundFixture(@RequestHeader Map<String, String> headers) {
+//		//System.out.println(headers);
+//		List<String> playerList = restService.roundFixture(); 
+//		return playerList;
+//	}
 	
 	@RequestMapping(value = { "updateplacespell" }, produces = "application/json", method = RequestMethod.POST)
 	public String updatePlaceSpell(@RequestParam Map<String, String> allRequestParams) {
@@ -80,6 +80,12 @@ public class MainController {
 	@RequestMapping(value = { "getScoreArr" },produces = "application/json", method = RequestMethod.POST)
 	public ArrayList<Object> getScoreArr(@RequestParam Map<String, String> allRequestParam) {
 		ArrayList<Object> result = restService.getScoreArr();
+		return result;
+	}
+	
+	@RequestMapping(value = { "getContractAddress" },produces = "application/json", method = RequestMethod.POST)
+	public String getContractAddress(@RequestParam Map<String, String> allRequestParam) {
+		String result = restService.getContractAddress();
 		return result;
 	}
 

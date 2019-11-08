@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mavjay.neutraldragontournament.model.FlagSettings;
+import com.mavjay.neutraldragontournament.service.RestService;
 import com.mavjay.neutraldragontournament.web3.ContractInteraction;
-
 
 @Service
 public class SchedulerServiceImpl  {
@@ -34,6 +34,9 @@ public class SchedulerServiceImpl  {
 	
 	@Autowired
 	private SessionFactory sessionFact;
+	
+	@Autowired
+	private RestService restService;
 	
 	private int tournament_flag=0;
 	private int deployment_flag=0;
@@ -201,8 +204,9 @@ public class SchedulerServiceImpl  {
 		Session session = sessionFact.getCurrentSession();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		System.out.println("level check: "+timestamp);
-		session.createSQLQuery("update FlagSettings set levelcount=:count")
-		.setParameter("count", level_flag).executeUpdate();
+	//	session.createSQLQuery("update FlagSettings set levelcount=:count")
+	//	.setParameter("count", level_flag).executeUpdate();
+		restService.roundFixture();
 		level_flag++;
 
 	}

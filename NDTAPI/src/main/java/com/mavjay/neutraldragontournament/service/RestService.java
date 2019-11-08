@@ -15,4 +15,5 @@ public interface RestService {
 	public String updateMatchFixture(String matchArr);
 	public String calculateScore();
 	public ArrayList<Object> getScoreArr();
+	public String getContractAddress();
 }
