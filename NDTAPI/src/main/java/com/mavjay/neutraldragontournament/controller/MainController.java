@@ -53,9 +53,9 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = { "getMatchArr" },produces = "application/json", method = RequestMethod.POST)
-	public ArrayList<Object> getMatchArr(@RequestParam Map<String, String> allRequestParam) {
-		ArrayList<Object> result = restService.getMatchArr();
-		return result;
+	public String getMatchArr(@RequestParam Map<String, String> allRequestParam) {
+		 
+		return restService.getMatchArr().toString();
 	}
 	
 	@RequestMapping(value = { "getPlayerDetails" },produces = "application/json", method = RequestMethod.POST)

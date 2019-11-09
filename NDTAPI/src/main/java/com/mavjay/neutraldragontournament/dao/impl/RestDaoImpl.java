@@ -190,33 +190,58 @@ public class RestDaoImpl implements RestDao {
 		Query completedMatches=	session.createQuery("from LevelFixture where progress=:progress")
 				.setParameter("progress", "completed");
 		compeltedmatchDetails=completedMatches.list();
-		Map<String, Object> appList = new HashMap<String, Object>();
+//		Map<String, Object> appList = new HashMap<String, Object>();
+		JSONObject appList = new JSONObject();
 		for (LevelFixture match : compeltedmatchDetails) {
-			List<Object> dataList = new ArrayList<Object>();
-			dataList.add(match.getPlayerAddress());
-			dataList.add(match.getWizardId());
-			dataList.add(match.getSpell1());
-			dataList.add(match.getSpell2());
-			dataList.add(match.getSpell3());
-			dataList.add(match.getSpell4());
-			dataList.add(match.getSpell5());
-			dataList.add(match.getRoundWon());
-			dataList.add(match.getLevelNum());
+//			List<Object> dataList = new ArrayList<Object>();
+			JSONObject dataList = new JSONObject();
+			try {
+			
+			dataList.put("address",match.getPlayerAddress());
+			dataList.put("wizid",match.getWizardId());
+			dataList.put("spell1",match.getSpell1());
+			dataList.put("spell2",match.getSpell2());
+			dataList.put("spell3",match.getSpell3());
+			dataList.put("spell4",match.getSpell4());
+			dataList.put("spell5",match.getSpell5());
+			dataList.put("roundwon",match.getRoundWon());
+			dataList.put("level",match.getLevelNum());
+			
 			completedmatchList.add(dataList);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		appList.put("complted", completedmatchList);
+		try {
+			appList.put("completed", completedmatchList);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		List<LevelFixture> scheduledmatchDetails;
 		Query scheduledMatches=	session.createQuery("from LevelFixture where progress=:progress")
 				.setParameter("progress", "inprogress");
 		scheduledmatchDetails=scheduledMatches.list();
 		for (LevelFixture match1 : scheduledmatchDetails) {
-			List<Object> dataList1 = new ArrayList<Object>();
-			dataList1.add(match1.getPlayerAddress());
-			dataList1.add(match1.getWizardId());
-			dataList1.add(match1.getLevelNum());
-			scheduledmatchList.add(dataList1);
+			JSONObject progressList = new JSONObject();
+//			List<Object> dataList1 = new ArrayList<Object>();
+			try {
+			progressList.put("address",match1.getPlayerAddress());
+			progressList.put("wizid",match1.getWizardId());
+			progressList.put("level",match1.getLevelNum());
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			scheduledmatchList.add(progressList);
 		}
-		appList.put("scheduled",scheduledmatchList);
+		try {
+			appList.put("scheduled",scheduledmatchList);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		resultList.add(appList);
 		System.out.println("List ::::::"+resultList);
 		return resultList;
