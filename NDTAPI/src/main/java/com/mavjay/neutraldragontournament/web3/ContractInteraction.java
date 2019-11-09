@@ -35,7 +35,7 @@ import com.mavjay.neutraldragontournament.service.RestService;
 @Service
 public class ContractInteraction {
 @Autowired
-private RestService restService;
+RestService restService;
 	
 	
 	

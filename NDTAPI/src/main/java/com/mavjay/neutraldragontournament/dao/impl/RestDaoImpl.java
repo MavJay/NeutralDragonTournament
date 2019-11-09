@@ -25,6 +25,7 @@ import com.mavjay.neutraldragontournament.web3.ContractInteraction;;
 public class RestDaoImpl implements RestDao {
 	@Autowired
 	private SessionFactory sessionFact;
+	@Autowired ContractInteraction interaction;
 	
 	@Override
 	//public String joinTournament(String address, int wizid, int affinity) {
@@ -87,10 +88,9 @@ public class RestDaoImpl implements RestDao {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		ContractInteraction cI = new ContractInteraction();
 		try {
 			ArrayList<Object> matchArray = new ArrayList();
-			matchArray = cI.getMatchFixture(dataList);
+			matchArray = interaction.getMatchFixture(dataList);
 			for(int i=0;i<matchArray.size();){
 				Query insertQuery = session.createSQLQuery("INSERT INTO matcharray(player1address,player2address) VALUES (?,?)");
 				insertQuery.setParameter(0, matchArray.get(i));
