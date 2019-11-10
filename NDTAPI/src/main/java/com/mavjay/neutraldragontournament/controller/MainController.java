@@ -77,7 +77,14 @@ public class MainController {
 //		return result;
 //	}
 	
-	@RequestMapping(value = { "getScoreArr" },produces = "application/json", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value = { "gettimer" },produces = "application/json", method = RequestMethod.POST)
+	public String getTimer(@RequestParam Map<String, String> allRequestParam) {
+		String result = restService.getTimer();
+		return result;
+	}
+		@RequestMapping(value = { "getScoreArr" },produces = "application/json", method = RequestMethod.POST)
 	public ArrayList<Object> getScoreArr(@RequestParam Map<String, String> allRequestParam) {
 		ArrayList<Object> result = restService.getScoreArr();
 		return result;

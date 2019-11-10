@@ -48,6 +48,11 @@ public class RestServiceImpl implements RestService {
 	public String updateMatchFixture(String matchArr){
 		return restDao.updateMatchFixture(matchArr);
 	}
+
+	@Transactional
+	public String getTimer() {
+		return restDao.getTimer();
+	}
 	
 	@Transactional
 	public String calculateScore(){

@@ -286,7 +286,24 @@ public class RestDaoImpl implements RestDao {
 //		}
 		return "success";
 	}
+
+	@Override
+	public String getTimer() {
+		Session session = sessionFact.getCurrentSession();
+	//	Flags fs= new Flags();
+		ArrayList<String> dataList = new ArrayList<String>();
+		dataList=	(ArrayList<String>) session.createSQLQuery("select tournamentstarttime from FlagSettings limit 1").list();
 	
+		System.out.println(dataList.get(0));
+		
+		
+		
+		return dataList.get(0).toString();
+	}
+	
+	
+	
+		
 	@SuppressWarnings("null")
 	public String calculateScore(){
 		try{
@@ -523,24 +540,41 @@ public class RestDaoImpl implements RestDao {
 		}
 		if(matchFixture.size() == 1){
 			String winner3 =null;
+			String wizid1,wizid2,wizid3;
 			List<Score> getScore;
 			Query queryScore = session.createSQLQuery("SELECT TOP 1 * from Score s ORDER BY s.totalScore DESC");
 			getScore = queryScore.list();
 			for(Score score : getScore){
 				winner3 = score.getPlrAddress();
 			}
+			
+			Query getWizidQuery = session.createQuery("SELECT wizardId from Tournament where player:=playeraddress")
+					.setParameter("playeraddress", wizard1Address);
+			
+			wizid1= getWizidQuery.uniqueResult().toString();
+			
+			Query getWizidQuery2 = session.createQuery("SELECT wizardId from Tournament where player:=playeraddress")
+					.setParameter("playeraddress", wizard2Address);
+			
+			wizid2= getWizidQuery2.uniqueResult().toString();
+			
+			Query getWizidQuery3 = session.createQuery("SELECT wizardId from Tournament where player:=playeraddress")
+					.setParameter("playeraddress", winner3);
+			
+			wizid3= getWizidQuery3.uniqueResult().toString();
+			
 			String winner1 =null,winner2 = null;
 			//distribute Prize Money
 			if(wizard1Status == 0){
 				ContractInteraction contract = new ContractInteraction();
 				winner1 = wizard1Address;
 				winner2 = wizard2Address;
-				contract.distributePrize(winner1,winner2,winner3);
+				contract.distributePrize(winner1,winner2,winner3,wizid1,wizid2,wizid3);
 			} else if(wizard2Status == 0){
 				ContractInteraction contract = new ContractInteraction();
 				winner1 = wizard2Address;
 				winner2 = wizard1Address;
-				contract.distributePrize(winner1,winner2,winner3);
+				contract.distributePrize(winner1,winner2,winner3,wizid1,wizid2,wizid3);
 			}
 			
 		}
