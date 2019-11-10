@@ -49,7 +49,7 @@ var result1=array.values();
 for (let elements of result1) {
 console.log(elements);
 }
-console.log(array);
+// console.log(array);
 App.placeSpells(array);
 
 }

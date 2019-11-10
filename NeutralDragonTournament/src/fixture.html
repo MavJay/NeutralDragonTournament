@@ -13,7 +13,8 @@
 
  <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script
+ src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
@@ -130,42 +131,218 @@
 </table> -->
 
 <script type="text/javascript">
+
+
+
   // add method to receive wiz id and round wins
-var wiz1="1235";
-var wiz2="1236";
-var wizid1img="1235"+".svg";
-var wizid2img="1236"+".svg";
-var spellset1=[];
-var spellset2=[];
-var wiz1roundwins = 3;
-var wiz2roundwins = 2;
+
 // write a logic to push spellset into respective arrays
 
-spellset1.push("water.svg");
-spellset1.push("waterBlk.svg");
-spellset1.push("fire.svg");
-spellset1.push("wind.svg");
-spellset1.push("windBlk.svg");
+// spellset1.push("water.svg");
+// spellset1.push("waterBlk.svg");
+// spellset1.push("fire.svg");
+// spellset1.push("wind.svg");
+// spellset1.push("windBlk.svg");
 
-spellset2.push("fireBlk.svg");
-spellset2.push("wind.svg");
-spellset2.push("windBlk.svg");
-spellset2.push("fireBlk.svg");
-spellset2.push("fire.svg");
+// spellset2.push("fireBlk.svg");
+// spellset2.push("wind.svg");
+// spellset2.push("windBlk.svg");
+// spellset2.push("fireBlk.svg");
+// spellset2.push("fire.svg");
+
+//    $.ajax({
+//     type: "POST",
+//             url: "http://localhost:8080/neutraldragontournament/rest/getMatchArr",
+//             crossDomain: true,
+//             success: function (data) {
+//             // Need to check the reponse type
+// setFixture(data);
+     
+//               }
+
+//             },
+//             error: function (err) {
+//               debugger
+//           //    console.log(err.responseText);
+//               // var obj = JSON.parse(err.responseText);
+//               // console.log(obj);
+
+//               if(err.responseText == 'notExists'){
+//                 App.snackbarCall("Player is not in the tournament");
+//               } else if(err.responseText == 'success'){
+//                   App.snackbarCall("You have successfully placed your wizard spells");
+//               } else if(err.responseText == 'failed'){
+//                   App.snackbarCall("You have already placed your wizard spells");
+//               }
+//             });
+
+   $.ajax({
+    type: "POST",
+            url: "http://localhost:8080/neutraldragontournament/rest/getMatchArr",
+            crossDomain: true,
+        
+            success: function (data) {
+            // Need to check the reponse type
+            setFixture(data);
+            },
+            error: function (err) {
+            }
+            
+            
+            });
 
 
-var duelFixture = '<table class="fixture_table" style="max-width:400px; max-height:400px; margin: 0 auto; right:0 ; left:0 ; margin-top:10px;"><tr><td style="width:200px;"><img id="wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid1img+'" style="width: 200px;height: 200px"><br> <div style="text-align: center;"> Wizard ID: '+wiz1+'</div><div style="text-align: center;">Rounds won :'+wiz1roundwins+'</div></td> <td style="width:50px; max-width: 200px;max-height: 200px"><div style=" width: 50px;max-width: 200px;max-height: 200px"> <img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div></td><td style="width:50px;max-width: 200px;max-height: 200px"><div style=" width:50px;max-width: 200px;max-height: 200px"><img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div></td><td style="width:200px;"><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2img+'"style="width: 200px;height: 200px" class="grayout"><br><div style="text-align: center;"> Wizard ID: '+wiz2+'</div><div style="style="text-align: center;">Rounds won :'+wiz2roundwins+'</div></td></tr></table>';
-
-var dividerLine ='<br><br><br>Level ----  ��� -- ��� -- ��� -- ��� ---- Ends<br><br><br>';
-$("#fixtures").html(duelFixture);
 
 
-
-$("#fixtures").append(dividerLine);
-  $("#fixtures").append(duelFixture);
 
 //<div style="float: right;">Rounds won '+wiz1roundwins+'</div>
     // <div style="float: right;">Rounds won '+wiz1roundwins+'</div>
+
+       
+
+
+
+
+       function setFixture(data){
+
+
+        var wiz1="";
+        var wiz2="";
+        var wizid1img="";
+        var wizid2img="";
+        var spellset1=[];
+        var spellset2=[];
+        var wiz1roundwins ;
+        var wiz2roundwins ;
+        console.log(data);
+
+//Messages to display
+
+        var completedMessage ="<br><h3>Battle history<br><h3>";
+        var noCompletedMessage ="<br><h3>No battle history available<br><h3>";
+        var scheduledMessage ="<br><h3>Scheduled battles<br><h3>";
+         var noScheduledMessage ="<br><h3>No Scheduled battles<br><h3>";
+
+
+              console.log("completed",data[0].completed);
+              console.log("in porgress",data[0].scheduled);
+
+              var completedMatch=data[0].completed;
+              console.log("comp_data",completedMatch.length);
+if(completedMatch.length==0){
+
+$("#fixtures").prepend(noCompletedMessage);
+}
+else{
+
+
+              for(var i=0;i<(completedMatch.length/2);i=i+2){
+  
+                wiz1=completedMatch[i].wizid;
+                wizid1img=completedMatch[i].wizid+".svg";
+
+                wiz1roundwins=completedMatch[i].roundwon;
+                console.log("spell1",completedMatch[i].spell1);
+                spellset1.push(pushspell(completedMatch[i].spell1));
+                spellset1.push(pushspell(completedMatch[i].spell2));
+                spellset1.push(pushspell(completedMatch[i].spell3));
+                spellset1.push(pushspell(completedMatch[i].spell4));
+                spellset1.push(pushspell(completedMatch[i].spell5));
+
+
+
+                wiz2=completedMatch[i+1].wizid;
+                wizid2img=completedMatch[i+1].wizid+".svg";
+                wiz2roundwins=completedMatch[i+1].roundwon;
+
+                console.log("image ",pushspell(completedMatch[i+1].spell1));
+                spellset2.push(pushspell(completedMatch[i+1].spell1));
+                spellset2.push(pushspell(completedMatch[i+1].spell2));
+                spellset2.push(pushspell(completedMatch[i+1].spell3));
+                spellset2.push(pushspell(completedMatch[i+1].spell4));
+                spellset2.push(pushspell(completedMatch[i+1].spell5));
+
+          
+                var duelFixture = '<table class="fixture_table" style="max-width:400px; max-height:400px; margin: 0 auto; right:0 ; left:0 ; margin-top:10px;"><tr><td style="width:200px;"><img id="wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid1img+'" style="width: 200px;height: 200px"><br> <div style="text-align: center;"> Wizard ID: '+wiz1+'</div><div style="text-align: center;">Rounds won :'+wiz1roundwins+'</div></td> <td style="width:50px; max-width: 200px;max-height: 200px"><div style=" width: 50px;max-width: 200px;max-height: 200px"> <img src="./images/'+spellset1[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset1[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div></td><td style="width:50px;max-width: 200px;max-height: 200px"><div style=" width:50px;max-width: 200px;max-height: 200px"><img src="./images/'+spellset2[0]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset2[1]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset2[2]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset2[3]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"><br> <img src="./images/'+spellset2[4]+'"style="max-width: 40px;max-height: 40px; vertical-align: top;"></div></td><td style="width:200px;"><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2img+'"style="width: 200px;height: 200px" ><br><div style="text-align: center;"> Wizard ID: '+wiz2+'</div><div style="style="text-align: center;">Rounds won :'+wiz2roundwins+'</div></td></tr></table>';
+
+
+                //To grayout add class "grayout" 
+                // eg.<img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2img+'"style="width: 200px;height: 200px" class="grayout">
+
+                  var dividerLine ='<br><br><br>Level ----  ��� -- ��� -- ��� -- ��� ---- Ends<br><br><br>';
+
+// $("#fixtures").html(duelFixture);
+//$("#fixtures").append(dividerLine);
+$("#fixtures").prepend(duelFixture);
+
+       }
+
+
+
+     function pushspell(number){
+
+
+
+      debugger
+
+        if(number==0){
+        // number 0 for fire
+        return "fire.svg";
+        }
+        else if(number==1){
+        // number 1 for wind
+
+        return "wind.svg";
+        }
+        else if(number==2){
+
+        // number 2 for water
+        return "water.svg";
+
+        }
+        }
+        $("#fixtures").prepend(completedMessage);  
+}
+
+
+
+
+  
+
+
+   var scheduledMatch=data[0].scheduled;
+
+   if(scheduledMessage.length==0){
+    $("#fixtures").prepend(noScheduledMessage);
+   }
+   else{
+         for(var i=0;i<(scheduledMatch.length/2);i=i+2){
+
+            debugger
+        var wiz1="";
+        var wiz2="";
+        var wizid1img="";
+        var wizid2img="";
+
+                wiz1=scheduledMatch[i].wizid;
+                wizid1img=scheduledMatch[i].wizid+".svg";
+                wiz2=scheduledMatch[i+1].wizid;
+                wizid2img=scheduledMatch[i+1].wizid+".svg";
+
+
+                   var duelFixture = '<table class="fixture_table" style="max-width:400px; max-height:400px; margin: 0 auto; right:0 ; left:0 ; margin-top:10px;"><tr><td style="width:200px;"><img id="wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid1img+'" style="width: 200px;height: 200px"><br> <div style="text-align: center;"> Wizard ID: '+wiz1+'</div><td style="width:50px;max-width: 200px;max-height: 200px">VS</td><td style="width:200px;"><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+wizid2img+'"style="width: 200px;height: 200px" ><br><div style="text-align: center;"> Wizard ID: '+wiz2+'</div></td></tr></table>';
+
+$("#fixtures").prepend(duelFixture);
+
+
+         }
+
+  $("#fixtures").prepend(scheduledMessage);   
+  }    
+     
+}
+
+
 </script>
 
 <footer></footer>

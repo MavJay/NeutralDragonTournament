@@ -10,7 +10,9 @@ tournamentPlayers[] private tPlayers;
 uint public totalNOfParticipants;
 address payable private developer;
 event playerJoiningEvent(string status,uint count);
-event prizeAmount(uint prize1,uint prize2,uint tableTopScorer,uint developerCommission);
+//event prizeAmount(uint prize1,uint prize2,uint tableTopScorer,uint developerCommission);
+event prizeAmount(address wizard1Address,address wizard2Address, address wizard3Address,uint prize1,uint prize2,uint tableTopScorer,uint developerCommission,uint wizid1,uint wizid2,uint wizid3);
+
   constructor() public{
         developer = msg.sender;
         totalNOfParticipants = 0;
@@ -61,7 +63,8 @@ function resendJoiningFee(address playerAdress) public payable{
          developer.transfer(0.1 ether);//Transfer 0.1 amount in wei
 }
 
- function distributePrize(address payable wizard1Address,address payable wizard2Address,address payable wizard3Address)  public payable{
+// function distributePrize(address payable wizard1Address,address payable wizard2Address,address payable wizard3Address)  public payable{
+   function distributePrize(address payable wizard1Address,address payable wizard2Address,address payable wizard3Address,uint wizid1,uint wizid1,uint wizid3)  public payable{
      uint256 totalFeesCollected = totalNOfParticipants*100000000000000000;
      uint256 developerCommission = totalFeesCollected*10/100;
      uint256 totalPrizeMoney = totalFeesCollected - developerCommission;
@@ -88,6 +91,7 @@ winAddrs[i].transfer(prizeAmtAry[i]);
      wizard1Address.transfer(prize1);
      wizard2Address.transfer(prize2);
      wizard3Address.transfer(tableTopScorer);
-    emit prizeAmount(prize1,prize2,tableTopScorer,developerCommission);
+ //   emit prizeAmount(prize1,prize2,tableTopScorer,developerCommission);
+   emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer,developerCommission,wizid1,wizid2,wizid3);
 }
 }  

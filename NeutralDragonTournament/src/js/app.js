@@ -1,3 +1,7 @@
+var meta_address,meta_network;
+
+var serverURl="http://localhost:8080/neutraldragontournament/rest/";
+
 App = {
   web3Provider: null,
   contracts: {},
@@ -10,6 +14,15 @@ App = {
   levelStartDuration:0,
   levelEndDuration:0,
   contractAddress:'0x0',
+  winner1Address:'0x0',
+  winner2Address:'0x0',
+  winner3Address:'0x0',
+  prize1:0,
+  prize2:0,
+  tableTopScorer:0,
+  wizid1:0,
+  wizid2:0,
+  wizid3:0,
   init: async function() {
     //return await App.initWeb3();
     window.addEventListener('load', async () => {
@@ -23,6 +36,9 @@ App = {
           return await App.initWeb3();
         } catch (error) {
           // User denied account access...
+      $("#userNotificationText").html('<br><br> You should connect your wallet to access.');
+      $("#notificationinfo").show();
+      $("#noti_close").hide();
         }
       }
       // Legacy dapp browsers...
@@ -39,7 +55,7 @@ App = {
 
     $.ajax({
 type: "POST",
-  url: "http://localhost:8080/neutraldragontournament/rest/getContractAddress",
+  url: serverURl+"getContractAddress",
   crossDomain: true,
   data: {},
   header:{
@@ -75,6 +91,10 @@ App.contractAddress = err.responseText;
         // if not locked, get account
         const account = web3.eth.accounts[0];
         // updates UI, state, pull data
+        meta_address= web3.eth.accounts[0];
+
+        // Checks for account or network change.
+        web3.currentProvider.publicConfigStore.on('update', callback);
       } else {
         // locked. update UI. Ask user to unlock.
       }
@@ -83,25 +103,49 @@ App.contractAddress = err.responseText;
 
     //Detecting network of metamask connenction
     web3.version.getNetwork((err, netId) => {
+        meta_network=netId;
       switch (netId) {
+      
         case "1":
         console.log('This is mainnet')
         break
         case "2":
         console.log('This is the deprecated Morden test network.')
-        $(".metamask-info").text("Please switch to Mainnet");
+        // $(".metamask-info").text("Please switch to Mainnet");
+
+            $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            $("#notificationinfo").show();
+              $("#noti_close").hide();
         break
         case "3":
         console.log('This is the ropsten test network.')
-        $(".metamask-info").text("Please switch to Mainnet");
+        // $(".metamask-info").text("Please switch to Mainnet");
+            $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            $("#notificationinfo").show();
+              $("#noti_close").hide();
+        break
+        case "4":
+        console.log('This is the rinkeby test network.')
+        // $(".metamask-info").text("Please switch to Mainnet");
+            // $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            // $("#notificationinfo").show();
+            //   $("#noti_close").hide();
+              // meta_address
         break
         default:
         console.log('This is local network or unknown network')
-        $(".metamask-info").text("Please switch to Mainnet");
+        // $(".metamask-info").text("Please switch to Mainnet");
+            $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            $("#notificationinfo").show();
+              $("#noti_close").hide();
       }
 
     })
-    return App.initContract();
+     return App.initContract();
+   },
+
+ snackbarCall:function(text){
+    Snackbar.show({text: text,pos: 'bottom-center',actionText: 'OK',actionTextColor: "var(--text-c1)"});
   },
 
   initContract: function() {
@@ -135,9 +179,9 @@ console.log(App.maininstance);
             }
 
 //Get Player Notification Details
-                    $.ajax({
-          type: "POST",
-                  url: "http://localhost:8080/neutraldragontournament/rest/getPlayerDetails",
+                  $.ajax({
+                  type: "POST",
+                  url: serverURl+"getPlayerDetails",
                   crossDomain: true,
                   data: 'player='+App.account+'',
                   header:{
@@ -178,17 +222,18 @@ console.log(App.maininstance);
                           //Get Match array
                           $.ajax({
                           type: "POST",
-                                  url: "http://localhost:8080/neutraldragontournament/rest/getScoreArr",
+                                  url: serverURl+"getScoreArr",
                                   crossDomain: true,
                                   data: {},
                                   header:{
                                   },
                                   success: function (data) {
                                 // Need to check response type
+                                console.log("Score Fixtures:::::::"+data);
+                                debugger
                                 for(var i=0;i<data.length;i++){
-                                  var scoreDetails='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td>'+
-                                  '<td>'+data[i][8]+'</td><td>'+data[i][9]+'</td><td>'+data[i][10]+'</td><td>'+data[i][11]+'</td><td>'+data[i][12]+'</td></tr>';
-	$("#scoreRow").append(scoreDetails);
+                                  var details1='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td></tr>'
+	                                 $("#tableRow").append(details1);
                                 }
 
                                 },
@@ -213,10 +258,15 @@ console.log(App.maininstance);
     App.maininstance.checkPlayerExists(App.account, function(err, res){
       console.log(res);
       if(!res){
-          App.snackbarCall("Please confirm your transaction");
+      $("#userNotificationText").html('<br>'+BetInfo);
+      $("#notificationinfo").show();
+        $("#noti_close").hide();
         App.maininstance.joinTournament(playerAddress,wizardId,affinityType,{from: web3.eth.accounts[0], gas: 3000000, value: web3.toWei(joiningFee,'ether')}, function(err, res){
           if(!err){
-               App.snackbarCall("You have joined the tournament");
+        //       App.snackbarCall("You have joined the tournament");
+            $("#notificationinfo").show();
+            $("#userNotificationText").html('<br> <br>'+"You have joined the tournament.");
+            $("#noti_close").show();
                if(App.joiningStatus == 'joined'){
              $.ajax({
              type: "POST",
@@ -235,6 +285,10 @@ console.log(App.maininstance);
                      }
            }else{
              console.error(err);
+             App.snackbarCall("You have rejected the last transaction.");
+            $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"You have rejected the last transaction.");
+               $("#noti_close").show();
            }
         });
       } else {
@@ -244,30 +298,71 @@ console.log(App.maininstance);
   },
 
   placeSpells:function(spellArray){
-    debugger
+     debugger
+if (typeof App.maininstance !== 'undefined'&& typeof web3 !== 'undefined'){
+    $("#notificationinfo").show();
+    $("#userNotificationText").html('<br> <br>'+"Updading spell");
+    $("#noti_close").hide();
+   
     $.ajax({
     type: "POST",
-            url: "http://localhost:8080/neutraldragontournament/rest/updateplacespell",
+            url: serverURl+"updateplacespell",
             crossDomain: true,
             data: 'player='+App.account+'&wizardspell1='+spellArray[0]+'&wizardspell2='+spellArray[1]+'&wizardspell3='+spellArray[2]+'&wizardspell4='+spellArray[3]+'&wizardspell5='+spellArray[4]+'',
             header:{
             },
             success: function (data) {
             // Need to check the reponse type
+             $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"Spells updated successfully.");
+             $("#noti_close").show();
             },
             error: function (err) {
+
+
               if(err.responseText == 'notExists'){
                 App.snackbarCall("Player is not in the tournament");
+              $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"Player is not in the tournament");
+             $("#noti_close").show();
               } else if(err.responseText == 'success'){
                   App.snackbarCall("You have successfully placed your wizard spells");
+
+              $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"You have successfully placed your wizard spells.");
+             $("#noti_close").show();
               } else if(err.responseText == 'failed'){
+
+              $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"You have already placed your wizard spells");
+             $("#noti_close").show();
                   App.snackbarCall("You have already placed your wizard spells");
               }
             }
             });
   }
+  else{
+
+        App.init();
+  }
+  },
+   initAgain: async function() {
+          await ethereum.enable();
+          // Acccounts now exposed
+          return await App.initWeb3();
+        },
+
 };
+
+   function callback(data){
+    if(meta_address!==data.selectedAddress||meta_network!==data.networkVersion){
+      location.reload();
+    }
+
+
+   }
 
 $(function() {
   App.init();
 });
+

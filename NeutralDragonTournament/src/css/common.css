@@ -26,8 +26,6 @@ height: 50px;
     width: 100% !important;
     position: fixed;
     top: 0;
-  
-  
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -46,6 +44,13 @@ height: 50px;
 .navbar-brand{
 /*	height: 80px; 
 	float: none;*/
+}
+
+
+
+.bg-light{
+    background-color: #ffef37 !important;
+
 }
 
 #tournament_name{
@@ -207,6 +212,15 @@ height: 30px;
 
 
 
+  #table_container{
+    max-width: 90%;
+    right: 0;
+    left: 0;
+    margin: auto;
+    background : #fff;
+    top: 180px;
+    position: absolute;
+  }
 
 
 /* For Dual */
@@ -227,7 +241,7 @@ h3 {
 	margin:auto;
 	right: 0;
 	left: 0;
-	margin-top: 100px;
+	margin-top: 250px;
 	margin-bottom: 100px;
 
 	background-color:#ffff85; 
