@@ -56,6 +56,7 @@ public class RestDaoImpl implements RestDao {
 	public List<String> roundFixture() {
 		Session session = sessionFact.getCurrentSession();		
 		List<String> dataList = new ArrayList<String>();
+		int playerCount =0;
 		try {
 			List<Object> playerList = null;			
 			Query Query = session.createQuery("select player from Tournament where playerStatus=:playerStatus")
@@ -68,19 +69,20 @@ public class RestDaoImpl implements RestDao {
 					}
 				}else if(playerList.size() % 2 == 0){
 					for(Object playerFetch : playerList){
-						dataList.add((String) playerList.get(1));
+						dataList.add((String) playerList.get(playerCount));
+						playerCount++;
 					}
 				} else {
 					Query getPlayer = session.createSQLQuery("select player from Tournament WHERE tournamentId NOT IN (SELECT MAX(tournamentId) from Tournament) and playerStatus='0' ORDER BY tournamentId DESC");	
 					List<Object> getPlayerList = null;	
 					getPlayerList = getPlayer.list();
-					int i =0;
 					for(Object playerFetch : getPlayerList){
-						i++;
-						dataList.add((String) playerList.get(i));
+						dataList.add((String) playerList.get(playerCount));
+						playerCount++;
 					}
 					int updateByeStatus = session.createSQLQuery("update Tournament set byeStatus='1' LIMIT 1").executeUpdate();
 				}
+				playerCount =0;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
