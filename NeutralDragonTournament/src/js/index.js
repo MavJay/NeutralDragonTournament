@@ -1,6 +1,6 @@
 var tournamentTimer;
-var newMilli=60000;
-
+var newMilli=0;
+var tournament_starter ;
 var BetInfo = "Waiting for the transaction to be confirmed.<br>Please confirm your transaction in METAMASK if you have not done so.";
 
 
@@ -22,6 +22,9 @@ $("#enroll_btn").click(function(){
     type: 'GET',
     contentType: 'application/json',
     success: function (data) {
+      // alert(JSON.stringify(data));
+  	console.log(data);
+
   var count = Object.keys(data).length;
 
   if(data.wizards.length ==0){
@@ -65,49 +68,61 @@ else{
 // }
 
 
-setRankingTable();
+// setRankingTable();
 
-function setRankingTable(){
+function setRankingTable(dataArray){
 
   // debugger
 
-  var Basetable ='<table  id="rank_master"  class="table table-striped table-bordered" style="visibility:hidden">'+
+  var Basetable ='<table  id="rank_master"  class="table table-striped table-bordered">'+
   '<thead><tr><th>Wizard ID</th><th>Affinity</th><th>Address</th><th>Rank</th><th>Score</th><th>Duels played</th><th>Normal wins</th>'+
   '<th>Normal losses</th><th>Ties</th><th>Wins against opponent’s Elemental spell</th><th>Losses against opponent’s Elemental spell</th>'+
   '<th>Elemental wins</th><th>Elemental losses</th></tr></thead><tbody id="rank_master_body"></tbody></table>';
 
 
-  //$("#table_container").html(Basetable);
+  $("#table_container").html(Basetable);
 
 
   var tableData ="";
 
 
-  // for(var i=0;i<dataArray.size();i++){
+  for(var i=0;i<dataArray.length;i++){
 
 
-    // tableData= tableData+'<td>'+dataArray[i].wiz_id+'</td>'
-    // +'<td>'+dataArray[i].wiz_type+'</td>'
-    // +'<td>'+dataArray[i].owenr_id+'</td>'
-    // +'<td>'+dataArray[i].rank+'</td>'
-    // +'<td>'+dataArray[i].score+'</td>'
-    // +'<td>'+dataArray[i].duels_played+'</td>'
-    // +'<td>'+dataArray[i].normal_wins+'</td>'
-    // +'<td>'+dataArray[i].normal_loss+'</td>'
-    // +'<td>'+dataArray[i].ties+'</td>'
-    // +'<td>'+dataArray[i].win_against_opp_element_spell+'</td>'
-    // +'<td>'+dataArray[i].loss_against_opp_element_spell+'</td>'
-    // +'<td>'+dataArray[i].win_element+'</td>'
-    // +'<td>'+dataArray[i].loss_element+'</td></tr>';
-  // }
-      tableData=   
-      '<tr><td>1234</td><td>Fire</td><td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td><td>1</td><td>25</td><td>3</td><td>6</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>';
-      // '<tr><td>1234</td><td>Fire</td><td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td><td>1</td><td>25</td><td>3</td><td>6</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>'+
+
+
+
+
+
+
+    tableData= tableData+'<tr><td>'+dataArray[i].wizid+'</td>'
+    +'<td>'+dataArray[i].affinity+'</td>'
+    +'<td title="'+dataArray[i].plrAddress+'">'+dataArray[i].plrAddress+'</div></td>'
+    +'<td>'+dataArray[i].rank+'</td>'
+    +'<td>'+dataArray[i].totalScore+'</td>'
+    +'<td>'+dataArray[i].duelsPlayed+'</td>'
+    +'<td>'+dataArray[i].noofwins+'</td>'
+    +'<td>'+dataArray[i].noOfLoss+'</td>'
+    +'<td>'+dataArray[i].noOftie+'</td>'
+    +'<td>'+dataArray[i].noOfWinAgainstElemental+'</td>'
+    +'<td>'+dataArray[i].noOfLossAgainstElemental+'</td>'
+    +'<td>'+dataArray[i].elementalWin+'</td>'
+    +'<td>'+dataArray[i].elementalLoss+'</td></tr>';
+  }
+      // tableData=   
       // '<tr><td>1234</td><td>Fire</td><td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td><td>1</td><td>25</td><td>3</td><td>6</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>';
+      // // '<tr><td>1234</td><td>Fire</td><td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td><td>1</td><td>25</td><td>3</td><td>6</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>'+
+      // // '<tr><td>1234</td><td>Fire</td><td>0x6E6A91Fd6E11D77Ef7a40391534B13A7E03A86FC</td><td>1</td><td>25</td><td>3</td><td>6</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>';
 
 
 
-  //$("#rank_master_body").append(tableData);
+$("#rank_master_body").append(tableData);
+// $('#rank_master').DataTable();
+var wiztabel_height = $(window).height()-$('.navbar').height()-$("footer").height()-400;
+console.log("height", wiztabel_height);
+$('#rank_master').DataTable( {
+    scrollY: wiztabel_height
+  } );
 
 //  $(document).ready( function () {
 //     $('#rank_master').DataTable();
@@ -207,17 +222,26 @@ function millitoDay(forCalc){
               }
 
               else{
-clearInterval(tournament_starter);
+
+              clearInterval(tournament_starter);
+              //   $("#ranking_table").show();
+              // $("#rank_master").show();
+              //   $("#rank_master_wrapper").show();
+                // var div = document.getElementById('table_container');
+                // div.style.visibility="visibility";
+                $("#table_container").show();
+
+                 var div = document.getElementById('table_container');
+                div.style.zIndex="5";
                var div = document.getElementById('tournament_status');
                 div.style.visibility="hidden";
                  var div = document.getElementById('enroll_container');
                 div.style.visibility="hidden";
                 var div = document.getElementById('tower_div');
                 div.style.opacity="0.2";
-                 var div = document.getElementById('ranking_container');
-                div.style.zIndex="5";
-
                 
+          
+               
               }
 
 }
@@ -232,8 +256,9 @@ clearInterval(tournament_starter);
 
     };
 
-    
-var tournament_starter = setInterval(settime, 1000);
+    function starttimer(){
+ tournament_starter = setInterval(settime, 1000);
+}
 // setInterval(() => {
 //   settime();
 // }, 1000);

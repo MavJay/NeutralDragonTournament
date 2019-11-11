@@ -213,13 +213,15 @@ height: 30px;
 
 
   #table_container{
-    max-width: 90%;
+    max-width: 98%;
     right: 0;
     left: 0;
     margin: auto;
-    background : #fff;
-    top: 180px;
-    position: absolute;
+    /*background : #fff;*/
+   top: 120px;
+    position: fixed;
+    bottom:6rem;
+
   }
 
 
@@ -416,22 +418,56 @@ max-height: 200px !important;
 
 #ranking_container{
 	height: 400px;
-	max-width: 80%;
+	max-width: 90%;
 	max-height: 90%;
 	margin:auto;
 	right: 0;
 	left: 0;
-	top: 200px;
+	top: 220px;
 	position: fixed;
 /*	overflow: auto;*/
 }
 
-#ranking_container table td{
-	word-wrap: break-word;
-	max-height: 100px;
-	max-width: 150px;
+#rank_master{
+	bottom: 30px;
+}
+#rank_master_wrapper table td{
+	word-wrap: break-word !important;
+	max-height: 100px !important;
+	max-width: 100px !important;
+	text-overflow: ellipsis !important;
+	
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	
+	/* for good looks */
+	padding: 10px !important;
 }
 
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+     margin: 10px 0; 
+    /*white-space: nowrap;
+    justify-content: flex-end;*/
+}
+
+
+  table .table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td {
+    border-bottom-width: 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+ .page-item.active .page-link {
+
+    background-color: #ffd45a !important;
+    border-color: #ffd45a !important;
+  }
+
+  .page-link {
+    color: #000 !important;
+  }
+
+
+/*
 
 #ranking_container tbody {
     display:block;
@@ -442,8 +478,7 @@ max-height: 200px !important;
     display:table;
     width:100%;
     table-layout:fixed;
-}
+}*/
 /*thead {
     width: calc( 100% - 1em )
 }*/
-

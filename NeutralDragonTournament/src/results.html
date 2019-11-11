@@ -102,41 +102,13 @@
 
 <script type="text/javascript">
 
- updateResultsMessage();
 
-  var winnerDetails = App.maininstance.prizeAmount({}, {fromBlock:'latest', toBlock: 'latest'});
-           // App.getMyBets(account);
-            if (winnerDetails != undefined){
-              winnerDetails.watch(function(error, result){
-                
-                try{
-                App.wizard1Address = result.args.wizard1Address.valueOf();
-                App.wizard2Address = result.args.wizard2Address.valueOf();
-                App.wizard2Address = result.args.wizard2Address.valueOf();
-                App.prize1= result.args.prize1.valueOf();
-                App.prize2= result.args.prize2.valueOf();
-                App.tableTopScorer= result.args.tableTopScorer.valueOf();
-                App.wizid1= result.args.wizid1.valueOf();
-                App.wizid2= result.args.wizid2.valueOf();
-                App.wizid3= result.args.wizid3.valueOf();
-              
-              updateResults();
-              }
-              catch(error){
-                console.log("emit error", error);
 
-              }
-                });
-              }
 
-            else{
-
-              updateResultsMessage();
-            }
 
 
 function updateResults(){
- var result='<div class="container"><div class="row"><div class="col-sm">Winner <br><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/"'+App.wizid1+'" style="max-width: 200px;max-height: 200px;"><br>Wizard #1233<br>Prize won:"'+App.prize1+'" ETH</div><div class="col-sm">Runner <br><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/"'+App.wizid1+'" style="max-width: 200px;max-height: 200px;"><br>Wizard #4321Prize won: "'+App.prize2+'" ETH</div><div class="col-sm">Table topper <br><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/"'+App.wizid1+' style="max-width: 200px;max-height: 200px;"><br>Wizard #3322<br>Prize won: "'+App.tableTopScorer+'" ETH</div></div></div>';
+ var result='<div class="container"><div class="row"><div class="col-sm">Winner <br><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+App.wizid1+'.svg" style="max-width: 200px;max-height: 200px;"><br>Wizard #'+App.wizid1+'<br>Prize won:'+App.prize1+' ETH</div><div class="col-sm">Runner <br><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+App.wizid1+'.svg" style="max-width: 200px;max-height: 200px;"><br>Wizard #'+App.wizid2+'<br>Prize won: '+App.prize2+' ETH</div><div class="col-sm">Table topper <br><img id = "wiz_image" src="https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/'+App.wizid1+'.svg" style="max-width: 200px;max-height: 200px;"><br>Wizard #'+App.wizid3+'<br>Prize won: '+App.tableTopScorer+' ETH</div></div></div>';
 
    $("#results_container").html(result);
 
@@ -148,8 +120,39 @@ function updateResultsMessage(){
         $("#results_container").html(resultsMessage);
 }
          
- 
 
+function getwizid(address,wiznum){
+  debugger
+
+
+     $.ajax({
+                          type: "POST",
+                                  url: serverURl+"getwizid",
+                                  crossDomain: true,
+                                  data:'address='+address,
+                                  header:{
+                                  },
+                                  success: function (data) {
+                                    debugger
+                              
+                                console.log("wizid:::::::"+data);
+
+                                if(wiznum==1){
+                                  App.wizid1=data;
+                                }
+                                else if(wiznum==2){
+                                  App.wizid2=data;
+                                }
+                                else if(wiznum==3){
+                                  App.wizid3=data;
+                                }
+                             
+   updateResults();
+                                },
+                                error: function (err) {
+                                           }
+                                      });
+}
 
 
 </script>
