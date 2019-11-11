@@ -1,7 +1,6 @@
 package com.mavjay.neutraldragontournament.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,11 +43,6 @@ public class RestServiceImpl implements RestService {
 		return restDao.getPlayerDetails(playerAddr);
 	}
 	
-	@Transactional
-	public String updateMatchFixture(String matchArr){
-		return restDao.updateMatchFixture(matchArr);
-	}
-
 	@Transactional
 	public String getTimer() {
 		return restDao.getTimer();

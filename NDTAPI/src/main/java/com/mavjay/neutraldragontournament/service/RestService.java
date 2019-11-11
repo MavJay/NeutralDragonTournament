@@ -12,7 +12,6 @@ public interface RestService {
 			int wizardSpell2,int wizardSpell3,int wizardSpell4,int wizardSpell5);
 	public ArrayList<Object> getMatchArr();
 	public String getPlayerDetails(String playerAddr);
-	public String updateMatchFixture(String matchArr);
 	public String getTimer();
 		public String calculateScore();
 	public ArrayList<Object> getScoreArr();

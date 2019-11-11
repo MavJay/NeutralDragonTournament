@@ -7,12 +7,10 @@ import com.mavjay.neutraldragontournament.dao.SchedulerDao;
 public class SchedulerDaoImpl implements SchedulerDao {
 
 	public SchedulerDaoImpl() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String increaseLevel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -1,16 +1,13 @@
 package com.mavjay.neutraldragontournament.dao.impl;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -190,10 +187,8 @@ public class RestDaoImpl implements RestDao {
 		Query completedMatches=	session.createQuery("from LevelFixture where progress=:progress")
 				.setParameter("progress", "completed");
 		compeltedmatchDetails=completedMatches.list();
-//		Map<String, Object> appList = new HashMap<String, Object>();
 		JSONObject appList = new JSONObject();
 		for (LevelFixture match : compeltedmatchDetails) {
-//			List<Object> dataList = new ArrayList<Object>();
 			JSONObject dataList = new JSONObject();
 			try {
 			
@@ -209,14 +204,12 @@ public class RestDaoImpl implements RestDao {
 			
 			completedmatchList.add(dataList);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		try {
 			appList.put("completed", completedmatchList);
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		List<LevelFixture> scheduledmatchDetails;
@@ -239,7 +232,6 @@ public class RestDaoImpl implements RestDao {
 		try {
 			appList.put("scheduled",scheduledmatchList);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		resultList.add(appList);
@@ -247,13 +239,11 @@ public class RestDaoImpl implements RestDao {
 		return resultList;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public String getPlayerDetails(String playerAddr){
 		Session session = sessionFact.getCurrentSession();
 		int spell = 0,playerStatus = 0,byeStatus = 0;
 		List<Tournament> playerDetails;
-		int unique;
 		Query findPlayer=	session.createQuery("from Tournament where player=:player")
 		.setParameter("player", playerAddr);
 		playerDetails=findPlayer.list();
@@ -273,30 +263,13 @@ public class RestDaoImpl implements RestDao {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public String updateMatchFixture(String matchArr){
-//		System.out.println("Array in IMpl"+arr);
-		ContractInteraction cI = new ContractInteraction();
-//		try {
-////			cI.loadContract();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		return "success";
-	}
 
 	@Override
 	public String getTimer() {
 		Session session = sessionFact.getCurrentSession();
-	//	Flags fs= new Flags();
 		ArrayList<String> dataList = new ArrayList<String>();
 		dataList=	(ArrayList<String>) session.createSQLQuery("select tournamentstarttime from FlagSettings limit 1").list();
-	
 		System.out.println(dataList.get(0));
-		
-		
 		
 		return dataList.get(0).toString();
 	}

@@ -62,19 +62,6 @@ RestService restService;
 		return "success";
 	}
 	
-//	@SuppressWarnings("deprecation")
-//	public int getTimer() throws Exception{
-//		inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
-//		prop.load(inputStream);
-//		String keyPair = prop.getProperty("privateKey").toString();
-//		Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/"+prop.getProperty("infuraKey").toString()));
-//		contract1 = NeutralDragonTournament.load(contractAddress, web3j, credentials, ManagedTransaction.GAS_PRICE,Contract.GAS_LIMIT);
-//		RemoteCall<BigInteger> contractCall = contract1.tournamentStartTimer();
-//		BigInteger result = contractCall.send();
-//		System.out.println("Getting End timer on load"+result);
-//		return result.intValue();
-//	}
-	
 	@SuppressWarnings("deprecation")
 	public ArrayList<Object> getMatchFixture(List<String> dataList2) throws Exception{
 		inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
@@ -105,7 +92,6 @@ RestService restService;
 		contractAddress = restService.getContractAddress();
 		credentials = Credentials.create(keyPair);
 		contract1 = NeutralDragonTournament.load(contractAddress, web3j, credentials, ManagedTransaction.GAS_PRICE,Contract.GAS_LIMIT);
-//		System.out.println("Contract ADdress::::::"+contract1.getContractAddress());
 		BigInteger weivalue = new BigInteger("0");
 		RemoteCall<TransactionReceipt> contractCall = contract1.distributePrize(winner1, winner2, winner3,wizid1,wizid2,wizid3, weivalue);
 		TransactionReceipt result = contractCall.send();
@@ -115,10 +101,6 @@ RestService restService;
 				  .get();
 
 				BigInteger wei = ethGetBalance.getBalance();
-//				TransactionReceipt transactionReceipt = Transfer.sendFunds(
-//				        web3j, credentials, "0xe28713AD22c9f568888b980139dCc3A96Fe434aE",
-//				        BigDecimal.valueOf(1.0),Unit.ETHER).send();
-//				System.out.println("Amount Transfered"+transactionReceipt);
 		System.out.println("Start Duel Return"+result);
 		System.out.println("Contract Balance"+wei);
 		return "success";

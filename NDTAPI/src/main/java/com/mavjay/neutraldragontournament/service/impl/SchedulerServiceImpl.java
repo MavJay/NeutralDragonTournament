@@ -2,7 +2,6 @@ package com.mavjay.neutraldragontournament.service.impl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -11,8 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import org.hibernate.Query;
-
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,11 +198,8 @@ public class SchedulerServiceImpl  {
 	@Scheduled(initialDelay=3*1000,fixedRate=5*1000)
 	@Transactional
 	public void increaseLevel() {
-		Session session = sessionFact.getCurrentSession();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		System.out.println("level check: "+timestamp);
-	//	session.createSQLQuery("update FlagSettings set levelcount=:count")
-	//	.setParameter("count", level_flag).executeUpdate();
 		restService.roundFixture();
 		level_flag++;
 
