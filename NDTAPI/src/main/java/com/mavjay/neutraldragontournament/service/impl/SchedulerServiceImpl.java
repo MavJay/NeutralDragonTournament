@@ -2,6 +2,7 @@ package com.mavjay.neutraldragontournament.service.impl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -10,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import org.hibernate.Query;
+
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,13 +76,15 @@ public class SchedulerServiceImpl  {
 				//String strCurrDate = (String)currDate;
 				DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String currFormatDate = df1.format(currDate);
-				if (list != null) {
+				//if (list != null) {
+				if(list.size()>0) {
+					System.out.println("DB has value");
 					for(FlagSettings user : list){
 						
 						//dateCDT = df1.parse(user.getContractdeploystarttime());
 						dateCDT = user.getContractdeploystarttime();
 					}
-				}
+				//}
 				//dateCDT -->Wed Nov 06 19:06:47 IST 2019
 				//currDate-->Thu Nov 07 11:48:41 IST 2019
 	        	System.out.println("dateCDT-->"+dateCDT);//2019-11-06 19:06:47
@@ -133,7 +138,10 @@ public class SchedulerServiceImpl  {
 		        	System.out.println(contractAddress);
 	        	}
 	        	
-	        	
+	        }//if db has value
+				else {
+					System.out.println("DB has no value");
+				}
 				
 				
 			} catch (Exception e) {
