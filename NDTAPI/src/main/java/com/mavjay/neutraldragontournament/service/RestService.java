@@ -14,6 +14,9 @@ public interface RestService {
 	public String getPlayerDetails(String playerAddr);
 	public String getTimer();
 		public String calculateScore();
-	public ArrayList<Object> getScoreArr();
+	public String getScoreArr();
+//	public String getWizardData();
+//	public String getWizardDataWithMinpower();
 	public String getContractAddress();
+	public String getWizid(String string);
 }

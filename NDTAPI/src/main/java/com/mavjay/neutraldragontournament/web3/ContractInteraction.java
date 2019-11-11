@@ -59,7 +59,7 @@ RestService restService;
 		contractAddress = contract.getContractAddress();
 		System.out.println("Is contract Valid :"+contract.isValid());
 		System.out.println("Is contract Valid :"+contractAddress);
-		return "success";
+		return contractAddress;
 	}
 	
 	@SuppressWarnings("deprecation")

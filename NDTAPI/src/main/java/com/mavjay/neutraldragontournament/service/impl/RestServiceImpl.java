@@ -54,12 +54,30 @@ public class RestServiceImpl implements RestService {
 	}
 	
 	@Transactional
-	public ArrayList<Object> getScoreArr(){
+	public String getScoreArr(){
 		return restDao.getScoreArr();
 	}
-	
-	@Transactional
+
+//	@Transactional
+//	public String getWizardData() {
+//		// TODO Auto-generated method stub
+//		return restDao.getWizardData();
+//	}
+//
+//	@Transactional
+//	public String getWizardDataWithMinpower() {
+//		// TODO Auto-generated method stub
+//		return restDao.getWizardDataWithMinpower();
+//	}
+//	
+		@Transactional
 	public String getContractAddress(){
 		return restDao.getContractAddress();
 	}
+
+		@Transactional
+		public String getWizid(String address) {
+		
+			return restDao.getWizid(address);
+		}
 }

@@ -12,8 +12,18 @@ public interface RestDao {
 			int wizardSpell2,int wizardSpell3,int wizardSpell4,int wizardSpell5);
 	public ArrayList<Object> getMatchArr();
 	public String getPlayerDetails(String playerAddr);
+
+	
+		public String getContractAddress();
+
+	String getTimer();
 	public String calculateScore();
-	public String getTimer();
-	public ArrayList<Object> getScoreArr();
-	public String getContractAddress();
+
+	public String getScoreArr();
+
+//	public String getWizardData();
+//
+//	String getWizardDataWithMinpower();
+
+	public String getWizid(String address);
 }

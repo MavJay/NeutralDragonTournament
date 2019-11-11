@@ -1,13 +1,12 @@
 package com.mavjay.neutraldragontournament.controller;
 
-import java.util.ArrayList;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.mavjay.neutraldragontournament.service.RestService;
 import com.mavjay.neutraldragontournament.web3.ContractInteraction;
 
@@ -77,10 +76,15 @@ public class MainController {
 		return result;
 	}
 		@RequestMapping(value = { "getScoreArr" },produces = "application/json", method = RequestMethod.POST)
-	public ArrayList<Object> getScoreArr(@RequestParam Map<String, String> allRequestParam) {
-		ArrayList<Object> result = restService.getScoreArr();
-		return result;
+	public String getScoreArr(@RequestParam Map<String, String> allRequestParam) {
+			return	restService.getScoreArr();
+		
 	}
+		@RequestMapping(value = { "getwizid" },produces = "application/json", method = RequestMethod.POST)
+		public String getWizid(@RequestParam Map<String, String> allRequestParam) {
+			String result = restService.getWizid(allRequestParam.get("address"));
+			return result;
+		}	
 	
 	@RequestMapping(value = { "getContractAddress" },produces = "application/json", method = RequestMethod.POST)
 	public String getContractAddress(@RequestParam Map<String, String> allRequestParam) {

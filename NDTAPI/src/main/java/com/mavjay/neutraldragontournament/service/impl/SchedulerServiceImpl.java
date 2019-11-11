@@ -2,7 +2,6 @@ package com.mavjay.neutraldragontournament.service.impl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.TimeZone;
 import org.hibernate.Query;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,13 +184,14 @@ public class SchedulerServiceImpl  {
 //	        System.out.println("end time"+ now.plusMinutes(20));
 //	        OffsetDateTime contractAddress=		now.plusMinutes(20);
         	
+	        //important: please add end timer same as fixed delay in this method
 	        
 	        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
 	        OffsetDateTime end= now.plusSeconds(60);
 	        long timeinmilli= ChronoUnit.MILLIS.between(now, end);
 	        System.out.println(now+"   "+ end+"   "+ChronoUnit.MILLIS.between(now, end));
 	        session.createSQLQuery("update FlagSettings set tournamentstarttime=:time")
-			.setParameter("time", String.valueOf(timeinmilli)).executeUpdate();
+			.setParameter("time", String.valueOf(end)).executeUpdate();
         	
         	
 		}
