@@ -84,7 +84,7 @@ RestService restService;
 	
 	
 	@SuppressWarnings("deprecation")
-	public String distributePrize(String winner1,String winner2,String winner3,String wizid1,String wizid2,String wizid3) throws Exception{
+	public String distributePrize(String winner1,String winner2,String winner3) throws Exception{
 		inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
 		prop.load(inputStream);
 		String keyPair = prop.getProperty("privateKey").toString();
@@ -93,7 +93,7 @@ RestService restService;
 		credentials = Credentials.create(keyPair);
 		contract1 = NeutralDragonTournament.load(contractAddress, web3j, credentials, ManagedTransaction.GAS_PRICE,Contract.GAS_LIMIT);
 		BigInteger weivalue = new BigInteger("0");
-		RemoteCall<TransactionReceipt> contractCall = contract1.distributePrize(winner1, winner2, winner3,wizid1,wizid2,wizid3, weivalue);
+		RemoteCall<TransactionReceipt> contractCall = contract1.distributePrize(winner1, winner2, winner3, weivalue);
 		TransactionReceipt result = contractCall.send();
 		EthGetBalance ethGetBalance = web3j
 				  .ethGetBalance(contractAddress, DefaultBlockParameterName.LATEST)

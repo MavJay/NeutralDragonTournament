@@ -542,12 +542,12 @@ public class RestDaoImpl implements RestDao {
 				ContractInteraction contract = new ContractInteraction();
 				winner1 = wizard1Address;
 				winner2 = wizard2Address;
-				contract.distributePrize(winner1,winner2,winner3,wizid1,wizid2,wizid3);
+				contract.distributePrize(winner1,winner2,winner3);
 			} else if(wizard2Status == 0){
 				ContractInteraction contract = new ContractInteraction();
 				winner1 = wizard2Address;
 				winner2 = wizard1Address;
-				contract.distributePrize(winner1,winner2,winner3,wizid1,wizid2,wizid3);
+				contract.distributePrize(winner1,winner2,winner3);
 			}
 			
 		}
