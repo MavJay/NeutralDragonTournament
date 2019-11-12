@@ -187,7 +187,7 @@ public class SchedulerServiceImpl  {
 	        //important: please add end timer same as fixed delay in this method
 
 	        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-	        OffsetDateTime end= now.plusSeconds(60);
+	        OffsetDateTime end= now.plusSeconds(900);
 	        long timeinmilli= ChronoUnit.MILLIS.between(now, end);
 	        System.out.println(now+"   "+ end+"   "+ChronoUnit.MILLIS.between(now, end));
 	        session.createSQLQuery("update FlagSettings set tournamentstarttime=:time")
