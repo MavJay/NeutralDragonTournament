@@ -1,6 +1,8 @@
 var meta_address,meta_network;
 
-var serverURl="http://localhost:8080/neutraldragontournament/rest/";
+//var serverURl="http://localhost:8080/neutraldragontournament/rest/";
+
+var serverURl="http://3.14.210.37:8080/neutraldragontournament/rest/"
 
 App = {
   web3Provider: null,
@@ -377,7 +379,7 @@ catch(error){
                if(App.joiningStatus == 'joined'){
              $.ajax({
              type: "POST",
-                     url: "http://localhost:8080/neutraldragontournament/rest/jointournament",
+                     url: serverURl+"jointournament",
                      crossDomain: true,
                      data: 'player='+playerAddress+'&wizardid='+wizardId+'&affinitytype='+affinityType+'',
                      header:{

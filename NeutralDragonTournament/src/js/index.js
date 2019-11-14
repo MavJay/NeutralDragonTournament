@@ -8,9 +8,9 @@ $("#enroll_btn").click(function(){
 	var apiToken="SWNXMHPV76I52TGX4vkmp3QkVgje5B8H78KNQthv";
 	var apiEmail="muthukumaresh@vijayasekar.com";
 	// var walletAddress ="0xa20a319098BF993eA6Cc93922c9b001F1A3dd7Db";
-	var walletAddress ="0xc92a2167a1f788a468665e292ea4038d7a9928dd";
+//	var walletAddress ="0xc92a2167a1f788a468665e292ea4038d7a9928dd";
 
-// var walletAddress =web3.eth.accounts[0];
+ var walletAddress =web3.eth.accounts[0];
 
 	$.ajax({
     url: "https://cheezewizards-rinkeby.alchemyapi.io/wizards?owner="+walletAddress,
