@@ -115,7 +115,7 @@ public class SchedulerServiceImpl  {
 	            	bdate = false;
 	            }
 	        	System.out.println("bdate--->"+bdate);
-	        if(!bdate) {
+	        if(bdate) {
 	        		System.out.println("Contract already deployed");
 	        		//startTournament();
 
@@ -139,6 +139,20 @@ public class SchedulerServiceImpl  {
 	        }//if db has value
 				else {
 					System.out.println("DB has no value");
+					System.out.println("Contract not deployed. So, inserting in FlagSettings table and loading contract");
+	        		String contractAddress=		interaction.loadContract();
+	        		//insert flagsetting settings tables: contractAddress, timing=now()
+		        	FlagSettings cntInfo = new FlagSettings();
+		        	cntInfo.setContractAddress(contractAddress);
+		        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		    		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		    		Date date = new Date();
+		        	cntInfo.setContractdeploystarttime(formatter.format(date));
+		        	session.save(cntInfo);
+
+		        	session.createSQLQuery("update FlagSettings set contractaddress=:address")
+					.setParameter("address", contractAddress).executeUpdate();
+		        	System.out.println(contractAddress);
 				}
 
 
@@ -203,7 +217,7 @@ public class SchedulerServiceImpl  {
 	}
 
 	//Leavel timer is been set for every 5mins
-		@Scheduled(initialDelay=3*1000,fixedRate=5*60*1000)
+		@Scheduled(initialDelay=15*60*1000,fixedRate=5*60*1000)
 	@Transactional
 	public void increaseLevel() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());

@@ -95,6 +95,7 @@ public class RestDaoImpl implements RestDao {
 		}
 		try {
 			ArrayList<Object> matchArray = new ArrayList();
+			if(dataList.size() != 0){
 			matchArray = interaction.getMatchFixture(dataList);
 			for (int i = 0; i < matchArray.size();) {
 				Query insertQuery = session
@@ -114,6 +115,9 @@ public class RestDaoImpl implements RestDao {
 				insertQuery.setParameter(1, wizardId);
 				insertQuery.setParameter(2, levelNum);
 				insertQuery.executeUpdate();
+			}
+			} else {
+				System.out.println("No Players have joined");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
