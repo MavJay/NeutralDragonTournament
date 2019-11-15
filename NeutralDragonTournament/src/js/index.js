@@ -28,7 +28,7 @@ $("#enroll_btn").click(function(){
   var count = Object.keys(data).length;
 
   if(data.wizards.length ==0){
-     $("#userNotificationText").html("No wizards available in your wallet, get one to enroll.");
+     $("#userNotificationText").html("<br>No wizards available in your wallet, get one to enroll.");
     $("#notificationinfo").show();
     $("#noti_close").show();
   	  // App.snackbarCall("No wizards available in your wallet, get one to enroll.");
