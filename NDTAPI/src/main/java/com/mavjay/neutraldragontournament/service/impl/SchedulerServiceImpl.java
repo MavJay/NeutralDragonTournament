@@ -47,7 +47,7 @@ public class SchedulerServiceImpl  {
 	// on first call deploy contract , second call will be after a year (make it maximum delay)
 
 
-	@Scheduled(initialDelay=6000,fixedRate=365*24*60*60*1000)
+	@Scheduled(initialDelay=60*1000,fixedRate=365*24*60*60*1000)
 	@Transactional
 	public void deployContract(){
 
@@ -167,7 +167,7 @@ public class SchedulerServiceImpl  {
 
 	// first call start tournament timer , second call end tournament timer
 //	@Scheduled(initialDelay=2*60*1000,fixedRate=1*60*1000)
-	@Scheduled(initialDelay=10000,fixedRate=15*60*1000) // Testing its initially set to 15mins
+	@Scheduled(initialDelay=5*60*1000,fixedRate=15*60*1000) // Testing its initially set to 15mins
 	@Transactional
 	public void startTournament() {
 
@@ -217,7 +217,7 @@ public class SchedulerServiceImpl  {
 	}
 
 	//Leavel timer is been set for every 5mins
-		@Scheduled(initialDelay=15*60*1000,fixedRate=5*60*1000)
+		@Scheduled(initialDelay=20*60*1000,fixedRate=5*60*1000)
 	@Transactional
 	public void increaseLevel() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
