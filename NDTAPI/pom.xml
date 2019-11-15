@@ -268,7 +268,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <dependency>
   <groupId>org.web3j</groupId>
   <artifactId>core</artifactId>
-  <version>4.5.5</version>
+  <version>4.5.6</version>
+    <exclusions>
+       <!--  <exclusion>
+          <groupId>org.bouncycastle</groupId>
+          <artifactId>bcprov-jdk15on</artifactId>
+        </exclusion> -->
+          <exclusion>
+          <groupId>com.github.jnr</groupId>
+          <artifactId>jnr-unixsocket</artifactId>
+        </exclusion>
+      </exclusions> 
 </dependency>
 
 		<dependency>
