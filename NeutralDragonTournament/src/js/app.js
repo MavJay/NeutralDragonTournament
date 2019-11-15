@@ -2,7 +2,7 @@ var meta_address,meta_network;
 
 //var serverURl="http://localhost:8080/neutraldragontournament/rest/";
 
-var serverURl="http://3.14.210.37:8080/neutraldragontournament/rest/"
+var serverURl="https://ndt.mavjay.com/neutraldragontournament/rest/"
 
 App = {
   web3Provider: null,
