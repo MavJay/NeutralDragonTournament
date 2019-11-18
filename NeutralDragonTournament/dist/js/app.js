@@ -1,12 +1,33 @@
+var meta_address,meta_network;
+
+//var serverURl="http://localhost:8080/neutraldragontournament/rest/";
+
+var serverURl="https://ndt.mavjay.com/neutraldragontournament/rest/"
+
 App = {
   web3Provider: null,
   contracts: {},
   account: '0x0',
   maininstance:{},
-  switched:false,
+  joiningStatus:null,
+  playerCount:0,
+  tournamentEnrollTimer:0,
+  tournamentEnrollEndTimer:0,
+  levelStartDuration:0,
+  levelEndDuration:0,
+  contractAddress:"0x0",
+  winner1Address:'0x0',
+  winner2Address:'0x0',
+  winner3Address:'0x0',
+  prize1:0,
+  prize2:0,
+  tableTopScorer:0,
+  wizid1:0,
+  wizid2:0,
+  wizid3:0,
   init: async function() {
     //return await App.initWeb3();
-    window.addEventListener('load', async () => {
+ //   window.addEventListener('load', async () => {
       // Modern dapp browsers...
       if (window.ethereum) {
         window.web3 = new Web3(ethereum);
@@ -17,11 +38,13 @@ App = {
           return await App.initWeb3();
         } catch (error) {
           // User denied account access...
+      $("#userNotificationText").html('<br><br> You should connect your wallet to access.');
+      $("#notificationinfo").show();
+      $("#noti_close").hide();
         }
       }
       // Legacy dapp browsers...
       else if (window.web3) {
-
         window.web3 = new Web3(web3.currentProvider);
         // Acccounts always exposed
         return await App.initWeb3();
@@ -30,110 +53,125 @@ App = {
       else {
         console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
       }
-    });
+  //  });
+
+
   },
   initWeb3: async function() {
     if (typeof web3 !== 'undefined') {
       // If a web3 instance is already provided by Meta Mask.
       if (window.web3.currentProvider.constructor.name == "MetamaskInpageProvider"){
-        App.web3Provider = web3.currentProvider;
-        web3 = new Web3(web3.currentProvider);
-      }else{
-        App.web3Provider = web3.currentProvider;
-        web3 = new Web3(web3.currentProvider);
+          App.web3Provider = web3.currentProvider;
+          web3 = new Web3(web3.currentProvider);
+        }else{
+          App.web3Provider = web3.currentProvider;
+          web3 = new Web3(web3.currentProvider);
+        }
+      } else {
+        // Specify default instance if no web3 instance provided
+        App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
+        web3 = new Web3(App.web3Provider);
       }
-    } else {
-      // Specify default instance if no web3 instance provided
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-      web3 = new Web3(App.web3Provider);
-    }
-    // web3 has to be injected/present
+
+
     if (web3) {
       if (web3.eth.accounts.length) {
-        let account = getAccount();
-        let accountInterval = setInterval(() => {
-          if (getAccount() !== account) {
-            App.switched = true;
-            account = getAccount();
-            $("#place-bet").off('click');
-            $('#live-pills-tabContent .live-bet ul li').remove();
-            $('.history-table tbody tr:not(:last-child)').remove();
-              $('#live-pills-tabContent .live-bet label .players-count').text('0');
-            App.contracts.sample = {};
-            App.maininstance = {};
-            //location.reload();
-            return App.initContract();
-          }
-        }, 1000);
         // if not locked, get account
-        let network = getNetwork();
-        let networkInterval = setInterval(() => {
-          if (getNetwork() !== network) {
-            if(getNetwork() != 1){
-              //alert(network)
-              $(".metamask-info").text("Please switch to Mainnet");
-            }else{
-              $(".metamask-info").text("");
-              $("#place-bet").off('click');
-              $('#live-pills-tabContent .live-bet ul li').remove();
-              $('.history-table tbody tr:not(:last-child)').remove();
-                $('#live-pills-tabContent .live-bet label .players-count').text('0');
-              App.contracts.sample = {};
-              App.maininstance = {};
-              //location.reload();
-              return App.initContract();
-            }
-          }
-        },1000);
-        function getNetwork(){
-          const network = web3.version.network;
-          return network;
-        }
-
-        function getAccount(){
         const account = web3.eth.accounts[0];
-        return account;
-      }
         // updates UI, state, pull data
+        meta_address= web3.eth.accounts[0];
+
+        // Checks for account or network change.
+        web3.currentProvider.publicConfigStore.on('update', callback);
       } else {
         // locked. update UI. Ask user to unlock.
       }
     }
-    //Detecting network of metamask connenction
+
+
+  //   //Detecting network of metamask connenction
+  //   web3.version.getNetwork((err, netId) => {
+  //         meta_network = netId;
+  //     switch (netId) {
+    
+  //       case "1":
+  //       console.log('This is mainnet');
+
+  //       break
+  //       case "2":
+  //       console.log('This is the deprecated Morden test network.');
+        
+  //       break
+  //       case "3":
+  //       console.log('This is the ropsten test network.');
+    
+  //       break
+  //       default:
+  //       console.log('This is local network or unknown network');
+    
+  //     }
+
+  //   })
+  //   return App.initContract();
+  // },
+
+
+
+//Detecting network of metamask connenction
     web3.version.getNetwork((err, netId) => {
+        meta_network=netId;
       switch (netId) {
+      
         case "1":
         console.log('This is mainnet')
         break
         case "2":
         console.log('This is the deprecated Morden test network.')
-        $(".metamask-info").text("Please switch to Mainnet");
+        // $(".metamask-info").text("Please switch to Mainnet");
+
+            $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            $("#notificationinfo").show();
+              $("#noti_close").hide();
         break
         case "3":
         console.log('This is the ropsten test network.')
-        $(".metamask-info").text("Please switch to Mainnet");
+        // $(".metamask-info").text("Please switch to Mainnet");
+            $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            $("#notificationinfo").show();
+              $("#noti_close").hide();
+        break
+        case "4":
+        console.log('This is the rinkeby test network.')
+        // $(".metamask-info").text("Please switch to Mainnet");
+            // $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            // $("#notificationinfo").show();
+            //   $("#noti_close").hide();
+              // meta_address
         break
         default:
         console.log('This is local network or unknown network')
-        $(".metamask-info").text("Please switch to Mainnet");
+        // $(".metamask-info").text("Please switch to Mainnet");
+            $("#userNotificationText").html('<br><br>Please switch to main net.<br>');
+            $("#notificationinfo").show();
+              $("#noti_close").hide();
       }
 
     })
-    return App.initContract();
+     return App.initContract();
+   },
+
+ snackbarCall:function(text){
+    Snackbar.show({text: text,pos: 'bottom-center',actionText: 'OK',actionTextColor: "var(--text-c1)"});
   },
+
+
   initContract: function() {
-    $.getJSON("NewGame.json", function(GamePlay) {
-      //  Instantiate a new truffle contract from the artifact
-      App.contracts.Sample = TruffleContract(GamePlay);
-      //  Connect provider to interact with contract
-      App.contracts.Sample.setProvider(App.web3Provider);
-
+var NDTContract = web3.eth.contract([{"constant":false,"inputs":[{"internalType":"address","name":"playerAdress","type":"address"}],"name":"resendJoiningFee","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"playerAddress","type":"address"}],"name":"checkPlayerExists","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address[]","name":"wizardAddress","type":"address[]"}],"name":"roundFixture","outputs":[{"internalType":"address[]","name":"","type":"address[]"},{"internalType":"address[]","name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"adr","type":"address"},{"internalType":"uint256","name":"wizardId","type":"uint256"},{"internalType":"uint256","name":"affinityType","type":"uint256"}],"name":"joinTournament","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"internalType":"address payable","name":"wizard1Address","type":"address"},{"internalType":"address payable","name":"wizard2Address","type":"address"},{"internalType":"address payable","name":"wizard3Address","type":"address"}],"name":"distributePrize","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"totalNOfParticipants","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"status","type":"string"},{"indexed":false,"internalType":"uint256","name":"count","type":"uint256"}],"name":"playerJoiningEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"prize1","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"prize2","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"tableTopScorer","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"developerCommission","type":"uint256"}],"name":"prizeAmount","type":"event"}]);
+App.maininstance = NDTContract.at(App.contractAddress);
+console.log(App.maininstance);
       return App.render();
-
-    });
   },
   render: function(){
-
     web3.eth.getCoinbase(function(error,account){
       if(error === null){
         if(account !== null){
@@ -146,393 +184,299 @@ App = {
               console.log(balance + " ETH");
             }
           });
-          $("#guessnum").keyup(function(e){
-            if(e.currentTarget.value == ""){
-              $('#place-bet').attr('disabled','true');
-              $('#place-bet').removeClass('active');
-            }else{
-              $('#place-bet').removeAttr('disabled');
-              $('#place-bet').addClass('active');
-            }
-              });
-          $("#guessnum").keydown(function(e){
-            if($(this).context.value.length < 2){
-              // prevent: "e", "=", ",", "-", "."
-              if ([69, 187, 188, 189, 190].includes(e.keyCode)) {
-                e.preventDefault();
-              }else{
-                $('#place-bet').removeAttr('disabled');
-              }
-            }else{
+          //  Check Player Valid
+          // debugger
+            var playerJoinStatus = App.maininstance.playerJoiningEvent({}, {fromBlock:'latest', toBlock: 'latest'});
+                if (playerJoinStatus != undefined){
+                  // debugger
+              playerJoinStatus.watch(function(error, result){
+                // debugger
+                console.log("joinstatus error",error);
+                console.log("joinstatus result",result);
+                App.joiningStatus = result.args.status.valueOf();
+                App.playerCount = result.args.count.valueOf();
+                alert(App.playerCount);
 
-              if(e.keyCode != 8){
-                e.preventDefault();
-              }
-            }
-
-          })
-          // Load contract data
-          App.contracts.Sample.deployed().then(function(instance) {
-            maininstance = instance;
-            instance.playSize.call().then(function(v) {
-              $('.total-count').text(v);
+                $("#playercount").html("Number of wizards enrolled:"+ App.playerCount);
+                $("#pricepool").html("Prize money:"+ App.playerCount*0.1+" ETH");
+                
             })
-
-            var poolArray = [50,100,500,10]
-            for(var i=0;i<poolArray.length;i++){
-
-              instance.getPlayerAddress(poolArray[i]).then(function(arr){
-                var array=arr[0];
-                var betAmt = parseInt(arr[1].valueOf());
-                var live;
-                switch(betAmt) {
-                  case 50:
-                  live= "live1";
-                  break;
-                  case 100:
-                  live="live2";
-                  break;
-                  case 500:
-                  live="live3";
-                  break;
-                  case 10:
-                  live="live4";
-                  break;
-                  default:
-                  live="live4";
-                  break;
-                }
-                var count = 0;
-                for(i=0;i<array.length;i++){
-                  if(array[i] != 0x0000000000000000000000000000000000000000){
-                    count++;
-                    $('#'+live +' ul').append('<li>'+App.truncate(array[i],12)+'</li>');
-                    $('#'+live+ ' .players-count').text(count);
-                  }
-                }
-              })
-            }
-            var playercount_event;
-            var winScreen_event;
-            var totalwinamoubt;
-            const playerdetails_event = instance.playerdetails_event({},{fromBlock: 0, toBlock: 'latest'});
-            if(App.switched == false){
-               playercount_event = instance.player_count_event({}, {fromBlock:'latest', toBlock: 'latest'});
-               winScreen_event = instance.playerdetails_event({},{fromBlock: 'latest', toBlock: 'latest'});
-               totalwinamoubt = instance.totalwinamoubt({},{fromBlock: 'latest', toBlock: 'latest'});
             }
 
-//live tracking online count and player update ui
-            var pc_block_num = 0;
-            if (playercount_event != undefined){
-            playercount_event.watch(function(error, result){
-              $(".metamask-info").text("");
-              if(pc_block_num != result.blockNumber){
-                $(".play-arena section").css({"filter":"unset","pointer-events":"auto"});
-                pc_block_num = result.blockNumber;
-              d = parseInt(result.args.bet.valueOf());
-              c = result.args.count.valueOf()
-              e = result.args.addr.valueOf();
-              var live;
-              switch(d) {
-                case 50:
-                live= "live1";
-                break;
-                case 100:
-                live="live2";
-                break;
-                case 500:
-                live="live3";
-                break;
-                case 10:
-                live="live4";
-                break;
-                default:
-                live="live4";
-                break;
+try{
+
+ updateResultsMessage();
+
+  var winnerDetails = App.maininstance.prizeAmount({}, {fromBlock:'latest', toBlock: 'latest'});
+           // App.getMyBets(account);
+            if (winnerDetails != undefined){
+              winnerDetails.watch(function(error, result){
+                
+                try{
+                App.wizard1Address = result.args.wizard1Address.valueOf();
+                App.wizard2Address = result.args.wizard2Address.valueOf();
+                App.wizard2Address = result.args.wizard2Address.valueOf();
+                App.prize1= result.args.prize1.valueOf();
+                App.prize2= result.args.prize2.valueOf();
+                App.tableTopScorer= result.args.tableTopScorer.valueOf();
+                App.wizid1= result.args.wizid1.valueOf();
+                App.wizid2= result.args.wizid2.valueOf();
+                App.wizid3= result.args.wizid3.valueOf();
+
+                App.wizid1=getwizid(App.wizard1Address,1);
+                App.wizid2=getwizid(App.wizard2Address,2);
+                App.wizid3=getwizid(App.wizard3Address,3);
+
+              
+              updateResults();
+              }
+              catch(error){
+                console.log("emit error", error);
+
+              }
+                });
               }
 
-              $('#'+live+ ' .players-count').text(c);
-              $('#'+live +' ul').append('<li>'+App.truncate(e,12)+'</li>');
-              $('#total_players').text(c);
+            else{
+
+              updateResultsMessage();
             }
-          })
-        }
 
-//win modal pop up ui
-          var win_block_num = 0;
-          if (winScreen_event != undefined){
-          winScreen_event.watch(function(error,result){
-            if(win_block_num != result.blockNumber){
-              win_block_num = result.blockNumber;
-              addr = result.args.adr.valueOf();
-              tablecount = result.args.count.valueOf();
-              guessnums = result.args.guessnums.valueOf();
-              winPercent = result.args.winPercent.valueOf();
-              bet = parseInt(result.args.bet.valueOf());
-              var winAmountBlock;
-              if(addr.includes(App.account)){
-              current_win_amount = 0;
-
-              if(totalwinamoubt != undefined){
-                totalwinamoubt.watch(function(error,result){
-                  if(winAmountBlock != result.blockNumber){
-                    winAmountBlock = result.blockNumber;
-                    addr = result.args.adr.valueOf();
-                    winAmount = result.args.winamount;
-                    winAmount.forEach(function(element,index) {
-                      if(addr[index] == App.account){
-                        $('.eth-amount').text("You won "+web3.fromWei(element.valueOf(),"ether")+" ETH")
-                      //current_win_amount = ;
-                      }
-                    })
-                  }
-                })
-              }
 }
-              var bet_amt;
-              var live;
-              switch (bet) {
-                case 50:
-                bet_amt = 0.05;
-                live="live1";
-                break;
-                case 100:
-                bet_amt = 0.1;
-                live="live2";
-                break;
-                case 500:
-                bet_amt = 0.5;
-                live="live3";
-                break;
-                case 10:
-                bet_amt = 0.01;
-                live="live4";
-                break;
-                default:
-              }
-              $('#'+live+ ' ul li').remove();
-              $('#'+live+' label .players-count').text("0");
-              var newObj = {};
-                    winPercent.forEach(function(element,index) {
-                      var sample= {};
-                      var arr=[];
-                      sample["number"] = guessnums[index].valueOf();
-                      sample["address"] = addr[index];
-                      sample["percent"] = element.valueOf();
-                      if (!Object.keys(newObj).includes(element.valueOf())){
-                        arr.push(sample)
-                        newObj[parseInt(element.valueOf())] = arr;
-                      }else{
-                        newObj[parseInt(element.valueOf())].push(sample)
-                      }
-                    })
-                    var intResult = Object.keys(newObj).map(function (x) {
-                      return parseInt(x, 10);
-                    });
-                    sortedPercentage = intResult.sort( function(x, y)
-                    {
-                    return y - x;
-                    } );
-                    var appendStr = "";
-                    sortedPercentage.forEach(function(ele,index){
-                      newObj[ele].forEach(function(e,i){
-                        var dotclass;
-                        if(App.account == e.address){
-                          dotclass = "current-player-dot";
-                          $('#WinModalCenter').fireworks();
-                          //$('#win-detail').text("YOU WON "+parseInt(e.percent)/100+"% ");
-                          $('#WinModalCenter').modal('show');
-                        }
-                        appendStr += '<tr><td><span class="'+dotclass+'"></span>'+ App.truncate(e.address,12) +'</td><td>'+e.number+'</td><td>'+parseInt(e.percent)/100+'</td></tr>';
-                      })
-                    })
-                    const sum_mean = guessnums.reduce((total, amount) => parseInt(total) + parseInt(amount));
-                    const mean = sum_mean/guessnums.length;
-                    appendStr += '<tr><td><b>Mean</b></td><td><b>'+mean.toFixed(2)+'</b></td><td></td></tr>';
-                    $('.history-winscreen-table tbody').append(appendStr);
-            }
-          });
-        }
+catch(error){
+  console.log(error);
+}
 
-//player transaction history update in ui
-            var pd_block_num = 0
-            if (playerdetails_event != undefined){
-            playerdetails_event.watch(function(error,result){
-            //  debugger
-              //console.log("yes inside")
-              web3.eth.getTransactionReceipt(result.transactionHash,function(err,value){
-                //value.logs.topics[ 2 ]
-              })
 
-              if (pd_block_num != result.blockNumber){
-                pd_block_num = result.blockNumber;
-                addr = result.args.adr.valueOf();
-                tablecount = result.args.count.valueOf();
-                guessnums = result.args.guessnums.valueOf();
-                winPercent = result.args.winPercent.valueOf();
-                bet = parseInt(result.args.bet.valueOf());
-                var pool;
-                var bet_amt;
-                switch (bet) {
-                  case 50:
-                  pool = "pool1";
-                  bet_amt = 0.05;
-                  break;
-                  case 100:
-                  pool = "pool2";
-                  bet_amt = 0.1;
-                  break;
-                  case 500:
-                  pool = "pool3";
-                  bet_amt = 0.5;
-                  break;
-                  case 10:
-                  pool = "pool4";
-                  bet_amt = 0.01;
-                  break;
-                  default:
-                }
-                ///Ascending ordered table format
-                          var newObj = {};
-                                winPercent.forEach(function(element,index) {
-                                  var sample= {};
-                                  var arr=[];
-                                  sample["number"] = guessnums[index].valueOf();
-                                  sample["address"] = addr[index];
-                                  sample["percent"] = element.valueOf();
-                                  if (!Object.keys(newObj).includes(element.valueOf())){
-                                    arr.push(sample)
-                                    newObj[parseInt(element.valueOf())] = arr;
-                                  }else{
-                                    newObj[parseInt(element.valueOf())].push(sample)
-                                  }
-                                })
-                                var intResult = Object.keys(newObj).map(function (x) {
-                                  return parseInt(x, 10);
-                                });
-                                sortedPercentage = intResult.sort( function(x, y)
-                                {
-                                return y - x;
-                                } );
-                                var appendStr = "";
-                                sortedPercentage.forEach(function(ele,index){
-                                  newObj[ele].forEach(function(e,i){
-                                    if(App.account == e.address){
-                                      web3.eth.getBlock(result.blockNumber, (error, block) => {
-                                        const timestamp = block.timestamp;
-                                        const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-                                        var date1 = new Date(timestamp*1000);
-                                        var utc_date = date1.toUTCString()
-                                        var loc_date = new Date(utc_date)
-                                        var f_date = loc_date.getDate() + "-" + months[loc_date.getMonth()] +"-"+ loc_date.getFullYear()+"; "+loc_date.getHours()+":"+ (loc_date.getMinutes()<10?'0':'') + loc_date.getMinutes()  ;
-                                        $('#self-wins tbody tr:first').before('<tr><td>'+ bet_amt +'</td><td>'+ f_date +'</td><td>'+e.number+'</td><td>'+parseInt(e.percent)/100+'</td></tr>');
-                                      });
+
+
+//Get Player Notification Details
+                  $.ajax({
+                  type: "POST",
+                  url: serverURl+"getPlayerDetails",
+                  crossDomain: true,
+                  data: 'player='+App.account+'',
+                  header:{
+                  },
+                  success: function (data) {
+                // Need to check response type
+                },
+                                    error: function (err) {
+                                      console.log(err.responseText);
+                                      var response = err.responseText;
+                                      if(response == 'placeSpell'){
+                                   //     App.snackbarCall("Please place your spells");
+                                      } else if(response == 'eliminated'){
+                                        App.snackbarCall("You have been eliminated from the tournament");
+                                      } else if(response == 'bye'){
+                                        App.snackbarCall("You have been bye passed to next level");
+                                      } else {
+
+                                      }
                                     }
-                                  appendStr += '<tr><td>'+ App.truncate(e.address,12) +'</td><td>'+e.number+'</td><td>'+parseInt(e.percent)/100+'</td></tr>';
+                                    });
+// //Get Match array
+// $.ajax({
+// type: "POST",
+//         url: "http://localhost:8080/neutraldragontournament/rest/getMatchArr",
+//         crossDomain: true,
+//         data: {},
+//         header:{
+//         },
+//         success: function (data) {
+//       // Need to check response type
+//       console.log("Match Fixtures:::::::"+data);
+//       },
+//                           error: function (err) {
+//                           }
+//                           });
 
-                                  commision = (addr.length * bet_amt) - ((addr.length * bet_amt)*10/100)
-                                  win_amt = commision/(addr.length*(parseInt(e.percent)/100)/100)
-                                  })
-                                })
-                const sum_mean = guessnums.reduce((total, amount) => parseInt(total) + parseInt(amount));
-                const mean = sum_mean/guessnums.length;
-                appendStr += '<tr><td><b>Mean</b></td><td><b>'+mean.toFixed(2)+'</b></td><td></td></tr>';
-                $('#'+pool+' tbody tr:first').before(appendStr);              }
-            })
-          }
-          });
+                          //Get Match array
+                          $.ajax({
+                          type: "POST",
+                                  url: serverURl+"getScoreArr",
+                                  crossDomain: true,
+                                  data: {},
+                                  header:{
+                                  },
+                                  success: function (data) {
+                                // Need to check response type
+                                console.log("Score Fixtures:::::::"+data);
+                                // debugger
+                                // for(var i=0;i<data.length;i++){
+                                //   var details1='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td></tr>'
+	                               //   $("#tableRow").append(details1);
+                                // }
+                                setRankingTable(data);
+
+                                },
+                                error: function (err) {
+                                           }
+                                      });
+
+                                $.ajax({
+                          type: "POST",
+                                  url: serverURl+"gettimer",
+                                  crossDomain: true,
+                                  data: {},
+                                  header:{
+                                  },
+                                  success: function (data) {
+                                // Need to check response type
+                                
+                                // debugger
+                                // for(var i=0;i<data.length;i++){
+                                //   var details1='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td></tr>'
+                                 //   $("#tableRow").append(details1);
+                                // }
+                              newMilli= parseInt(data);
+                              starttimer();
+
+                                },
+                                error: function (err) {
+                                           }
+                                      });
 
 
-
-          $('#account-error').hide()
-          $(".select-ether").click(function () {
-            $(".select-ether").removeClass("active");
-            $(this).addClass("active");
-
-          });
-
-          $('#place-bet').click(function(){
-            var num = $('#guessnum').val();
-            var val = parseInt($('.coin-bet .active').attr('data-value'));
-            var eth = parseFloat($('.coin-bet .active .ether-value').text());
-            if($(".coin-bet .active").length != 0 ){
-              if(num!= 0 && num < 100 && num != ""){
-                App.placebet(App.account,num,val,eth)
-
-              }else{
-                App.snackbarCall("Please type a valid number");
-              }
-            }else{
-              App.snackbarCall("Please choose a bet amount");
-            }
-
-          })
         }else{
           $('#account-error').show()
           $('#account-error').text("Please connect your wallet!");
         }
       }
+
     });
   },
   snackbarCall:function(text){
     Snackbar.show({text: text,pos: 'bottom-center',actionText: 'OK',actionTextColor: "var(--text-c1)"});
   },
-  truncate : function (fullStr, strLen, separator) {
-    if (fullStr.length <= strLen) return fullStr;
+  joinTournament:function(playerAddress,wizardId,joiningFee,affinityType){
+    // debugger
+    App.maininstance.checkPlayerExists(App.account, function(err, res){
+      console.log(res);
+      if(!res){
+      $("#userNotificationText").html('<br>'+BetInfo);
+      $("#notificationinfo").show();
+        $("#noti_close").hide();
+        App.maininstance.joinTournament(playerAddress,wizardId,affinityType,{from: web3.eth.accounts[0], gas: 3000000, value: web3.toWei(joiningFee,'ether')}, function(err, res){
+          if(!err){
+        //       App.snackbarCall("You have joined the tournament");
+            $("#notificationinfo").show();
+            $("#userNotificationText").html('<br> <br>'+"You have joined the tournament.");
+            $("#noti_close").show();
+               // if(App.joiningStatus == 'joined'){
+             $.ajax({
+             type: "POST",
+                     url: serverURl+"jointournament",
+                     crossDomain: true,
+                     data: 'player='+playerAddress+'&wizardid='+wizardId+'&affinitytype='+affinityType+'',
+                     header:{
+                     },
+                     success: function (data) {
 
-    separator = separator || '...';
 
-    var sepLen = separator.length,
-    charsToShow = strLen - sepLen,
-    frontChars = Math.ceil(charsToShow/2),
-    backChars = Math.floor(charsToShow/2);
+                     },
+                     error: function (err) {
+                       console.log(err);
 
-    return fullStr.substr(0, frontChars) +
-    separator +
-    fullStr.substr(fullStr.length - backChars);
+                     }
+                     });
+                     // }
+           }else{
+             console.error(err);
+             App.snackbarCall("You have rejected the last transaction.");
+            $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"You have rejected the last transaction.");
+               $("#noti_close").show();
+           }
+        });
+      } else {
+        App.snackbarCall("You have joined the tournament already");
+      }
+    });
   },
-  placebet:function(a,b,c,d){
-      $(".metamask-info").text("Please confirm in Metamask");
-      var e = parseInt(c);
-      maininstance.checkPoolcheck(e).then(function(bool){
-        if(bool){
-          maininstance.checkDuplicate(App.account,c).then(function(bool){
-            if(!bool){
-              $(".play-arena section").css({"filter":"blur(8px)","pointer-events":"none"});
-              maininstance.joinGame(a,b,c,{from: App.account,value: web3.toWei(d,'ether')}).then(function(acc,error){
-                if(!error){
-                    $(".metamask-info").text("Bet submitted!");
-                    App.snackbarCall("You bet is placed successfully");
-                }else{
-                  $(".play-arena section").css({"filter":"unset","pointer-events":"auto"});
-                  $(".metamask-info").text("Something went wrong!");
-                }
-              }).catch(function(err){
-                if(err.message.includes("User denied transaction signature")){
-                  $(".play-arena section").css({"filter":"unset","pointer-events":"auto"});
-                  $(".metamask-info").text("You rejected last transaction in metamask");
-                }else{
-                  $(".play-arena section").css({"filter":"unset","pointer-events":"auto"});
-                  $(".metamask-info").text("Something went wrong. Please check your metamask for detailed error");
-                }
 
-              });
-            }else{
-              $(".play-arena section").css({"filter":"unset","pointer-events":"auto"});
-              $(".metamask-info").text("You already placed your bet for this pool. Try other pool!");
-              App.snackbarCall("You already placed your bet for this pool. Try other pool!");
+  placeSpells:function(spellArray){
+    // debugger 
+if (typeof App.maininstance !== 'undefined'&& typeof web3 !== 'undefined'){
+    $("#notificationinfo").show();
+    $("#userNotificationText").html('<br> <br>'+"Updading spell");
+    $("#noti_close").hide();
+   
+    $.ajax({
+    type: "POST",
+            url: serverURl+"updateplacespell",
+            crossDomain: true,
+            data: 'player='+App.account+'&wizardspell1='+spellArray[0]+'&wizardspell2='+spellArray[1]+'&wizardspell3='+spellArray[2]+'&wizardspell4='+spellArray[3]+'&wizardspell5='+spellArray[4]+'',
+            header:{
+            },
+            success: function (data) {
+            // Need to check the reponse type
+             $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"Spells updated successfully.");
+             $("#noti_close").show();
+            },
+            error: function (err) {
+
+
+              if(err.responseText == 'notExists'){
+                App.snackbarCall("Player is not in the tournament");
+              $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"Player is not in the tournament");
+             $("#noti_close").show();
+              } else if(err.responseText == 'success'){
+                  App.snackbarCall("You have successfully placed your wizard spells");
+
+              $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"You have successfully placed your wizard spells.");
+             $("#noti_close").show();
+              } else if(err.responseText == 'failed'){
+
+              $("#notificationinfo").show();
+             $("#userNotificationText").html('<br> <br>'+"You have already placed your wizard spells");
+             $("#noti_close").show();
+                  App.snackbarCall("You have already placed your wizard spells");
+              }
             }
-          })
-        }else{
-          $(".play-arena section").css({"filter":"unset","pointer-events":"auto"});
-          App.snackbarCall("Something went wrong!. Please try again later")
-        }
-      })
+            });
   }
+  else{
+
+        App.init();
+  }
+  },
+   initAgain: async function() {
+          await ethereum.enable();
+          // Acccounts now exposed
+          return await App.initWeb3();
+        },
 
 };
 
+   function callback(data){
+    if(meta_address!==data.selectedAddress||meta_network!==data.networkVersion){
+      location.reload();
+    }
+
+
+   }
+
 $(function() {
-  App.init();
+
+      $.ajax({
+type: "POST",
+  url: serverURl+"getContractAddress",
+  crossDomain: true,
+  data: {},
+  header:{
+  },
+  success: function (data) {
+// Need to check response type
+},
+                    error: function (err) {
+App.contractAddress = err.responseText;
+ App.init();
+                    }
+                    });
+
 });
+

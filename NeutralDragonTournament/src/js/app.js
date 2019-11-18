@@ -15,7 +15,7 @@ App = {
   tournamentEnrollEndTimer:0,
   levelStartDuration:0,
   levelEndDuration:0,
-  contractAddress:'0x0',
+  contractAddress:"0x0",
   winner1Address:'0x0',
   winner2Address:'0x0',
   winner3Address:'0x0',
@@ -27,7 +27,7 @@ App = {
   wizid3:0,
   init: async function() {
     //return await App.initWeb3();
-    window.addEventListener('load', async () => {
+ //   window.addEventListener('load', async () => {
       // Modern dapp browsers...
       if (window.ethereum) {
         window.web3 = new Web3(ethereum);
@@ -53,22 +53,9 @@ App = {
       else {
         console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
       }
-    });
+  //  });
 
-    $.ajax({
-type: "POST",
-  url: serverURl+"getContractAddress",
-  crossDomain: true,
-  data: {},
-  header:{
-  },
-  success: function (data) {
-// Need to check response type
-},
-                    error: function (err) {
-App.contractAddress = err.responseText;
-                    }
-                    });
+
   },
   initWeb3: async function() {
     if (typeof web3 !== 'undefined') {
@@ -474,6 +461,22 @@ if (typeof App.maininstance !== 'undefined'&& typeof web3 !== 'undefined'){
    }
 
 $(function() {
-  App.init();
+
+      $.ajax({
+type: "POST",
+  url: serverURl+"getContractAddress",
+  crossDomain: true,
+  data: {},
+  header:{
+  },
+  success: function (data) {
+// Need to check response type
+},
+                    error: function (err) {
+App.contractAddress = err.responseText;
+ App.init();
+                    }
+                    });
+
 });
 
