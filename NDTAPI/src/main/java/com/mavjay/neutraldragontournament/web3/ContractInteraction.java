@@ -77,7 +77,7 @@ RestService restService;
 		System.out.println("Contract ADdress::::::"+contract1.getContractAddress());
 		RemoteCall<Tuple2<List<String>, List<String>>> contractCall = contract1.roundFixture(dataList2);
 		Tuple2<List<String>, List<String>> result = contractCall.send();
-		for(int i=0;i<result.getSize();i++){
+		for(int i=0;i<result.getSize()-1;i++){
 			dataList.add(result.getValue1().get(i));
 			dataList.add(result.getValue2().get(i));
 		}

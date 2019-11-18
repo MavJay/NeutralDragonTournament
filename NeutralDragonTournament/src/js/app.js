@@ -376,7 +376,7 @@ catch(error){
             $("#notificationinfo").show();
             $("#userNotificationText").html('<br> <br>'+"You have joined the tournament.");
             $("#noti_close").show();
-               if(App.joiningStatus == 'joined'){
+               // if(App.joiningStatus == 'joined'){
              $.ajax({
              type: "POST",
                      url: serverURl+"jointournament",
@@ -393,7 +393,7 @@ catch(error){
 
                      }
                      });
-                     }
+                     // }
            }else{
              console.error(err);
              App.snackbarCall("You have rejected the last transaction.");
