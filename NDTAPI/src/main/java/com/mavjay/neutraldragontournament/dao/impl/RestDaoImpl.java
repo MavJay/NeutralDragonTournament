@@ -107,7 +107,7 @@ public class RestDaoImpl implements RestDao {
 			}
 			int levelNum = (int) session.createSQLQuery("select levelCount from FlagSettings").uniqueResult();
 			for (int i = 0; i < matchArray.size(); i++) {
-				int wizardId = (int) session.createSQLQuery("select wizardId from Tournament where player=:player")
+				int wizardId = (int) session.createSQLQuery("select wizardId from tournament where player=:player")
 						.setParameter("player", matchArray.get(i)).uniqueResult();
 				Query insertQuery = session
 						.createSQLQuery("INSERT INTO levelfixture(playerAddress,wizardId,levelNum) VALUES (?,?,?)");

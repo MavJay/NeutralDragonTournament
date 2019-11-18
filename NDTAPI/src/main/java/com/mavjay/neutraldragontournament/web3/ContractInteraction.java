@@ -59,6 +59,8 @@ RestService restService;
 		contractAddress = contract.getContractAddress();
 		System.out.println("Is contract Valid :"+contract.isValid());
 		System.out.println("Is contract Valid :"+contractAddress);
+		prop.clear();
+		inputStream.close();
 		return contractAddress;
 	}
 	
@@ -79,6 +81,8 @@ RestService restService;
 			dataList.add(result.getValue1().get(i));
 			dataList.add(result.getValue2().get(i));
 		}
+		prop.clear();
+		inputStream.close();
 		return dataList;
 	}
 	
@@ -103,6 +107,8 @@ RestService restService;
 				BigInteger wei = ethGetBalance.getBalance();
 		System.out.println("Start Duel Return"+result);
 		System.out.println("Contract Balance"+wei);
+		prop.clear();
+		inputStream.close();
 		return "success";
 	}
 	
