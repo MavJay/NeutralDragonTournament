@@ -253,7 +253,9 @@ function millitoDay(forCalc){
       var time = millitoDay(newMilli);
      var timerdetails= "Tournament starts in : <br>"+ time;
       $("#countdown").html(timerdetails);
-
+      // $("#enroll_btn").attr("pointer-events","auto");
+document.getElementById('enroll_btn').style.pointerEvents="auto";
+document.getElementById('enroll_btn').style.background="#fff032";
     };
 
     function starttimer(){

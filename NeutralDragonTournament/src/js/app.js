@@ -2,7 +2,10 @@ var meta_address,meta_network;
 
 //var serverURl="http://localhost:8080/neutraldragontournament/rest/";
 
-var serverURl="https://ndt.mavjay.com/neutraldragontournament/rest/"
+var serverURl="https://ndt.mavjay.com/neutraldragontournament/rest/";
+var currentPage="";
+
+
 
 App = {
   web3Provider: null,
@@ -89,31 +92,7 @@ App = {
     }
 
 
-  //   //Detecting network of metamask connenction
-  //   web3.version.getNetwork((err, netId) => {
-  //         meta_network = netId;
-  //     switch (netId) {
-    
-  //       case "1":
-  //       console.log('This is mainnet');
 
-  //       break
-  //       case "2":
-  //       console.log('This is the deprecated Morden test network.');
-        
-  //       break
-  //       case "3":
-  //       console.log('This is the ropsten test network.');
-    
-  //       break
-  //       default:
-  //       console.log('This is local network or unknown network');
-    
-  //     }
-
-  //   })
-  //   return App.initContract();
-  // },
 
 
 
@@ -186,6 +165,10 @@ console.log(App.maininstance);
           });
           //  Check Player Valid
           // debugger
+
+//execute only on index
+if(currentPage=="index.html"){
+
             var playerJoinStatus = App.maininstance.playerJoiningEvent({}, {fromBlock:'latest', toBlock: 'latest'});
                 if (playerJoinStatus != undefined){
                   // debugger
@@ -203,14 +186,22 @@ console.log(App.maininstance);
             })
             }
 
+          }
+
+
+//execute only if results page
+if(currentPage=="results.html"){
+
 try{
 
  updateResultsMessage();
 
-  var winnerDetails = App.maininstance.prizeAmount({}, {fromBlock:'latest', toBlock: 'latest'});
+  var winnerDetails = App.maininstance.prizeAmount({}, {fromBlock:0, toBlock: 'latest'});
            // App.getMyBets(account);
+           console.log("requested for results", winnerDetails);
             if (winnerDetails != undefined){
               winnerDetails.watch(function(error, result){
+                console.log("winner details received",result);
                 
                 try{
                 App.wizard1Address = result.args.wizard1Address.valueOf();
@@ -219,9 +210,9 @@ try{
                 App.prize1= result.args.prize1.valueOf();
                 App.prize2= result.args.prize2.valueOf();
                 App.tableTopScorer= result.args.tableTopScorer.valueOf();
-                App.wizid1= result.args.wizid1.valueOf();
-                App.wizid2= result.args.wizid2.valueOf();
-                App.wizid3= result.args.wizid3.valueOf();
+                // App.wizid1= result.args.wizid1.valueOf();
+                // App.wizid2= result.args.wizid2.valueOf();
+                // App.wizid3= result.args.wizid3.valueOf();
 
                 App.wizid1=getwizid(App.wizard1Address,1);
                 App.wizid2=getwizid(App.wizard2Address,2);
@@ -231,7 +222,8 @@ try{
               updateResults();
               }
               catch(error){
-                console.log("emit error", error);
+                 console.log("winner details error received",error);
+               
 
               }
                 });
@@ -246,9 +238,11 @@ try{
 catch(error){
   console.log(error);
 }
+}
 
 
-
+// exeucte only if home or duel
+ if(currentPage=="index.html"||currentPage=="duel.html"){
 
 //Get Player Notification Details
                   $.ajax({
@@ -275,23 +269,21 @@ catch(error){
                                       }
                                     }
                                     });
-// //Get Match array
-// $.ajax({
-// type: "POST",
-//         url: "http://localhost:8080/neutraldragontournament/rest/getMatchArr",
-//         crossDomain: true,
-//         data: {},
-//         header:{
-//         },
-//         success: function (data) {
-//       // Need to check response type
-//       console.log("Match Fixtures:::::::"+data);
-//       },
-//                           error: function (err) {
-//                           }
-//                           });
+                 }
 
-                          //Get Match array
+
+// // execute only if fixture
+//  if(currentPage=="fixture.html"){
+
+                 
+
+//                          }
+
+// execute only if index page
+   if(currentPage=="index.html"){ 
+
+
+             //Get Match array
                           $.ajax({
                           type: "POST",
                                   url: serverURl+"getScoreArr",
@@ -305,7 +297,7 @@ catch(error){
                                 // debugger
                                 // for(var i=0;i<data.length;i++){
                                 //   var details1='<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td></tr>'
-	                               //   $("#tableRow").append(details1);
+                                 //   $("#tableRow").append(details1);
                                 // }
                                 setRankingTable(data);
 
@@ -313,6 +305,7 @@ catch(error){
                                 error: function (err) {
                                            }
                                       });
+
 
                                 $.ajax({
                           type: "POST",
@@ -336,6 +329,8 @@ catch(error){
                                 error: function (err) {
                                            }
                                       });
+
+                              }
 
 
         }else{
@@ -461,6 +456,7 @@ if (typeof App.maininstance !== 'undefined'&& typeof web3 !== 'undefined'){
    }
 
 $(function() {
+currentPage= window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
 
       $.ajax({
 type: "POST",

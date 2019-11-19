@@ -91,7 +91,7 @@ function resendJoiningFee(address playerAdress) public payable{
      // wizard1Address.transfer(prize1);
      // wizard2Address.transfer(prize2);
      // wizard3Address.transfer(tableTopScorer);
-    emit prizeAmount(prize1,prize2,tableTopScorer,developerCommission);
+    emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer,developerCommission);
  //  emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer,developerCommission,wizid1,wizid2,wizid3);
 }
 
