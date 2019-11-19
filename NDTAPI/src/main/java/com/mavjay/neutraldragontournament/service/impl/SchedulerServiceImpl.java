@@ -129,11 +129,12 @@ public class SchedulerServiceImpl  {
 		    		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 		    		Date date = new Date();
 		        	cntInfo.setContractdeploystarttime(formatter.format(date));
+		        	cntInfo.setTournamentStatus("started");
 		        	session.save(cntInfo);
 
-		        	session.createSQLQuery("update FlagSettings set contractaddress=:address")
-					.setParameter("address", contractAddress).executeUpdate();
-		        	System.out.println(contractAddress);
+//		        	session.createSQLQuery("update FlagSettings set contractaddress=:address")
+//					.setParameter("address", contractAddress)
+//					.executeUpdate();
 	        	}
 
 	        }//if db has value
@@ -148,11 +149,12 @@ public class SchedulerServiceImpl  {
 		    		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 		    		Date date = new Date();
 		        	cntInfo.setContractdeploystarttime(formatter.format(date));
+		        	cntInfo.setTournamentStatus("started");
 		        	session.save(cntInfo);
 
-		        	session.createSQLQuery("update FlagSettings set contractaddress=:address")
-					.setParameter("address", contractAddress).executeUpdate();
-		        	System.out.println(contractAddress);
+//        	session.createSQLQuery("update FlagSettings set contractaddress=:address")
+//					.setParameter("address", contractAddress)
+//					.executeUpdate();
 				}
 
 
@@ -167,7 +169,7 @@ public class SchedulerServiceImpl  {
 
 	// first call start tournament timer , second call end tournament timer
 //	@Scheduled(initialDelay=2*60*1000,fixedRate=1*60*1000)
-	@Scheduled(initialDelay=5*60*1000,fixedRate=15*60*1000) // Testing its initially set to 15mins
+	@Scheduled(initialDelay=1*60*1000,fixedRate=15*60*1000) // Testing its initially set to 15mins
 	@Transactional
 	public void startTournament() {
 
@@ -220,11 +222,41 @@ public class SchedulerServiceImpl  {
 		@Scheduled(initialDelay=20*60*1000,fixedRate=5*60*1000)
 	@Transactional
 	public void increaseLevel() {
+			Session session = sessionFact.getCurrentSession();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		System.out.println("level check: "+timestamp);
+		
+		Query userQuery = (Query) session.createQuery(
+	    		"from FlagSettings");
+		List<FlagSettings> list =  (List<FlagSettings>)userQuery.list();
+		String tournamentStatus = null;
+		for(FlagSettings user : list){
+			tournamentStatus = user.getTournamentStatus();
+		}
+		if(tournamentStatus.equals("started")) {
 		restService.roundFixture();
+		int updateLevel = session.createSQLQuery("update FlagSettings set levelCount=:level")
+				.setParameter("level", level_flag).executeUpdate();
 		level_flag++;
+		}
 
+	}
+		
+		@Scheduled(initialDelay=10*60*1000,fixedRate=5*60*1000)
+	@Transactional
+	public void scoreUpdate() {
+			Session session = sessionFact.getCurrentSession();
+			Query userQuery = (Query) session.createQuery(
+		    		"from FlagSettings");
+			List<FlagSettings> list =  (List<FlagSettings>)userQuery.list();
+			String tournamentStatus = null;
+			for(FlagSettings user : list){
+				tournamentStatus = user.getTournamentStatus();
+			}
+					
+					if(tournamentStatus.equals("started")) {
+		restService.calculateScore();
+					}
 	}
 
 

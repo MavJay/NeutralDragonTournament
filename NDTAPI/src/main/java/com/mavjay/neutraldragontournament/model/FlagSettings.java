@@ -30,6 +30,9 @@ public class FlagSettings {
 	@Column
 	private String contractdeploystarttime;
 	
+	@Column
+	private String tournamentStatus;
+	
 	
 
 
@@ -90,10 +93,19 @@ public class FlagSettings {
 	public void setContractdeploystarttime(String contractdeploystarttime) {
 		this.contractdeploystarttime = contractdeploystarttime;
 	}
+	
+	public String getTournamentStatus() {
+		return tournamentStatus;
+	}
+
+
+	public void setTournamentStatus(String tournamentStatus) {
+		this.tournamentStatus = tournamentStatus;
+	}
 
 	
 	
-	public FlagSettings(int fgid,int levelCount, boolean roundFixture, boolean scoreUpdate,String contractAddress, String tournamentStartTime, String contractdeploystarttime) {
+	public FlagSettings(int fgid,int levelCount, boolean roundFixture, boolean scoreUpdate,String contractAddress, String tournamentStartTime, String contractdeploystarttime,String tournamentStatus) {
 		super();
 		this.fgid = fgid;
 		this.levelCount = levelCount;
@@ -102,6 +114,7 @@ public class FlagSettings {
 		this.contractAddress=contractAddress;
 		this.tournamentStartTime=tournamentStartTime;
 		this.contractdeploystarttime=contractdeploystarttime;
+		this.tournamentStatus = tournamentStatus;
 		
 	}
 	
