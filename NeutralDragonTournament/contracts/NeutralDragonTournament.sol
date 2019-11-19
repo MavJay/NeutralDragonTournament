@@ -10,9 +10,9 @@ tournamentPlayers[] private tPlayers;
 uint public totalNOfParticipants;
 address payable private developer;
 event playerJoiningEvent(string status,uint count);
-event prizeAmount(uint prize1,uint prize2,uint tableTopScorer,uint developerCommission);
-event developerCommission(uint commision);
-//event prizeAmount(address wizard1Address,address wizard2Address, address wizard3Address,uint prize1,uint prize2,uint tableTopScorer,uint developerCommission,uint wizid1,uint wizid2,uint wizid3);
+event prizeAmount(address wizard1Address, address wizard2Address, address wizard3Address, uint prize1,uint prize2,uint tableTopScorer,uint developerCommission);
+// event developerCommission(uint developerCommission);
+//event prizeAmount(address wizard1Address,address wizard2Address, address wizard3Address,uint prize1,uint prize2,uint tableTopScorer);
 
   constructor() public{
         developer = msg.sender;
@@ -92,9 +92,9 @@ function resendJoiningFee(address playerAdress) public payable{
      // wizard1Address.transfer(prize1);
      // wizard2Address.transfer(prize2);
      // wizard3Address.transfer(tableTopScorer);
-    emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer);
-    emit developerCommission(developerCommission);
- //  emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer,developerCommission,wizid1,wizid2,wizid3);
+     emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer,developerCommission);
+    // emit developerCommission(developerCommission);
+  // emit prizeAmount(wizard1Address,wizard2Address,wizard3Address,prize1,prize2,tableTopScorer,developerCommission,wizid1,wizid2,wizid3);
 }
 
 
