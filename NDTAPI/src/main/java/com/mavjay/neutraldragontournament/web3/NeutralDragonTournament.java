@@ -1,4 +1,4 @@
-package org.web3j.sample;
+package com.mavjay.neutraldragontournament.web3;
 
 import io.reactivex.Flowable;
 import java.math.BigInteger;
