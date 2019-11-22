@@ -477,6 +477,10 @@ public class RestDaoImpl implements RestDao {
 							score1.setNoOfWinAgainstElemental(wizard1WinAgainst);
 							score1.setNoOfLossAgainstElemental(wizard1LossAgainst);
 							session.save(score1);
+							int updateCompletedStatus = session.createQuery("update LevelFixture set roundWon=:roundwon,progress='completed' where playerAddress=:address")
+									.setParameter("address", wizard1Address)
+									.setParameter("roundwon",wizard1RoundWin)
+									.executeUpdate();
 //							String updateSpell = "UPDATE LevelFixture SET spell1=:wizardSpell1, spell2=:wizardSpell2,spell3=:wizardSpell3,"
 //									+ "spell4=:wizardSpell4,spell5=:wizardSpell5 where playerAddress=:player";
 //							Query qry1 = session.createQuery(updateSpell);
@@ -499,6 +503,10 @@ public class RestDaoImpl implements RestDao {
 							score1.setNoOfWinAgainstElemental(wizard2WinAgainst);
 							score1.setNoOfLossAgainstElemental(wizard2LossAgainst);
 							session.save(score1);
+							int updateCompletedStatus = session.createQuery("update LevelFixture set roundWon=:roundwon,progress='completed' where playerAddress=:address")
+									.setParameter("address", wizard2Address)
+									.setParameter("roundwon",wizard2RoundWin)
+									.executeUpdate();
 //							String updateSpell = "UPDATE LevelFixture SET spell1=:wizardSpell1, spell2=:wizardSpell2,spell3=:wizardSpell3,"
 //									+ "spell4=:wizardSpell4,spell5=:wizardSpell5 where playerAddress=:player";
 //							Query qry1 = session.createQuery(updateSpell);
@@ -521,7 +529,7 @@ public class RestDaoImpl implements RestDao {
 											+ "where plrAddress=:player")
 									.setParameter("player", wizard1Address).setParameter("status", wizard1Status)
 									.setParameter("score", score.getTotalScore() + wizard1Score)
-									.setParameter("win", score.getNoOftie() + wizard1RoundWin)
+									.setParameter("win", score.getNoOfWins()+ wizard1RoundWin)
 									.setParameter("loss", score.getNoOfLoss() + wizard1RoundLoss)
 									.setParameter("tie", score.getNoOftie() + wizard1RoundTie)
 									.setParameter("elementalWin", score.getElementalWin() + wizard1ElementalWin)
@@ -529,6 +537,10 @@ public class RestDaoImpl implements RestDao {
 									.setParameter("winAgainst", score.getNoOfWinAgainstElemental() + wizard1WinAgainst)
 									.setParameter("lossAgainst",
 											score.getNoOfLossAgainstElemental() + wizard1LossAgainst)
+									.executeUpdate();
+							int updateCompletedStatus = session.createQuery("update LevelFixture set roundWon=:roundwon,progress='completed' where playerAddress=:address")
+									.setParameter("address", wizard1Address)
+									.setParameter("roundwon", score.getNoOfWins() + wizard1RoundWin)
 									.executeUpdate();
 //							String updateSpell = "UPDATE LevelFixture SET spell1=:wizardSpell1, spell2=:wizardSpell2,spell3=:wizardSpell3,"
 //									+ "spell4=:wizardSpell4,spell5=:wizardSpell5 where playerAddress=:player";
@@ -547,7 +559,7 @@ public class RestDaoImpl implements RestDao {
 											+ "where plrAddress=:player")
 									.setParameter("player", wizard2Address).setParameter("status", wizard2Status)
 									.setParameter("score", score.getTotalScore() + wizard2Score)
-									.setParameter("win", score.getNoOftie() + wizard2RoundWin)
+									.setParameter("win", score.getNoOfWins() + wizard2RoundWin)
 									.setParameter("loss", score.getNoOfLoss() + wizard2RoundLoss)
 									.setParameter("tie", score.getNoOftie() + wizard2RoundTie)
 									.setParameter("elementalWin", score.getElementalWin() + wizard2ElementalWin)
@@ -555,6 +567,10 @@ public class RestDaoImpl implements RestDao {
 									.setParameter("winAgainst", score.getNoOfWinAgainstElemental() + wizard2WinAgainst)
 									.setParameter("lossAgainst",
 											score.getNoOfLossAgainstElemental() + wizard2LossAgainst)
+									.executeUpdate();
+							int updateCompletedStatus = session.createQuery("update LevelFixture set roundWon=:roundwon,progress='completed' where playerAddress=:address")
+									.setParameter("address", wizard2Address)
+									.setParameter("roundwon", score.getNoOfWins() + wizard2RoundWin)
 									.executeUpdate();
 //							String updateSpell = "UPDATE LevelFixture SET spell1=:wizardSpell1, spell2=:wizardSpell2,spell3=:wizardSpell3,"
 //									+ "spell4=:wizardSpell4,spell5=:wizardSpell5 where playerAddress=:player";
@@ -570,10 +586,10 @@ public class RestDaoImpl implements RestDao {
 						}
 					}
 				}
-				int updateCompletedStatus = session.createQuery("update LevelFixture set progress='completed' where playerAddress IN(:player1,:player2)")
-						.setParameter("player1", match.getPlayer1Address())
-						.setParameter("player2", match.getPlayer2Address())
-						.executeUpdate();
+//				int updateCompletedStatus = session.createQuery("update LevelFixture set progress='completed' where playerAddress IN(:player1,:player2)")
+//						.setParameter("player1", match.getPlayer1Address())
+//						.setParameter("player2", match.getPlayer2Address())
+//						.executeUpdate();
 				int changeByeStatus = session.createQuery("update Tournament set byeStatus='0' where byeStatus='1'").executeUpdate();
 
 			}
